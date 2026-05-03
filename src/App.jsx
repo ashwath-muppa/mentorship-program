@@ -27,11 +27,11 @@ const NAV_TABS = [
 const FAQ_DATA = [
   {
     q: "Who is this program for?",
-    a: "The Summer Mentorship Program is designed for middle school students of all skill levels. Whether you've never written a line of code or already have research experience, we welcome everyone who is curious and motivated to learn.",
+    a: "Next In Research is designed for middle school students of all skill levels. Whether you've never written a line of code or already have research experience, we welcome everyone who is curious and motivated to learn.",
   },
   {
     q: "Is the program free?",
-    a: "Yes — 100% free. There is no cost whatsoever to participate in the Summer Mentorship Program.",
+    a: "Yes — 100% free. There is no cost whatsoever to participate in Next In Research.",
   },
   {
     q: "When and where does the program take place?",
@@ -207,7 +207,7 @@ const SMP_PHOTOS = [
   "SMP_13.jpg",
 ].map((file) => ({
   src: `${IMAGE_ROOT}/Misc_imgs/${file}`,
-  alt: "Summer Mentorship Program",
+  alt: "Next In Research",
 }));
 
 const MISC_PHOTOS = [
@@ -875,7 +875,7 @@ function HomePage({ setActivePage }) {
             transition={{ duration: 0.6 }}
             className="mb-8 text-center"
           >
-            <SectionLabel>Summer Mentorship Program</SectionLabel>
+            <SectionLabel>Next In Research</SectionLabel>
             <h2 className="font-display text-3xl sm:text-4xl font-bold text-ice">
               Moments from the program
             </h2>
@@ -1034,7 +1034,7 @@ function HomePage({ setActivePage }) {
             transition={{ duration: 0.7 }}
           >
             <h2 className="font-display text-4xl sm:text-5xl font-bold text-ice mb-6">
-              Ready to start your STEM journey?
+              Ready to start your journey with Next In Research?
             </h2>
             <p className="text-steel-blue text-lg mb-10 max-w-md mx-auto">
               Spots are given on a rolling basis. Apply now and take the first
@@ -1139,7 +1139,7 @@ function TimelinePage() {
           </h2>
           <div className="space-y-4 text-steel-blue text-lg leading-relaxed max-w-2xl">
             <p>
-              The Summer Mentorship Program is just the beginning. As our cohort
+              Next In Research is just the beginning. As our cohort
               grows, we envision expanding to serve more school districts,
               recruiting mentors across more STEM specialties, and building a
               lasting alumni network of young researchers.
@@ -1597,7 +1597,7 @@ function ApplyPage() {
                 "You'll receive a confirmation email (within 24 hours) with next steps and orientation details.",
                 "Attend Orientation #2 on April 28th in LCPS or FCPS (depending on location) to officially join.",
                 "Get matched with a mentor based on your interests and skill level.",
-                "Begin your STEM journey — skill-building, project work, and mentorship all summer.",
+                "Begin your Next In Research journey — skill-building, project work, and mentorship all summer.",
               ].map((step, i) => (
                 <div key={i} className="flex items-start gap-4">
                   <div className="w-7 h-7 rounded-full bg-coral/12 border border-coral/25 flex items-center justify-center text-xs font-bold text-coral flex-shrink-0 mt-0.5">

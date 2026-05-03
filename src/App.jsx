@@ -151,30 +151,35 @@ const MENTORS = [
     school: "TJHSST",
     interest: "Computer Science and Machine Learning",
     image: `${IMAGE_ROOT}/Mentor_Imgs/Ashwath_Muppa.jpg`,
+    focus: "50% 18%",
   },
   {
     name: "Gael Sanchez-Zubieta",
     school: "TJHSST",
     interest: "Public Health",
     image: `${IMAGE_ROOT}/Mentor_Imgs/Gael_Sanchez_Zubieta.jpg`,
+    focus: "50% 20%",
   },
   {
     name: "Ishaan Kar",
     school: "TJHSST",
     interest: "Finance and Consulting",
     image: `${IMAGE_ROOT}/Mentor_Imgs/Ishaan_Kar.jpg`,
+    focus: "50% 20%",
   },
   {
     name: "Aashka Doshi",
     school: "TJHSST",
     interest: "Neuroscience",
     image: `${IMAGE_ROOT}/Mentor_Imgs/Aashka_Doshi.jpg`,
+    focus: "50% 22%",
   },
   {
     name: "Arjun Kode",
     school: "TJHSST",
     interest: "Neuroscience",
     image: `${IMAGE_ROOT}/Mentor_Imgs/Arjun_Kode.jpg`,
+    focus: "50% 24%",
   },
 ];
 
@@ -529,26 +534,40 @@ function PhotoCarousel() {
 
 function ImageCarousel({ photos, label }) {
   const scrollerRef = useRef(null);
+  const itemRefs = useRef([]);
   const [paused, setPaused] = useState(false);
+  const loopedPhotos = [...photos, ...photos, ...photos];
+
+  const getSetWidth = () => {
+    const first = itemRefs.current[0];
+    const secondSet = itemRefs.current[photos.length];
+    if (!first || !secondSet) return 0;
+    return secondSet.offsetLeft - first.offsetLeft;
+  };
+
+  const normalizeScroll = () => {
+    const scroller = scrollerRef.current;
+    const setWidth = getSetWidth();
+    if (!scroller || !setWidth) return;
+
+    if (scroller.scrollLeft < setWidth * 0.35) {
+      scroller.scrollLeft += setWidth;
+    } else if (scroller.scrollLeft > setWidth * 1.65) {
+      scroller.scrollLeft -= setWidth;
+    }
+  };
+
+  useEffect(() => {
+    const scroller = scrollerRef.current;
+    const setWidth = getSetWidth();
+    if (!scroller || !setWidth) return;
+    scroller.scrollLeft = setWidth;
+  }, [photos.length]);
 
   useEffect(() => {
     if (paused) return;
     const id = setInterval(() => {
-      const scroller = scrollerRef.current;
-      if (!scroller) return;
-
-      const atEnd =
-        scroller.scrollLeft + scroller.clientWidth >= scroller.scrollWidth - 8;
-
-      if (atEnd) {
-        scroller.scrollTo({ left: 0, behavior: "smooth" });
-        return;
-      }
-
-      scroller.scrollBy({
-        left: scroller.clientWidth * 0.75,
-        behavior: "smooth",
-      });
+      slide(1);
     }, 4200);
     return () => clearInterval(id);
   }, [paused]);
@@ -561,6 +580,8 @@ function ImageCarousel({ photos, label }) {
       left: direction * scroller.clientWidth * 0.82,
       behavior: "smooth",
     });
+
+    window.setTimeout(normalizeScroll, 520);
   };
 
   return (
@@ -574,14 +595,18 @@ function ImageCarousel({ photos, label }) {
 
       <div
         ref={scrollerRef}
+        onScroll={normalizeScroll}
         className="no-scrollbar flex gap-5 overflow-x-auto scroll-smooth snap-x snap-mandatory px-8 py-8 sm:px-10"
       >
-        {photos.map((photo, i) => (
+        {loopedPhotos.map((photo, i) => (
           <figure
-            key={photo.src}
+            key={`${photo.src}-${i}`}
+            ref={(node) => {
+              itemRefs.current[i] = node;
+            }}
             className="snap-center flex-shrink-0 w-[78vw] sm:w-[440px] lg:w-[520px]"
           >
-            <div className="h-[280px] sm:h-[340px] lg:h-[400px] rounded-2xl border border-white/8 bg-deep-navy/65 p-3 flex items-center justify-center shadow-xl">
+            <div className="h-[280px] sm:h-[340px] lg:h-[400px] rounded-2xl border border-white/8 bg-white/[0.04] p-3 flex items-center justify-center shadow-xl">
               <img
                 src={photo.src}
                 alt={photo.alt}
@@ -1236,6 +1261,7 @@ function TeamPage() {
                     src={mentor.image}
                     alt={mentor.name}
                     className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+                    style={{ objectPosition: mentor.focus }}
                     loading="lazy"
                   />
                 </div>

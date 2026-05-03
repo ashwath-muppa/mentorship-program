@@ -185,13 +185,11 @@ const MENTORS = [
 
 const MENTOR_SPECIALTIES = [
   "Computer Science",
-  "Neuroscience",
-  "Economics",
-  "Biomedical Research",
-  "Environmental Science",
   "Machine Learning",
-  "Chemistry",
-  "Physics",
+  "Neuroscience",
+  "Public Health",
+  "Finance & Consulting",
+  "Electrical Engineering",
 ];
 
 const SMP_PHOTOS = [
@@ -558,11 +556,18 @@ function ImageCarousel({ photos, label }) {
   };
 
   useEffect(() => {
-    const scroller = scrollerRef.current;
-    const setWidth = getSetWidth();
-    if (!scroller || !setWidth) return;
-    scroller.scrollLeft = setWidth;
+    const rafId = requestAnimationFrame(() => {
+      const scroller = scrollerRef.current;
+      const setWidth = getSetWidth();
+      if (!scroller || !setWidth) return;
+      scroller.scrollLeft = setWidth;
+    });
+    return () => cancelAnimationFrame(rafId);
   }, [photos.length]);
+
+  useEffect(() => {
+    return () => window.clearTimeout(wrapTimerRef.current);
+  }, []);
 
   const slide = (direction) => {
     const scroller = scrollerRef.current;

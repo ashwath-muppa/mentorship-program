@@ -30,3 +30,11 @@ a {
 .glass-panel {
   @apply bg-white/5 backdrop-blur-md border border-white/10;
 }
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

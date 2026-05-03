@@ -129,7 +129,7 @@ const FOUNDERS = [
     school: "TJHSST",
     interest: "Electrical Engineering + Computer Science",
     email: "devsrivastava1221@gmail.com",
-    image: "/images/NextInResearch/Mentor_Imgs/Dev_Srivastava.jpg",
+    image: "/images/NextInResearch/optimized/Mentor_Imgs/Dev_Srivastava.jpg",
     initials: "DS",
   },
   {
@@ -138,7 +138,7 @@ const FOUNDERS = [
     school: "TJHSST",
     interest: "Neuroscience",
     email: "ctp.deborah@gmail.com",
-    image: "/images/NextInResearch/Mentor_Imgs/Deborah_Torrico_Pardo.jpg",
+    image: "/images/NextInResearch/optimized/Mentor_Imgs/Deborah_Torrico_Pardo.jpg",
     initials: "DT",
   },
 ];
@@ -148,31 +148,31 @@ const MENTORS = [
     name: "Ashwath Muppa",
     school: "TJHSST",
     interest: "Computer Science and Machine Learning",
-    image: "/images/NextInResearch/Mentor_Imgs/Ashwath_Muppa.jpg",
+    image: "/images/NextInResearch/optimized/Mentor_Imgs/Ashwath_Muppa.jpg",
   },
   {
     name: "Gael Sanchez-Zubieta",
     school: "TJHSST",
     interest: "Public Health",
-    image: "/images/NextInResearch/Mentor_Imgs/Gael_Sanchez_Zubieta.jpg",
+    image: "/images/NextInResearch/optimized/Mentor_Imgs/Gael_Sanchez_Zubieta.jpg",
   },
   {
     name: "Ishaan Kar",
     school: "TJHSST",
     interest: "Finance and Consulting",
-    image: "/images/NextInResearch/Mentor_Imgs/Ishaan_Kar.jpg",
+    image: "/images/NextInResearch/optimized/Mentor_Imgs/Ishaan_Kar.jpg",
   },
   {
     name: "Aashka Doshi",
     school: "TJHSST",
     interest: "Neuroscience",
-    image: "/images/NextInResearch/Mentor_Imgs/Aashka_Doshi.jpg",
+    image: "/images/NextInResearch/optimized/Mentor_Imgs/Aashka_Doshi.jpg",
   },
   {
     name: "Arjun Kode",
     school: "TJHSST",
     interest: "Neuroscience",
-    image: "/images/NextInResearch/Mentor_Imgs/Arjun_Kode.jpg",
+    image: "/images/NextInResearch/optimized/Mentor_Imgs/Arjun_Kode.jpg",
   },
 ];
 
@@ -201,7 +201,7 @@ const SMP_PHOTOS = [
   "SMP_11.jpg",
   "SMP_13.jpg",
 ].map((file) => ({
-  src: `/images/NextInResearch/Misc_imgs/${file}`,
+  src: `/images/NextInResearch/optimized/Misc_imgs/${file}`,
   alt: "Summer Mentorship Program",
 }));
 
@@ -210,16 +210,16 @@ const MISC_PHOTOS = [
   "Misc_2.jpg",
   "Misc_3.jpg",
   "Misc_4.jpg",
-  "Misc_5.png",
-  "Misc_6.png",
-  "Misc_7.png",
-  "Misc_8.png",
-  "Misc_9.png",
-  "Misc_10.png",
-  "Misc_11.png",
+  "Misc_5.jpg",
+  "Misc_6.jpg",
+  "Misc_7.jpg",
+  "Misc_8.jpg",
+  "Misc_9.jpg",
+  "Misc_10.jpg",
+  "Misc_11.jpg",
   "Misc_12.jpg",
 ].map((file) => ({
-  src: `/images/NextInResearch/Misc_imgs/${file}`,
+  src: `/images/NextInResearch/optimized/Misc_imgs/${file}`,
   alt: "Mentor achievement highlight",
 }));
 
@@ -526,77 +526,94 @@ function PhotoCarousel() {
 }
 
 function ImageCarousel({ photos, label }) {
-  const [active, setActive] = useState(0);
+  const scrollerRef = useRef(null);
   const [paused, setPaused] = useState(false);
 
   useEffect(() => {
     if (paused) return;
-    const id = setInterval(
-      () => setActive((p) => (p + 1) % photos.length),
-      3800
-    );
-    return () => clearInterval(id);
-  }, [paused, photos.length]);
+    const id = setInterval(() => {
+      const scroller = scrollerRef.current;
+      if (!scroller) return;
 
-  const prev = () => setActive((active - 1 + photos.length) % photos.length);
-  const next = () => setActive((active + 1) % photos.length);
+      const atEnd =
+        scroller.scrollLeft + scroller.clientWidth >= scroller.scrollWidth - 8;
+
+      if (atEnd) {
+        scroller.scrollTo({ left: 0, behavior: "smooth" });
+        return;
+      }
+
+      scroller.scrollBy({
+        left: scroller.clientWidth * 0.75,
+        behavior: "smooth",
+      });
+    }, 4200);
+    return () => clearInterval(id);
+  }, [paused]);
+
+  const slide = (direction) => {
+    const scroller = scrollerRef.current;
+    if (!scroller) return;
+
+    scroller.scrollBy({
+      left: direction * scroller.clientWidth * 0.82,
+      behavior: "smooth",
+    });
+  };
 
   return (
     <div
-      className="relative w-full rounded-3xl overflow-hidden aspect-[4/3] sm:aspect-[16/9] lg:aspect-[16/7] shadow-2xl border border-white/8 bg-white/[0.03] select-none"
+      className="relative w-full overflow-hidden rounded-3xl border border-white/8 bg-white/[0.03] shadow-2xl select-none"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <AnimatePresence mode="wait">
-        <motion.img
-          key={photos[active].src}
-          src={photos[active].src}
-          alt={photos[active].alt}
-          initial={{ opacity: 0, scale: 1.04 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.98 }}
-          transition={{ duration: 0.65, ease: "easeInOut" }}
-          className="absolute inset-0 h-full w-full object-cover"
-          loading={active === 0 ? "eager" : "lazy"}
-        />
-      </AnimatePresence>
+      <div className="absolute left-0 inset-y-0 w-16 z-10 bg-gradient-to-r from-deep-navy/90 to-transparent pointer-events-none" />
+      <div className="absolute right-0 inset-y-0 w-16 z-10 bg-gradient-to-l from-deep-navy/90 to-transparent pointer-events-none" />
 
-      <div className="absolute inset-0 bg-gradient-to-t from-deep-navy/65 via-transparent to-deep-navy/15 pointer-events-none" />
+      <div
+        ref={scrollerRef}
+        className="no-scrollbar flex gap-5 overflow-x-auto scroll-smooth snap-x snap-mandatory px-8 py-8 sm:px-10"
+      >
+        {photos.map((photo, i) => (
+          <figure
+            key={photo.src}
+            className="snap-center flex-shrink-0 w-[78vw] sm:w-[440px] lg:w-[520px]"
+          >
+            <div className="h-[280px] sm:h-[340px] lg:h-[400px] rounded-2xl border border-white/8 bg-deep-navy/65 p-3 flex items-center justify-center shadow-xl">
+              <img
+                src={photo.src}
+                alt={photo.alt}
+                className="max-h-full max-w-full object-contain"
+                loading={i < 4 ? "eager" : "lazy"}
+                decoding="async"
+              />
+            </div>
+          </figure>
+        ))}
+      </div>
 
-      <div className="absolute left-5 bottom-5 right-5 flex items-end justify-between gap-4">
-        <div>
+      <div className="pointer-events-none absolute left-6 bottom-5 right-6 z-20 flex items-end justify-between gap-4">
+        <div className="rounded-2xl bg-deep-navy/75 px-4 py-3 backdrop-blur-sm border border-white/8">
           <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-coral mb-1">
             {label}
           </p>
-          <p className="font-display text-ice font-bold text-xl sm:text-2xl">
-            {String(active + 1).padStart(2, "0")} / {String(photos.length).padStart(2, "0")}
+          <p className="font-display text-ice font-bold text-lg sm:text-xl">
+            {photos.length} photos
           </p>
-        </div>
-        <div className="hidden sm:flex gap-1.5">
-          {photos.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setActive(i)}
-              className={cn(
-                "h-1.5 rounded-full transition-all",
-                i === active ? "w-8 bg-coral" : "w-3 bg-white/35 hover:bg-white/60"
-              )}
-            />
-          ))}
         </div>
       </div>
 
       <button
-        onClick={prev}
-        className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/25 backdrop-blur-sm flex items-center justify-center text-white/70 hover:bg-black/50 hover:text-white transition"
+        onClick={() => slide(-1)}
+        className="absolute left-3 top-1/2 z-20 -translate-y-1/2 w-10 h-10 rounded-full bg-black/35 backdrop-blur-sm flex items-center justify-center text-white/75 hover:bg-black/55 hover:text-white transition"
       >
-        <ChevronRight className="w-4 h-4 rotate-180" />
+        <ChevronRight className="w-5 h-5 rotate-180" />
       </button>
       <button
-        onClick={next}
-        className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/25 backdrop-blur-sm flex items-center justify-center text-white/70 hover:bg-black/50 hover:text-white transition"
+        onClick={() => slide(1)}
+        className="absolute right-3 top-1/2 z-20 -translate-y-1/2 w-10 h-10 rounded-full bg-black/35 backdrop-blur-sm flex items-center justify-center text-white/75 hover:bg-black/55 hover:text-white transition"
       >
-        <ChevronRight className="w-4 h-4" />
+        <ChevronRight className="w-5 h-5" />
       </button>
     </div>
   );
@@ -1145,11 +1162,11 @@ function TeamPage() {
                 transition={{ duration: 0.6, delay: i * 0.15 }}
                 className="group rounded-3xl border border-white/8 bg-white/[0.03] p-8 hover:border-coral/30 hover:bg-coral/5 transition-all"
               >
-                <div className="flex items-start gap-5 mb-5">
+                <div className="flex flex-col sm:flex-row items-start gap-6 mb-6">
                   <img
                     src={founder.image}
                     alt={founder.name}
-                    className="w-20 h-20 rounded-2xl object-cover flex-shrink-0 border border-coral/20"
+                    className="w-full sm:w-40 h-64 sm:h-44 rounded-2xl object-cover flex-shrink-0 border border-coral/20"
                     loading="lazy"
                   />
                   <div>
@@ -1212,7 +1229,7 @@ function TeamPage() {
                 transition={{ delay: i * 0.06 }}
                 className="rounded-2xl border border-white/8 bg-white/[0.03] overflow-hidden hover:border-coral/30 hover:bg-coral/5 transition-all"
               >
-                <div className="aspect-[4/5] overflow-hidden bg-mid-blue/15">
+                <div className="h-56 sm:h-60 overflow-hidden bg-mid-blue/15">
                   <img
                     src={mentor.image}
                     alt={mentor.name}

@@ -1594,7 +1594,7 @@ function ApplyPage() {
               {[
                 "Your application is reviewed by the program coordinators.",
                 "You'll receive a confirmation email (within 24 hours) with next steps and orientation details.",
-                "Attend Orientation #2 on April 28th in LCPS or FCPS (depending on location) to officially join.",
+                "Attend Orientation #2 at the end of May in LCPS or FCPS (depending on location) to be onboarded into the program.",
                 "Get matched with a mentor based on your interests and skill level.",
                 "Begin your Next In Research journey — skill-building, project work, and mentorship all summer.",
               ].map((step, i) => (

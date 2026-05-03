@@ -33,7 +33,7 @@ const FAQ_DATA = [
   },
   {
     q: "When and where does the program take place?",
-    a: "The program runs May through August 2026. Orientation #1 is at Brambleton Library (Meeting Room A) on April 28th, 2026 from 5:30–6:30 PM. Weekly workshops during Phase 2 are held at a local library, with 1-on-1 Zoom sessions as well.",
+    a: "The program runs May through August 2026. LCPS students will meet for the introduction session at the end of May in Loudoun County, and FCPS students will meet in Fairfax. Weekly workshops during Phase 2 are held at a local library (depending on your County), with 1-on-1 Zoom sessions as well. This program is hybrid, where you can work online with mentors as well as in-person.",
   },
   {
     q: "What kind of projects will students work on?",
@@ -69,7 +69,7 @@ const FAQ_DATA = [
   },
   {
     q: "How do I apply?",
-    a: "Fill out the Google Form linked on the Apply page. Spots are limited, so we encourage applying early!",
+    a: "Fill out the Google Form linked on the Apply page to reserve your spot. Early applications are encouraged.",
   },
 ];
 
@@ -84,6 +84,7 @@ const PHASES = [
     details: [
       "Orientation #1 at Brambleton Library · April 28th, 5:30–6:30 PM",
       "Orientation #2 in LCPS · end of May (date TBD)",
+      "Orientation #3 in Fairfax · end of May (date TBD)",
       "4 Pillars: Brainstorming, Research, Skills, and Presentation",
       "Optional Google Classroom assignments for early starters",
       "Project finalized with mentor guidance by end of June",
@@ -124,19 +125,54 @@ const PHASES = [
 const FOUNDERS = [
   {
     name: "Dev Srivastava",
-    role: "Program Coordinator",
-    school: "Thomas Jefferson HSST",
+    role: "Program Coordinator / Cofounder",
+    school: "TJHSST",
+    interest: "Electrical Engineering + Computer Science",
     email: "devsrivastava1221@gmail.com",
-    bio: "Rising Senior at TJHSST with extensive tutoring experience at Katherine Johnson Middle School — conducting workshops on study skills, course selection, and SOL prep.",
+    image: "/images/NextInResearch/Mentor_Imgs/Dev_Srivastava.jpg",
     initials: "DS",
   },
   {
     name: "Deborah Torrico-Pardo",
-    role: "Program Coordinator",
-    school: "Thomas Jefferson HSST",
+    role: "Program Coordinator / Cofounder",
+    school: "TJHSST",
+    interest: "Neuroscience",
     email: "ctp.deborah@gmail.com",
-    bio: "Rising Senior at TJHSST and co-founder of the Summer Mentorship Program, dedicated to making high-level STEM research accessible to every middle schooler.",
+    image: "/images/NextInResearch/Mentor_Imgs/Deborah_Torrico_Pardo.jpg",
     initials: "DT",
+  },
+];
+
+const MENTORS = [
+  {
+    name: "Ashwath Muppa",
+    school: "TJHSST",
+    interest: "Computer Science and Machine Learning",
+    image: "/images/NextInResearch/Mentor_Imgs/Ashwath_Muppa.jpg",
+  },
+  {
+    name: "Gael Sanchez-Zubieta",
+    school: "TJHSST",
+    interest: "Public Health",
+    image: "/images/NextInResearch/Mentor_Imgs/Gael_Sanchez_Zubieta.jpg",
+  },
+  {
+    name: "Ishaan Kar",
+    school: "TJHSST",
+    interest: "Finance and Consulting",
+    image: "/images/NextInResearch/Mentor_Imgs/Ishaan_Kar.jpg",
+  },
+  {
+    name: "Aashka Doshi",
+    school: "TJHSST",
+    interest: "Neuroscience",
+    image: "/images/NextInResearch/Mentor_Imgs/Aashka_Doshi.jpg",
+  },
+  {
+    name: "Arjun Kode",
+    school: "TJHSST",
+    interest: "Neuroscience",
+    image: "/images/NextInResearch/Mentor_Imgs/Arjun_Kode.jpg",
   },
 ];
 
@@ -150,6 +186,42 @@ const MENTOR_SPECIALTIES = [
   "Chemistry",
   "Physics",
 ];
+
+const SMP_PHOTOS = [
+  "SMP_1.jpg",
+  "SMP_2.jpg",
+  "SMP_3.jpg",
+  "SMP_4.jpg",
+  "SMP_5.jpg",
+  "SMP_6.jpg",
+  "SMP_7.jpg",
+  "SMP_8.jpg",
+  "SMP_9.jpg",
+  "SMP_10.jpg",
+  "SMP_11.jpg",
+  "SMP_13.jpg",
+].map((file) => ({
+  src: `/images/NextInResearch/Misc_imgs/${file}`,
+  alt: "Summer Mentorship Program",
+}));
+
+const MISC_PHOTOS = [
+  "Misc_1.jpg",
+  "Misc_2.jpg",
+  "Misc_3.jpg",
+  "Misc_4.jpg",
+  "Misc_5.png",
+  "Misc_6.png",
+  "Misc_7.png",
+  "Misc_8.png",
+  "Misc_9.png",
+  "Misc_10.png",
+  "Misc_11.png",
+  "Misc_12.jpg",
+].map((file) => ({
+  src: `/images/NextInResearch/Misc_imgs/${file}`,
+  alt: "Mentor achievement highlight",
+}));
 
 const COMMUNITY_LINKS = [
   {
@@ -255,7 +327,7 @@ function Navigation({ activePage, setActivePage }) {
               <Sparkles className="w-4 h-4 text-white" />
             </div>
             <span className="font-display font-bold text-ice text-sm sm:text-base tracking-tight">
-              STEM Mentorship
+              Next In Research
             </span>
           </button>
 
@@ -453,6 +525,83 @@ function PhotoCarousel() {
   );
 }
 
+function ImageCarousel({ photos, label }) {
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (paused) return;
+    const id = setInterval(
+      () => setActive((p) => (p + 1) % photos.length),
+      3800
+    );
+    return () => clearInterval(id);
+  }, [paused, photos.length]);
+
+  const prev = () => setActive((active - 1 + photos.length) % photos.length);
+  const next = () => setActive((active + 1) % photos.length);
+
+  return (
+    <div
+      className="relative w-full rounded-3xl overflow-hidden aspect-[4/3] sm:aspect-[16/9] lg:aspect-[16/7] shadow-2xl border border-white/8 bg-white/[0.03] select-none"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={photos[active].src}
+          src={photos[active].src}
+          alt={photos[active].alt}
+          initial={{ opacity: 0, scale: 1.04 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.98 }}
+          transition={{ duration: 0.65, ease: "easeInOut" }}
+          className="absolute inset-0 h-full w-full object-cover"
+          loading={active === 0 ? "eager" : "lazy"}
+        />
+      </AnimatePresence>
+
+      <div className="absolute inset-0 bg-gradient-to-t from-deep-navy/65 via-transparent to-deep-navy/15 pointer-events-none" />
+
+      <div className="absolute left-5 bottom-5 right-5 flex items-end justify-between gap-4">
+        <div>
+          <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-coral mb-1">
+            {label}
+          </p>
+          <p className="font-display text-ice font-bold text-xl sm:text-2xl">
+            {String(active + 1).padStart(2, "0")} / {String(photos.length).padStart(2, "0")}
+          </p>
+        </div>
+        <div className="hidden sm:flex gap-1.5">
+          {photos.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setActive(i)}
+              className={cn(
+                "h-1.5 rounded-full transition-all",
+                i === active ? "w-8 bg-coral" : "w-3 bg-white/35 hover:bg-white/60"
+              )}
+            />
+          ))}
+        </div>
+      </div>
+
+      <button
+        onClick={prev}
+        className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/25 backdrop-blur-sm flex items-center justify-center text-white/70 hover:bg-black/50 hover:text-white transition"
+      >
+        <ChevronRight className="w-4 h-4 rotate-180" />
+      </button>
+      <button
+        onClick={next}
+        className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/25 backdrop-blur-sm flex items-center justify-center text-white/70 hover:bg-black/50 hover:text-white transition"
+      >
+        <ChevronRight className="w-4 h-4" />
+      </button>
+    </div>
+  );
+}
+
 // ─────────────────────────────────────────────
 // LOGO MARQUEE
 // ─────────────────────────────────────────────
@@ -463,6 +612,21 @@ const LOGOS = [
   { abbr: "Virginia Tech", full: "Virginia Polytechnic Institute" },
   { abbr: "TJHSST", full: "Thomas Jefferson HS for S&T" },
   { abbr: "Katherine Johnson MS", full: "Katherine Johnson Middle School" },
+  { abbr: "Trailside MS", full: "Trailside Middle School" },
+  { abbr: "Willard MS", full: "Willard Middle School" },
+  { abbr: "BASIS Independent", full: "BASIS Independent School" },
+  { abbr: "Stone Hill MS", full: "Stone Hill Middle School" },
+  { abbr: "Watson Mountain MS", full: "Watson Mountain Middle School" },
+  { abbr: "Gum Spring MS", full: "Gum Spring Middle School" },
+  { abbr: "Lakeside MS", full: "Lakeside Middle School" },
+  { abbr: "Eagle Ridge MS", full: "Eagle Ridge Middle School" },
+  { abbr: "Rocky Run MS", full: "Rocky Run Middle School" },
+  { abbr: "Brambleton MS", full: "Brambleton Middle School" },
+  { abbr: "Farmwell Station MS", full: "Farmwell Station Middle School" },
+  { abbr: "Belmont Ridge MS", full: "Belmont Ridge Middle School" },
+  { abbr: "Woodrow Wilson MS", full: "Woodrow Wilson Middle School" },
+  { abbr: "Rachel Carson MS", full: "Rachel Carson Middle School" },
+  { abbr: "Seneca Ridge MS", full: "Seneca Ridge Middle School" },
 ];
 
 function LogoMarquee() {
@@ -660,6 +824,32 @@ function HomePage({ setActivePage }) {
         </motion.div>
       </section>
 
+      {/* ── SMP Photo Carousel ── */}
+      <section className="py-20 bg-deep-navy border-y border-white/5">
+        <div className="mx-auto max-w-6xl px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mb-8 text-center"
+          >
+            <SectionLabel>Summer Mentorship Program</SectionLabel>
+            <h2 className="font-display text-3xl sm:text-4xl font-bold text-ice">
+              Moments from the program
+            </h2>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.15 }}
+          >
+            <ImageCarousel photos={SMP_PHOTOS} label="SMP Gallery" />
+          </motion.div>
+        </div>
+      </section>
+
       {/* ── Photo Carousel ── */}
       <section className="py-20 bg-mid-blue/10 border-y border-white/5">
         <div className="mx-auto max-w-5xl px-6 lg:px-8">
@@ -766,6 +956,32 @@ function HomePage({ setActivePage }) {
         </div>
       </section>
 
+      {/* ── Mentor Highlights ── */}
+      <section className="py-20 bg-deep-navy">
+        <div className="mx-auto max-w-6xl px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mb-8 text-center"
+          >
+            <SectionLabel>Mentor Highlights</SectionLabel>
+            <h2 className="font-display text-3xl sm:text-4xl font-bold text-ice">
+              What our mentors have done
+            </h2>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.15 }}
+          >
+            <ImageCarousel photos={MISC_PHOTOS} label="Research & Impact" />
+          </motion.div>
+        </div>
+      </section>
+
       {/* ── CTA ── */}
       <section className="py-28 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_50%_50%,_rgba(238,108,77,0.1),_transparent)]" />
@@ -780,8 +996,8 @@ function HomePage({ setActivePage }) {
               Ready to start your STEM journey?
             </h2>
             <p className="text-steel-blue text-lg mb-10 max-w-md mx-auto">
-              Spots are limited. Apply now and take the first step toward a
-              summer of research, mentorship, and real-world impact.
+              Spots are given on a rolling basis. Apply now and take the first
+              step toward a summer of research, mentorship, and real-world impact.
             </p>
             <button
               onClick={() => setActivePage("apply")}
@@ -930,9 +1146,12 @@ function TeamPage() {
                 className="group rounded-3xl border border-white/8 bg-white/[0.03] p-8 hover:border-coral/30 hover:bg-coral/5 transition-all"
               >
                 <div className="flex items-start gap-5 mb-5">
-                  <div className="w-14 h-14 rounded-2xl flex items-center justify-center font-display font-bold text-xl flex-shrink-0 bg-coral/12 text-coral border border-coral/20">
-                    {founder.initials}
-                  </div>
+                  <img
+                    src={founder.image}
+                    alt={founder.name}
+                    className="w-20 h-20 rounded-2xl object-cover flex-shrink-0 border border-coral/20"
+                    loading="lazy"
+                  />
                   <div>
                     <h4 className="font-display text-xl font-bold text-ice">
                       {founder.name}
@@ -943,11 +1162,11 @@ function TeamPage() {
                     <p className="text-steel-blue/50 text-xs mt-0.5">
                       {founder.school}
                     </p>
+                    <p className="text-steel-blue/70 text-sm mt-2">
+                      {founder.interest}
+                    </p>
                   </div>
                 </div>
-                <p className="text-steel-blue leading-relaxed mb-5 text-sm">
-                  {founder.bio}
-                </p>
                 <a
                   href={`mailto:${founder.email}`}
                   className="inline-flex items-center gap-2 text-sm text-steel-blue/60 hover:text-coral transition-colors"
@@ -983,25 +1202,51 @@ function TeamPage() {
             ))}
           </div>
 
-          {/* Placeholder cards */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-            {Array.from({ length: 6 }).map((_, i) => (
+            {MENTORS.map((mentor, i) => (
               <motion.div
-                key={i}
+                key={mentor.name}
                 initial={{ opacity: 0, y: 14 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.06 }}
-                className="rounded-2xl border border-dashed border-white/10 bg-white/[0.02] p-6 flex flex-col items-center justify-center text-center gap-3 min-h-[130px]"
+                className="rounded-2xl border border-white/8 bg-white/[0.03] overflow-hidden hover:border-coral/30 hover:bg-coral/5 transition-all"
               >
-                <div className="w-10 h-10 rounded-xl border border-white/8 bg-white/4 flex items-center justify-center">
-                  <Star className="w-5 h-5 text-steel-blue/30" />
+                <div className="aspect-[4/5] overflow-hidden bg-mid-blue/15">
+                  <img
+                    src={mentor.image}
+                    alt={mentor.name}
+                    className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+                    loading="lazy"
+                  />
                 </div>
-                <p className="text-xs text-steel-blue/35 font-medium">
-                  Profile coming soon
-                </p>
+                <div className="p-5">
+                  <h4 className="font-display text-lg font-bold text-ice">
+                    {mentor.name}
+                  </h4>
+                  <p className="text-coral text-xs font-semibold mt-1">
+                    {mentor.school}
+                  </p>
+                  <p className="text-steel-blue/75 text-sm mt-3 leading-relaxed">
+                    {mentor.interest}
+                  </p>
+                </div>
               </motion.div>
             ))}
+            <motion.div
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: MENTORS.length * 0.06 }}
+              className="rounded-2xl border border-dashed border-white/10 bg-white/[0.02] p-6 flex flex-col items-center justify-center text-center gap-3 min-h-[130px]"
+            >
+              <div className="w-10 h-10 rounded-xl border border-white/8 bg-white/4 flex items-center justify-center">
+                <Star className="w-5 h-5 text-steel-blue/30" />
+              </div>
+              <p className="text-xs text-steel-blue/35 font-medium">
+                The rest: TBD
+              </p>
+            </motion.div>
           </div>
 
           <motion.div
@@ -1017,7 +1262,7 @@ function TeamPage() {
               Each mentor is a Rising Senior at TJHSST with published papers,
               science fair placements, internships, or research assistant
               experience. Full profiles and specialties will be shared at the
-              April 28th orientation.
+              April 28th/May end orientation.
             </p>
           </motion.div>
         </section>
@@ -1281,8 +1526,8 @@ function ApplyPage() {
             Join Summer 2026
           </h1>
           <p className="text-steel-blue text-xl leading-relaxed mb-10 max-w-lg mx-auto">
-            Fill out the application to reserve your spot. Spots are limited —
-            early applications are encouraged.
+            Fill out the application to reserve your spot. Early applications
+            are encouraged.
           </p>
 
           <a
@@ -1307,8 +1552,8 @@ function ApplyPage() {
             <div className="space-y-5">
               {[
                 "Your application is reviewed by the program coordinators.",
-                "You'll receive a confirmation email with next steps and orientation details.",
-                "Attend Orientation #1 on April 28th at Brambleton Library to officially join.",
+                "You'll receive a confirmation email (within 24 hours) with next steps and orientation details.",
+                "Attend Orientation #2 on April 28th in LCPS or FCPS (depending on location) to officially join.",
                 "Get matched with a mentor based on your interests and skill level.",
                 "Begin your STEM journey — skill-building, project work, and mentorship all summer.",
               ].map((step, i) => (
@@ -1341,7 +1586,7 @@ function Footer({ setActivePage }) {
               <Sparkles className="w-4 h-4 text-white" />
             </div>
             <span className="font-display font-bold text-ice text-sm">
-              STEM Mentorship Program
+              Next In Research
             </span>
           </div>
 
@@ -1366,7 +1611,7 @@ function Footer({ setActivePage }) {
 
         <div className="mt-8 pt-6 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-3">
           <p className="text-xs text-steel-blue/30">
-            © {new Date().getFullYear()} Summer STEM Mentorship Program · All rights reserved.
+            © {new Date().getFullYear()} Next In Research · All rights reserved.
           </p>
           <p className="text-xs text-steel-blue/30">
             Thomas Jefferson High School for Science and Technology

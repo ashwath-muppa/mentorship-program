@@ -535,6 +535,7 @@ function PhotoCarousel() {
 function ImageCarousel({ photos, label }) {
   const scrollerRef = useRef(null);
   const itemRefs = useRef([]);
+  const wrapTimerRef = useRef(null);
   const loopedPhotos = [...photos, ...photos, ...photos];
 
   const getSetWidth = () => {
@@ -544,15 +545,15 @@ function ImageCarousel({ photos, label }) {
     return secondSet.offsetLeft - first.offsetLeft;
   };
 
-  const normalizeScroll = () => {
+  const normalizeScroll = (behavior = "auto") => {
     const scroller = scrollerRef.current;
     const setWidth = getSetWidth();
     if (!scroller || !setWidth) return;
 
     if (scroller.scrollLeft < setWidth * 0.4) {
-      scroller.scrollLeft += setWidth;
+      scroller.scrollTo({ left: scroller.scrollLeft + setWidth, behavior });
     } else if (scroller.scrollLeft > setWidth * 1.6) {
-      scroller.scrollLeft -= setWidth;
+      scroller.scrollTo({ left: scroller.scrollLeft - setWidth, behavior });
     }
   };
 
@@ -567,12 +568,14 @@ function ImageCarousel({ photos, label }) {
     const scroller = scrollerRef.current;
     if (!scroller) return;
 
+    window.clearTimeout(wrapTimerRef.current);
+
     scroller.scrollBy({
       left: direction * Math.min(scroller.clientWidth * 0.86, 520),
       behavior: "smooth",
     });
 
-    window.setTimeout(normalizeScroll, 520);
+    wrapTimerRef.current = window.setTimeout(() => normalizeScroll(), 650);
   };
 
   return (
@@ -582,7 +585,6 @@ function ImageCarousel({ photos, label }) {
 
       <div
         ref={scrollerRef}
-        onScroll={normalizeScroll}
         className="no-scrollbar flex gap-5 overflow-x-auto scroll-smooth snap-x snap-mandatory px-8 py-8 sm:px-10"
       >
         {loopedPhotos.map((photo, i) => (

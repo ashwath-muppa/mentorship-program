@@ -13,6 +13,8 @@ import { cn } from "./lib/utils";
 // DATA
 // ─────────────────────────────────────────────
 
+const IMAGE_ROOT = `${import.meta.env.BASE_URL}images/NextInResearch/optimized`;
+
 const NAV_TABS = [
   { id: "home", label: "Our Initiative" },
   { id: "timeline", label: "Timeline" },
@@ -129,7 +131,7 @@ const FOUNDERS = [
     school: "TJHSST",
     interest: "Electrical Engineering + Computer Science",
     email: "devsrivastava1221@gmail.com",
-    image: "/images/NextInResearch/optimized/Mentor_Imgs/Dev_Srivastava.jpg",
+    image: `${IMAGE_ROOT}/Mentor_Imgs/Dev_Srivastava.jpg`,
     initials: "DS",
   },
   {
@@ -138,7 +140,7 @@ const FOUNDERS = [
     school: "TJHSST",
     interest: "Neuroscience",
     email: "ctp.deborah@gmail.com",
-    image: "/images/NextInResearch/optimized/Mentor_Imgs/Deborah_Torrico_Pardo.jpg",
+    image: `${IMAGE_ROOT}/Mentor_Imgs/Deborah_Torrico_Pardo.jpg`,
     initials: "DT",
   },
 ];
@@ -148,31 +150,31 @@ const MENTORS = [
     name: "Ashwath Muppa",
     school: "TJHSST",
     interest: "Computer Science and Machine Learning",
-    image: "/images/NextInResearch/optimized/Mentor_Imgs/Ashwath_Muppa.jpg",
+    image: `${IMAGE_ROOT}/Mentor_Imgs/Ashwath_Muppa.jpg`,
   },
   {
     name: "Gael Sanchez-Zubieta",
     school: "TJHSST",
     interest: "Public Health",
-    image: "/images/NextInResearch/optimized/Mentor_Imgs/Gael_Sanchez_Zubieta.jpg",
+    image: `${IMAGE_ROOT}/Mentor_Imgs/Gael_Sanchez_Zubieta.jpg`,
   },
   {
     name: "Ishaan Kar",
     school: "TJHSST",
     interest: "Finance and Consulting",
-    image: "/images/NextInResearch/optimized/Mentor_Imgs/Ishaan_Kar.jpg",
+    image: `${IMAGE_ROOT}/Mentor_Imgs/Ishaan_Kar.jpg`,
   },
   {
     name: "Aashka Doshi",
     school: "TJHSST",
     interest: "Neuroscience",
-    image: "/images/NextInResearch/optimized/Mentor_Imgs/Aashka_Doshi.jpg",
+    image: `${IMAGE_ROOT}/Mentor_Imgs/Aashka_Doshi.jpg`,
   },
   {
     name: "Arjun Kode",
     school: "TJHSST",
     interest: "Neuroscience",
-    image: "/images/NextInResearch/optimized/Mentor_Imgs/Arjun_Kode.jpg",
+    image: `${IMAGE_ROOT}/Mentor_Imgs/Arjun_Kode.jpg`,
   },
 ];
 
@@ -201,7 +203,7 @@ const SMP_PHOTOS = [
   "SMP_11.jpg",
   "SMP_13.jpg",
 ].map((file) => ({
-  src: `/images/NextInResearch/optimized/Misc_imgs/${file}`,
+  src: `${IMAGE_ROOT}/Misc_imgs/${file}`,
   alt: "Summer Mentorship Program",
 }));
 
@@ -219,7 +221,7 @@ const MISC_PHOTOS = [
   "Misc_11.jpg",
   "Misc_12.jpg",
 ].map((file) => ({
-  src: `/images/NextInResearch/optimized/Misc_imgs/${file}`,
+  src: `${IMAGE_ROOT}/Misc_imgs/${file}`,
   alt: "Mentor achievement highlight",
 }));
 

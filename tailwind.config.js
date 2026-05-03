@@ -4,27 +4,29 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        display: ['"Inter"', "sans-serif"],
-        body: ['"Inter"', "sans-serif"],
+        display: ['"Fraunces"', "Georgia", "serif"],
+        body: ['"DM Sans"', "system-ui", "sans-serif"],
       },
       colors: {
-        brand: {
-          navy: "#0B0F19",
-          ink: "#0D1424",
-          teal: "#0DF5D4",
-          purple: "#9D4EDD",
-          gold: "#FEE440",
-          mist: "#E8F1FB",
+        "deep-navy": "#293241",
+        "mid-blue": "#3D5A80",
+        "steel-blue": "#98C1D9",
+        ice: "#E0FBFC",
+        coral: "#EE6C4D",
+      },
+      animation: {
+        marquee: "marquee 35s linear infinite",
+        "pulse-dot": "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+      },
+      keyframes: {
+        marquee: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
         },
       },
       boxShadow: {
-        soft: "0 24px 80px -32px rgba(0, 0, 0, 0.5)",
-        neonTeal: "0 0 20px rgba(13, 245, 212, 0.3)",
-        neonPurple: "0 0 20px rgba(157, 78, 221, 0.3)",
-        neonGold: "0 0 20px rgba(254, 228, 64, 0.3)",
-      },
-      backgroundImage: {
-        grid: "linear-gradient(rgba(13, 245, 212, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(13, 245, 212, 0.05) 1px, transparent 1px)",
+        coral: "0 0 30px rgba(238,108,77,0.35)",
+        "coral-sm": "0 0 16px rgba(238,108,77,0.25)",
       },
     },
   },

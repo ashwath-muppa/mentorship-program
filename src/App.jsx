@@ -533,78 +533,18 @@ function PhotoCarousel() {
 }
 
 function ImageCarousel({ photos, label }) {
-  const scrollerRef = useRef(null);
-  const itemRefs = useRef([]);
-  const [paused, setPaused] = useState(false);
-  const loopedPhotos = [...photos, ...photos, ...photos];
-
-  const getSetWidth = () => {
-    const first = itemRefs.current[0];
-    const secondSet = itemRefs.current[photos.length];
-    if (!first || !secondSet) return 0;
-    return secondSet.offsetLeft - first.offsetLeft;
-  };
-
-  const normalizeScroll = () => {
-    const scroller = scrollerRef.current;
-    const setWidth = getSetWidth();
-    if (!scroller || !setWidth) return;
-
-    if (scroller.scrollLeft < setWidth * 0.35) {
-      scroller.scrollLeft += setWidth;
-    } else if (scroller.scrollLeft > setWidth * 1.65) {
-      scroller.scrollLeft -= setWidth;
-    }
-  };
-
-  useEffect(() => {
-    const scroller = scrollerRef.current;
-    const setWidth = getSetWidth();
-    if (!scroller || !setWidth) return;
-    scroller.scrollLeft = setWidth;
-  }, [photos.length]);
-
-  useEffect(() => {
-    if (paused) return;
-    const id = setInterval(() => {
-      slide(1);
-    }, 4200);
-    return () => clearInterval(id);
-  }, [paused]);
-
-  const slide = (direction) => {
-    const scroller = scrollerRef.current;
-    if (!scroller) return;
-
-    scroller.scrollBy({
-      left: direction * scroller.clientWidth * 0.82,
-      behavior: "smooth",
-    });
-
-    window.setTimeout(normalizeScroll, 520);
-  };
+  const loopedPhotos = [...photos, ...photos];
 
   return (
-    <div
-      className="relative w-full overflow-hidden rounded-3xl border border-white/8 bg-white/[0.03] shadow-2xl select-none"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-    >
+    <div className="relative w-full overflow-hidden rounded-3xl border border-white/8 bg-white/[0.03] shadow-2xl select-none">
       <div className="absolute left-0 inset-y-0 w-16 z-10 bg-gradient-to-r from-deep-navy/90 to-transparent pointer-events-none" />
       <div className="absolute right-0 inset-y-0 w-16 z-10 bg-gradient-to-l from-deep-navy/90 to-transparent pointer-events-none" />
 
-      <div
-        ref={scrollerRef}
-        onScroll={normalizeScroll}
-        className="no-scrollbar flex gap-5 overflow-x-auto scroll-smooth snap-x snap-mandatory px-8 py-8 sm:px-10"
-      >
+      <div className="gallery-marquee flex w-max gap-5 px-8 py-8 sm:px-10">
         {loopedPhotos.map((photo, i) => (
           <figure
             key={`${photo.src}-${i}`}
-            ref={(node) => {
-              itemRefs.current[i] = node;
-            }}
-            className="snap-center flex-shrink-0 w-[78vw] sm:w-[440px] lg:w-[520px]"
+            className="flex-shrink-0 w-[78vw] sm:w-[440px] lg:w-[520px]"
           >
             <div className="h-[280px] sm:h-[340px] lg:h-[400px] rounded-2xl border border-white/8 bg-white/[0.04] p-3 flex items-center justify-center shadow-xl">
               <img
@@ -629,19 +569,6 @@ function ImageCarousel({ photos, label }) {
           </p>
         </div>
       </div>
-
-      <button
-        onClick={() => slide(-1)}
-        className="absolute left-3 top-1/2 z-20 -translate-y-1/2 w-10 h-10 rounded-full bg-black/35 backdrop-blur-sm flex items-center justify-center text-white/75 hover:bg-black/55 hover:text-white transition"
-      >
-        <ChevronRight className="w-5 h-5 rotate-180" />
-      </button>
-      <button
-        onClick={() => slide(1)}
-        className="absolute right-3 top-1/2 z-20 -translate-y-1/2 w-10 h-10 rounded-full bg-black/35 backdrop-blur-sm flex items-center justify-center text-white/75 hover:bg-black/55 hover:text-white transition"
-      >
-        <ChevronRight className="w-5 h-5" />
-      </button>
     </div>
   );
 }

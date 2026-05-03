@@ -31,10 +31,23 @@ a {
   @apply bg-white/5 backdrop-blur-md border border-white/10;
 }
 
-.no-scrollbar {
-  scrollbar-width: none;
+.gallery-marquee {
+  animation: gallery-marquee 70s linear infinite;
 }
 
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
+@keyframes gallery-marquee {
+  from {
+    transform: translateX(-50%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery-marquee {
+    animation-duration: 1ms;
+    animation-iteration-count: 1;
+  }
 }

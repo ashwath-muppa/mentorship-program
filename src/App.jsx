@@ -647,7 +647,6 @@ function ImageCarousel({ photos, label }) {
 const LOGOS = [
   { abbr: "LCPS", full: "Loudoun County Public Schools" },
   { abbr: "FCPS", full: "Fairfax County Public Schools" },
-  { abbr: "Virginia Tech", full: "Virginia Polytechnic Institute" },
   { abbr: "TJHSST", full: "Thomas Jefferson HS for S&T" },
   { abbr: "Katherine Johnson MS", full: "Katherine Johnson Middle School" },
   { abbr: "Trailside MS", full: "Trailside Middle School" },
@@ -991,7 +990,7 @@ function HomePage({ setActivePage }) {
             viewport={{ once: true }}
             className="text-center text-[10px] font-bold tracking-[0.3em] uppercase text-steel-blue/40 mb-8"
           >
-            Affiliated With &amp; Serving Students From
+            Serving Students From
           </motion.p>
           <LogoMarquee />
         </div>

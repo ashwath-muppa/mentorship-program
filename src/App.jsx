@@ -753,9 +753,12 @@ function HomePage({ setActivePage }) {
                       <MapPin className="w-4 h-4 text-steel-blue" />
                     </div>
                     <div>
-                      <p className="text-sm font-semibold text-ice">Orientation #1</p>
+                      <p className="text-sm font-semibold text-ice">Orientation #2</p>
                       <p className="text-sm text-steel-blue/70 mt-0.5">
-                        Brambleton Library · Meeting Room A
+                        Brambleton Library · Meeting Room A (LCPS)
+                      </p>
+                      <p className="text-sm text-steel-blue/70 mt-0.5">
+                        Fairfax County · Location TBD (FCPS)
                       </p>
                     </div>
                   </div>
@@ -766,7 +769,7 @@ function HomePage({ setActivePage }) {
                     <div>
                       <p className="text-sm font-semibold text-ice">Date & Time</p>
                       <p className="text-sm text-steel-blue/70 mt-0.5">
-                        April 28th, 2026 · 5:30–6:30 PM
+                        End of May, TBD
                       </p>
                     </div>
                   </div>

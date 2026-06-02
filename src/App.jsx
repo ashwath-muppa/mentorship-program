@@ -5,7 +5,7 @@ import {
   Sparkles, Menu, X, ChevronDown, Clock, Users,
   BookOpen, Award, MessageCircle, ExternalLink,
   Microscope, Code, FlaskConical, Star, Rocket,
-  GraduationCap, Heart, Zap, Quote,
+  GraduationCap, Heart, Zap, Quote, Video,
 } from "lucide-react";
 import { cn } from "./lib/utils";
 
@@ -1252,14 +1252,10 @@ function TeamPage() {
                 transition={{ delay: i * 0.06 }}
                 className="rounded-2xl border border-white/8 bg-white/[0.03] overflow-hidden hover:border-coral/30 hover:bg-coral/5 transition-all"
               >
-                <div className="h-56 sm:h-60 overflow-hidden bg-mid-blue/15">
-                  <img
-                    src={mentor.image}
-                    alt={mentor.name}
-                    className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
-                    style={{ objectPosition: mentor.focus }}
-                    loading="lazy"
-                  />
+                <div className="h-56 sm:h-60 overflow-hidden bg-mid-blue/15 flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-2xl border border-dashed border-white/12 bg-white/[0.03] flex items-center justify-center">
+                    <Star className="w-7 h-7 text-steel-blue/35" />
+                  </div>
                 </div>
                 <div className="p-5">
                   <h4 className="font-display text-lg font-bold text-ice">
@@ -1318,8 +1314,8 @@ function TeamPage() {
 
 function GetInvolvedPage() {
   return (
-    <div className="pt-24 pb-24 min-h-[80vh] flex items-center">
-      <div className="mx-auto max-w-3xl px-6 lg:px-8 w-full text-center">
+    <div className="pt-24 pb-24 min-h-[80vh]">
+      <div className="mx-auto max-w-4xl px-6 lg:px-8 w-full text-center">
         <motion.div
           initial={{ opacity: 0, y: 32 }}
           animate={{ opacity: 1, y: 0 }}
@@ -1330,37 +1326,36 @@ function GetInvolvedPage() {
           </div>
           <SectionLabel>Get Involved</SectionLabel>
           <h1 className="font-display text-5xl sm:text-6xl font-bold text-ice leading-tight mb-5">
-            Something exciting
-            <br />
-            is on its way.
+            Join the next chapter
           </h1>
-          <p className="text-steel-blue text-xl leading-relaxed max-w-xl mx-auto mb-3">
-            This section is under construction. We're building out ways for
-            volunteers, community partners, and supporters to get involved with
-            the program.
-          </p>
-          <p className="text-steel-blue/50 text-base mb-12">
-            In the meantime, reach out to us directly via the Contact page.
+          <p className="text-steel-blue text-xl leading-relaxed max-w-xl mx-auto mb-10">
+            Apply to get involved with Next In Research.
           </p>
 
-          <div className="inline-flex items-center gap-2 border border-coral/30 text-coral font-semibold px-7 py-3 rounded-full text-sm">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-coral opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-coral" />
-            </span>
-            Check Back Soon
+          <a
+            href="https://docs.google.com/forms/d/e/1FAIpQLSdJbFPGDU8FRyottDfEDJQwSOIfFLhuafah0TjfgBVjAiHZyQ/viewform?usp=header"
+            target="_blank"
+            rel="noreferrer"
+            className="group inline-flex items-center gap-3 bg-coral hover:bg-coral/90 text-white font-bold px-9 py-4 rounded-full text-base transition-all hover:shadow-coral hover:scale-105 active:scale-95 mb-14"
+          >
+            Apply Here
+            <ExternalLink className="w-5 h-5 group-hover:scale-110 transition-transform" />
+          </a>
+
+          <div className="rounded-3xl border border-white/8 bg-white/[0.03] p-5 sm:p-7 mb-8">
+            <div className="aspect-video rounded-2xl border border-dashed border-white/12 bg-mid-blue/15 flex flex-col items-center justify-center gap-4">
+              <div className="w-16 h-16 rounded-2xl border border-white/8 bg-white/[0.04] flex items-center justify-center">
+                <Video className="w-8 h-8 text-steel-blue/40" />
+              </div>
+              <p className="font-display text-2xl font-bold text-ice">
+                Video in progress
+              </p>
+            </div>
           </div>
 
-          <div className="mt-16 flex justify-center gap-3">
-            {[...Array(5)].map((_, i) => (
-              <motion.div
-                key={i}
-                animate={{ opacity: [0.2, 0.7, 0.2] }}
-                transition={{ duration: 2.4, repeat: Infinity, delay: i * 0.3 }}
-                className="h-1.5 w-8 rounded-full bg-coral/40"
-              />
-            ))}
-          </div>
+          <p className="text-steel-blue/50 text-base">
+            The rest is under construction.
+          </p>
         </motion.div>
       </div>
     </div>

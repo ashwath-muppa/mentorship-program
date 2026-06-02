@@ -43,7 +43,7 @@ const FAQ_DATA = [
   },
   {
     q: "Who are the mentors?",
-    a: "All mentors are Rising Seniors at Thomas Jefferson High School for Science and Technology (TJHSST). Each has foundational research experience — published papers, science fair placements, internships — and specializes in a different STEM field.",
+    a: "All mentors are students at Thomas Jefferson High School for Science and Technology (TJHSST). Each has foundational research experience — published papers, science fair placements, internships — and specializes in a different STEM field.",
   },
   {
     q: "How many students per mentor?",

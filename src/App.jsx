@@ -1225,7 +1225,7 @@ function TeamPage() {
             Our Mentors
           </h3>
           <p className="text-steel-blue text-base leading-relaxed mb-6 max-w-2xl">
-            We will have a team of 5–10 mentors, each with a distinct STEM
+            We will have a team of 30 mentors, each with a distinct STEM
             specialty. Mentors are assigned to students based on alignment with
             their project interests.
           </p>
@@ -1326,10 +1326,11 @@ function GetInvolvedPage() {
           </div>
           <SectionLabel>Get Involved</SectionLabel>
           <h1 className="font-display text-5xl sm:text-6xl font-bold text-ice leading-tight mb-5">
-            Join the next chapter
+            We're looking for high school mentors
           </h1>
           <p className="text-steel-blue text-xl leading-relaxed max-w-xl mx-auto mb-10">
-            Apply to get involved with Next In Research.
+            Apply for an opportunity to lead a team of middle school researchers
+            and earn volunteer hours while doing meaningful mentorship work.
           </p>
 
           <a
@@ -1338,7 +1339,7 @@ function GetInvolvedPage() {
             rel="noreferrer"
             className="group inline-flex items-center gap-3 bg-coral hover:bg-coral/90 text-white font-bold px-9 py-4 rounded-full text-base transition-all hover:shadow-coral hover:scale-105 active:scale-95 mb-14"
           >
-            Apply Here
+            High School Mentor Application
             <ExternalLink className="w-5 h-5 group-hover:scale-110 transition-transform" />
           </a>
 

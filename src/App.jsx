@@ -5,7 +5,7 @@ import {
   Sparkles, Menu, X, ChevronDown, Clock, Users,
   BookOpen, Award, MessageCircle, ExternalLink,
   Microscope, Code, FlaskConical, Star, Rocket,
-  GraduationCap, Heart, Zap, Quote, Video,
+  GraduationCap, Heart, Zap, Quote,
 } from "lucide-react";
 import { cn } from "./lib/utils";
 
@@ -1344,14 +1344,13 @@ function GetInvolvedPage() {
           </a>
 
           <div className="rounded-3xl border border-white/8 bg-white/[0.03] p-5 sm:p-7 mb-8">
-            <div className="aspect-video rounded-2xl border border-dashed border-white/12 bg-mid-blue/15 flex flex-col items-center justify-center gap-4">
-              <div className="w-16 h-16 rounded-2xl border border-white/8 bg-white/[0.04] flex items-center justify-center">
-                <Video className="w-8 h-8 text-steel-blue/40" />
-              </div>
-              <p className="font-display text-2xl font-bold text-ice">
-                Video in progress
-              </p>
-            </div>
+            <iframe
+              src="https://drive.google.com/file/d/1qm5lC6jQDy3LLs7C_SLQ52WUySAfspQN/preview"
+              title="Next In Research mentor application video"
+              allow="autoplay; fullscreen"
+              allowFullScreen
+              className="aspect-video w-full rounded-2xl border border-white/12 bg-mid-blue/15"
+            />
           </div>
 
           <p className="text-steel-blue/50 text-base">

@@ -410,6 +410,20 @@ const MENTOR_SPECIALTIES = [
   "Astronomy",
 ];
 
+const GRADE_FILTERS = [
+  { id: "All", label: "All Mentors" },
+  { id: "Rising Senior", label: "Rising Seniors" },
+  { id: "Rising Junior", label: "Rising Juniors" },
+  { id: "Rising Sophomore", label: "Rising Sophomores" },
+];
+
+const GRADE_ORDER = ["Rising Senior", "Rising Junior", "Rising Sophomore"];
+
+function gradeRank(grade) {
+  const rank = GRADE_ORDER.indexOf(grade);
+  return rank === -1 ? GRADE_ORDER.length : rank;
+}
+
 const SMP_PHOTOS = [
   "SMP_1.jpg",
   "SMP_2.jpg",
@@ -1504,6 +1518,24 @@ function TimelinePage() {
 // ─────────────────────────────────────────────
 
 function TeamPage() {
+  const [mentorGradeFilter, setMentorGradeFilter] = useState("All");
+  const [openMentor, setOpenMentor] = useState(null);
+
+  const orderedMentors = [...MENTORS].sort((a, b) => {
+    const gradeDelta = gradeRank(a.grade) - gradeRank(b.grade);
+    return gradeDelta || a.name.localeCompare(b.name);
+  });
+
+  const visibleMentors =
+    mentorGradeFilter === "All"
+      ? orderedMentors
+      : orderedMentors.filter((mentor) => mentor.grade === mentorGradeFilter);
+
+  const mentorCountFor = (grade) =>
+    grade === "All"
+      ? MENTORS.length
+      : MENTORS.filter((mentor) => mentor.grade === grade).length;
+
   return (
     <div className="pt-24 pb-24">
       <div className="mx-auto max-w-5xl px-6 lg:px-8">
@@ -1608,46 +1640,100 @@ function TeamPage() {
             ))}
           </div>
 
-          {/* Masonry of mentor bio cards */}
-          <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 mb-8">
-            {MENTORS.map((mentor) => (
-              <div
-                key={mentor.name}
-                className="group break-inside-avoid mb-4 rounded-2xl border border-white/8 bg-white/[0.03] overflow-hidden hover:border-coral/25 transition-all duration-500"
+          {/* Grade filters */}
+          <div className="flex flex-wrap items-center gap-3 mb-8">
+            <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-steel-blue/60 mr-1">
+              <Filter className="w-4 h-4" />
+              Filter by grade
+            </span>
+            {GRADE_FILTERS.map((filter) => (
+              <button
+                key={filter.id}
+                onClick={() => {
+                  setMentorGradeFilter(filter.id);
+                  setOpenMentor(null);
+                }}
+                className={cn(
+                  "inline-flex items-center gap-2 px-4 py-2 rounded-full border text-xs font-bold transition-all",
+                  mentorGradeFilter === filter.id
+                    ? "border-coral/45 bg-coral/12 text-coral"
+                    : "border-white/10 bg-white/[0.03] text-steel-blue/60 hover:text-ice hover:border-white/20"
+                )}
               >
-                <div className="relative h-52 overflow-hidden bg-mid-blue/15">
-                  <img
-                    src={mentor.image}
-                    alt={mentor.name}
-                    className="h-full w-full object-cover saturate-[0.8] brightness-95 opacity-90 transition-all duration-700 ease-out group-hover:saturate-100 group-hover:brightness-100 group-hover:opacity-100 group-hover:scale-[1.04]"
-                    style={{ objectPosition: mentor.pos }}
-                    loading="lazy"
-                  />
-                  {/* Calm veil that lifts on hover */}
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-deep-navy/55 via-deep-navy/5 to-transparent transition-opacity duration-700 group-hover:opacity-40" />
-                </div>
-                <div className="p-5">
-                  <h4 className="font-display text-lg font-bold text-ice leading-tight">
-                    {mentor.name}
-                  </h4>
-                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-1.5">
-                    {mentor.grade && (
-                      <span className="text-[10px] font-bold uppercase tracking-widest text-steel-blue/50">
-                        {mentor.grade} · TJHSST
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-coral text-xs font-semibold mt-2">
-                    {mentor.focus}
-                  </p>
-                  {mentor.bio && (
-                    <p className="text-steel-blue/75 text-sm mt-3 leading-relaxed">
-                      {mentor.bio}
-                    </p>
-                  )}
-                </div>
-              </div>
+                {filter.label}
+                <span className="text-[10px] opacity-60">
+                  {mentorCountFor(filter.id)}
+                </span>
+              </button>
             ))}
+          </div>
+
+          {/* Uniform mentor cards */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
+            {visibleMentors.map((mentor, i) => {
+              const isOpen = openMentor === mentor.name;
+              return (
+                <motion.div
+                  key={mentor.name}
+                  initial={{ opacity: 0, y: 14 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: (i % 6) * 0.04 }}
+                  className="group rounded-2xl border border-white/8 bg-white/[0.03] overflow-hidden hover:border-coral/25 transition-all duration-500"
+                >
+                  <div className="h-72 sm:h-80 bg-mid-blue/15 p-4 flex items-center justify-center">
+                    <img
+                      src={mentor.image}
+                      alt={mentor.name}
+                      className="max-h-full max-w-full object-contain saturate-[0.82] brightness-95 opacity-95 transition-all duration-700 ease-out group-hover:saturate-100 group-hover:brightness-100 group-hover:opacity-100"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="p-5">
+                    <h4 className="font-display text-lg font-bold text-ice leading-tight">
+                      {mentor.name}
+                    </h4>
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-1.5">
+                      {mentor.grade && (
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-steel-blue/50">
+                          {mentor.grade} · TJHSST
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-coral text-xs font-semibold mt-2">
+                      {mentor.focus}
+                    </p>
+                    <button
+                      onClick={() => setOpenMentor(isOpen ? null : mentor.name)}
+                      className="mt-4 w-full flex items-center justify-between rounded-xl border border-white/8 bg-white/[0.03] px-4 py-3 text-left text-sm font-semibold text-steel-blue/70 hover:text-ice hover:border-coral/25 transition-colors"
+                    >
+                      <span>{isOpen ? "Hide description" : "View description"}</span>
+                      <ChevronDown
+                        className={cn(
+                          "w-4 h-4 transition-transform",
+                          isOpen && "rotate-180 text-coral"
+                        )}
+                      />
+                    </button>
+                    <AnimatePresence initial={false}>
+                      {isOpen && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.24 }}
+                          className="overflow-hidden"
+                        >
+                          <p className="text-steel-blue/75 text-sm mt-4 leading-relaxed">
+                            {mentor.bio || "Description coming soon."}
+                          </p>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
 
           <motion.div

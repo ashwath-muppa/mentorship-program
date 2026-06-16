@@ -181,9 +181,10 @@ const MENTORS = [
   {
     name: "Ashwath Muppa",
     grade: "Rising Senior",
-    focus: "Computer Science & Machine Learning",
+    focus: "Machine Learning & Mathematical Modeling",
+    bio: "Hey everyone, my name is Ashwath Muppa and I'm a Rising Senior at TJ! I'm really passionate about machine learning and mathematical modeling, and in high school, I've worked on research ranging from mobile hand tremor classification to collaborative STEM applications. My favorite subjects are Computer Science and Math, and in my free time, I love playing strategic games, hitting the gym, and playing pickleball with my friends!",
     image: MENTOR_IMG("Ashwath_Muppa.jpg"),
-    pos: "50% 18%",
+    pos: DEFAULT_POS,
   },
   {
     name: "Gael Sanchez-Zubieta",
@@ -191,7 +192,7 @@ const MENTORS = [
     focus: "Public Health & Neuroscience",
     bio: "Hi! My name is Gael Sanchez-Zubieta and I'm a rising senior at TJ! I'm extremely passionate about Public Health (especially policy!), Neuroscience, Biology, & Chemistry. I've done a variety of projects in these fields such as research on the biodegradability of plant-based plastics, written a paper on the role of the hippocampus on amnesia, and am currently beginning a biorisk cost-benefit analysis research project. Some of my favorite subjects are DNA Science and Neurobiology. In my free time I enjoy cooking, baking, and inventing new coffee recipes!",
     image: MENTOR_IMG("Gael_Sanchez_Zubieta.jpg"),
-    pos: "50% 20%",
+    pos: DEFAULT_POS,
   },
   {
     name: "Ishaan Kar",
@@ -199,7 +200,7 @@ const MENTORS = [
     focus: "Business, Finance & Entrepreneurship",
     bio: "Hey everyone, my name is Ishaan Kar and I'm a rising senior at TJ! I'm really passionate about business, entrepreneurship, and finance, and in high school I've worked on projects ranging from market trend analysis to earnings call research. My favorite subjects are math and statistics, and in my free time I like going to the gym, eating, and playing sports!",
     image: MENTOR_IMG("Ishaan_Kar.jpg"),
-    pos: "50% 20%",
+    pos: DEFAULT_POS,
   },
   {
     name: "Arjun Kode",
@@ -207,7 +208,7 @@ const MENTORS = [
     focus: "Computational Neuroscience & Chemistry",
     bio: "Hey everyone, my name is Arjun and I'm a student at TJ! I'm really passionate about computational research, especially in neuroscience and chemistry. I've worked on projects ranging from analyzing mouse ultrasonic vocalizations to studying air pollution's effects on the brain. My favorite subjects are AP Chemistry and AP Biology and in my free time I enjoy playing sports with my friends.",
     image: MENTOR_IMG("Arjun_Kode.jpg"),
-    pos: "50% 24%",
+    pos: DEFAULT_POS,
   },
   {
     name: "Aashka Doshi",
@@ -1547,13 +1548,13 @@ function TeamPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: i * 0.15 }}
-                className="group rounded-3xl border border-white/8 bg-white/[0.03] p-8 hover:border-coral/30 hover:bg-coral/5 transition-all"
+                className="group rounded-3xl border border-white/8 bg-white/[0.03] p-8 hover:border-coral/25 transition-all duration-500"
               >
                 <div className="flex flex-col sm:flex-row items-start gap-6 mb-6">
                   <img
                     src={founder.image}
                     alt={founder.name}
-                    className="w-full sm:w-40 h-64 sm:h-44 rounded-2xl object-cover flex-shrink-0 border border-coral/20"
+                    className="w-full sm:w-40 h-64 sm:h-44 rounded-2xl object-cover object-top flex-shrink-0 border border-white/10 saturate-[0.8] brightness-95 opacity-90 transition-all duration-700 ease-out group-hover:saturate-100 group-hover:brightness-100 group-hover:opacity-100"
                     loading="lazy"
                   />
                   <div>
@@ -1612,16 +1613,18 @@ function TeamPage() {
             {MENTORS.map((mentor) => (
               <div
                 key={mentor.name}
-                className="break-inside-avoid mb-4 rounded-2xl border border-white/8 bg-white/[0.03] overflow-hidden hover:border-coral/30 hover:bg-coral/5 transition-all"
+                className="group break-inside-avoid mb-4 rounded-2xl border border-white/8 bg-white/[0.03] overflow-hidden hover:border-coral/25 transition-all duration-500"
               >
-                <div className="h-52 overflow-hidden bg-mid-blue/15">
+                <div className="relative h-52 overflow-hidden bg-mid-blue/15">
                   <img
                     src={mentor.image}
                     alt={mentor.name}
-                    className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+                    className="h-full w-full object-cover saturate-[0.8] brightness-95 opacity-90 transition-all duration-700 ease-out group-hover:saturate-100 group-hover:brightness-100 group-hover:opacity-100 group-hover:scale-[1.04]"
                     style={{ objectPosition: mentor.pos }}
                     loading="lazy"
                   />
+                  {/* Calm veil that lifts on hover */}
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-deep-navy/55 via-deep-navy/5 to-transparent transition-opacity duration-700 group-hover:opacity-40" />
                 </div>
                 <div className="p-5">
                   <h4 className="font-display text-lg font-bold text-ice leading-tight">

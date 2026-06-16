@@ -5,7 +5,10 @@ import {
   Sparkles, Menu, X, ChevronDown, Clock, Users,
   BookOpen, Award, MessageCircle, ExternalLink,
   Microscope, Code, FlaskConical, Star, Rocket,
-  GraduationCap, Heart, Zap, Quote,
+  GraduationCap, Heart, Zap, Quote, Filter,
+  CalendarDays, FileText, ShieldCheck, Target,
+  TrendingUp, Presentation, Beaker, Link2, Lightbulb,
+  Globe, Building2, Trophy, Compass, UserCheck, Construction,
 } from "lucide-react";
 import { cn } from "./lib/utils";
 
@@ -15,14 +18,39 @@ import { cn } from "./lib/utils";
 
 const IMAGE_ROOT = `${import.meta.env.BASE_URL}images/NextInResearch/optimized`;
 
+// Route table — each tab maps to a real URL path.
 const NAV_TABS = [
-  { id: "home", label: "Our Initiative" },
-  { id: "timeline", label: "Timeline" },
-  { id: "team", label: "Team" },
-  { id: "involved", label: "Get Involved" },
-  { id: "faq", label: "FAQ" },
-  { id: "contact", label: "Contact" },
+  { id: "home", path: "/", label: "Our Initiative" },
+  { id: "timeline", path: "/timeline", label: "Timeline" },
+  { id: "team", path: "/team", label: "Team" },
+  { id: "schedule", path: "/schedule", label: "Schedule" },
+  { id: "students", path: "/students", label: "Our Students" },
+  { id: "involved", path: "/getinvolved", label: "Get Involved" },
+  { id: "faq", path: "/faq", label: "FAQ" },
+  { id: "contact", path: "/contact", label: "Contact" },
 ];
+
+// Additional routes not shown as primary tabs + path aliases.
+const EXTRA_ROUTES = [{ id: "apply", path: "/apply" }];
+const PATH_ALIASES = {
+  "/home": "home",
+  "/summerschedule": "schedule",
+  "/team-and-mentors": "team",
+};
+
+const ALL_ROUTES = [...NAV_TABS, ...EXTRA_ROUTES];
+
+function pathToPage(pathname) {
+  const clean = (pathname || "/").replace(/\/+$/, "") || "/";
+  if (PATH_ALIASES[clean]) return PATH_ALIASES[clean];
+  const match = ALL_ROUTES.find((r) => r.path === clean);
+  return match ? match.id : "home";
+}
+
+function pageToPath(id) {
+  const match = ALL_ROUTES.find((r) => r.id === id);
+  return match ? match.path : "/";
+}
 
 const FAQ_DATA = [
   {
@@ -55,7 +83,7 @@ const FAQ_DATA = [
   },
   {
     q: "How do students and parents communicate with the program?",
-    a: "Students communicate via Discord. Parents have a dedicated WhatsApp group. Program coordinators are also reachable directly by email.",
+    a: "Parents and guardians reach out to the program coordinators directly by email. Once you've connected with us, we'll personally share access to our private student and parent communication channels — for everyone's safety, those invite links are never posted publicly on this website.",
   },
   {
     q: "What is the Google Classroom for?",
@@ -145,51 +173,240 @@ const FOUNDERS = [
   },
 ];
 
+const MENTOR_IMG = (file) => `${IMAGE_ROOT}/Mentor_Imgs/${file}`;
+const DEFAULT_POS = "50% 25%";
+
+// Mentor roster — bios sourced from the mentor intake form (Summer 2026 cohort).
 const MENTORS = [
   {
     name: "Ashwath Muppa",
-    school: "TJHSST",
-    interest: "Computer Science and Machine Learning",
-    image: `${IMAGE_ROOT}/Mentor_Imgs/Ashwath_Muppa.jpg`,
-    focus: "50% 18%",
+    grade: "Rising Senior",
+    focus: "Computer Science & Machine Learning",
+    image: MENTOR_IMG("Ashwath_Muppa.jpg"),
+    pos: "50% 18%",
   },
   {
     name: "Gael Sanchez-Zubieta",
-    school: "TJHSST",
-    interest: "Public Health",
-    image: `${IMAGE_ROOT}/Mentor_Imgs/Gael_Sanchez_Zubieta.jpg`,
-    focus: "50% 20%",
+    grade: "Rising Senior",
+    focus: "Public Health & Neuroscience",
+    bio: "Hi! My name is Gael Sanchez-Zubieta and I'm a rising senior at TJ! I'm extremely passionate about Public Health (especially policy!), Neuroscience, Biology, & Chemistry. I've done a variety of projects in these fields such as research on the biodegradability of plant-based plastics, written a paper on the role of the hippocampus on amnesia, and am currently beginning a biorisk cost-benefit analysis research project. Some of my favorite subjects are DNA Science and Neurobiology. In my free time I enjoy cooking, baking, and inventing new coffee recipes!",
+    image: MENTOR_IMG("Gael_Sanchez_Zubieta.jpg"),
+    pos: "50% 20%",
   },
   {
     name: "Ishaan Kar",
-    school: "TJHSST",
-    interest: "Finance and Consulting",
-    image: `${IMAGE_ROOT}/Mentor_Imgs/Ishaan_Kar.jpg`,
-    focus: "50% 20%",
-  },
-  {
-    name: "Aashka Doshi",
-    school: "TJHSST",
-    interest: "Neuroscience",
-    image: `${IMAGE_ROOT}/Mentor_Imgs/Aashka_Doshi.jpg`,
-    focus: "50% 22%",
+    grade: "Rising Senior",
+    focus: "Business, Finance & Entrepreneurship",
+    bio: "Hey everyone, my name is Ishaan Kar and I'm a rising senior at TJ! I'm really passionate about business, entrepreneurship, and finance, and in high school I've worked on projects ranging from market trend analysis to earnings call research. My favorite subjects are math and statistics, and in my free time I like going to the gym, eating, and playing sports!",
+    image: MENTOR_IMG("Ishaan_Kar.jpg"),
+    pos: "50% 20%",
   },
   {
     name: "Arjun Kode",
-    school: "TJHSST",
-    interest: "Neuroscience",
-    image: `${IMAGE_ROOT}/Mentor_Imgs/Arjun_Kode.jpg`,
-    focus: "50% 24%",
+    grade: "Rising Senior",
+    focus: "Computational Neuroscience & Chemistry",
+    bio: "Hey everyone, my name is Arjun and I'm a student at TJ! I'm really passionate about computational research, especially in neuroscience and chemistry. I've worked on projects ranging from analyzing mouse ultrasonic vocalizations to studying air pollution's effects on the brain. My favorite subjects are AP Chemistry and AP Biology and in my free time I enjoy playing sports with my friends.",
+    image: MENTOR_IMG("Arjun_Kode.jpg"),
+    pos: "50% 24%",
+  },
+  {
+    name: "Aashka Doshi",
+    grade: "Rising Senior",
+    focus: "Neuroscience",
+    image: MENTOR_IMG("Aashka_Doshi.jpg"),
+    pos: "50% 22%",
+  },
+  {
+    name: "Diana Soltani",
+    grade: "Rising Sophomore",
+    focus: "Neuroscience & AI in Medicine",
+    bio: "Hi, my name is Diana Soltani and I'm a Rising Sophomore at TJHSST! My favorite extracurriculars range from the Neuroscience Brain Bee, Live-Action Acting, International Congressional Debate, to projects concerning MRI development using AI. A fun fact about me is that I've never used a microwave in my life!",
+    image: MENTOR_IMG("Diana_Soltani.jpg"),
+    pos: DEFAULT_POS,
+  },
+  {
+    name: "Tanya Chavan",
+    grade: "Rising Junior",
+    focus: "Engineering & Humanities",
+    bio: "Hi!! I'm Tanya Chavan, and I'm a rising junior at TJ. I love the humanities; I compete in debate, Mock Trial, and MUN about a wide range of topics ranging from scientific to moral and ethical issues. I also love engineering, specifically CAD, woodwork, and assembly. In my free time, I love to assemble 3D wooden models, hang out with my friends, and listen to music.",
+    image: MENTOR_IMG("Tanya_Chavan.jpg"),
+    pos: DEFAULT_POS,
+  },
+  {
+    name: "Kalkidan Amare",
+    grade: "Rising Junior",
+    focus: "Engineering & Chemistry",
+    bio: "Hi all, my name is Kalkidan Amare and I'm a rising junior at TJ! I'm excited to work with students who want to pursue STEM research this summer as a student who is also interested in engineering and chemistry. I have always been curious about how technology works as I have taken many programming classes, I love reading mystery books, and enjoy playing soccer!",
+    image: MENTOR_IMG("Kalkidan_Amare.jpg"),
+    pos: DEFAULT_POS,
+  },
+  {
+    name: "Emma Zurine",
+    grade: "Rising Senior",
+    focus: "Engineering & Public Policy",
+    bio: "Hi! My name is Emma Zurine and I'm a rising senior at TJ! My main interests include engineering and public policy, especially projects involving robotics, sustainability, and space-related technology. I've had the chance to work on projects ranging from EV battery optimization to flood detection systems, and I'm always excited to explore new fields and ideas. Outside of school, you can usually find me singing or listening to music, trying new restaurants and cafes, playing volleyball, or spending time with friends and family!",
+    image: MENTOR_IMG("Emma_Zurine.jpg"),
+    pos: DEFAULT_POS,
+  },
+  {
+    name: "Vishnuvardhini Arul Palaniraj",
+    grade: "Rising Sophomore",
+    focus: "Medical Science, Cancer Research & AI",
+    bio: "Hi everyone, my name is Vishnuvardhini Arul Palaniraj, and I am a rising sophomore at TJ! I have done numerous projects over the years for science fairs and other research, specializing in medical sciences, cancer research and AI. I love to dance, practice MMA, try new food, and read dystopian or sci-fi books in my free time!",
+    image: MENTOR_IMG("Vishnuvardhini_Arul_Palaniraj.jpg"),
+    pos: DEFAULT_POS,
+  },
+  {
+    name: "Yogan Mahesh",
+    grade: "Rising Junior",
+    focus: "Biology & Chemistry",
+    bio: "Hello, my name is Yogan Mahesh, and I am a rising junior at TJHSST. I am interested in Biology and Chemistry, and have done various projects and labs relating to both fields, including gel electrophoresis and fly experimentation. Other than science, I am passionate about music, and I am currently an active member of my school's band program.",
+    image: MENTOR_IMG("Yogan_Mahesh.jpg"),
+    pos: DEFAULT_POS,
+  },
+  {
+    name: "Tristan Raffo",
+    grade: "Rising Senior",
+    focus: "Economics & Public Policy",
+    bio: "Hi! My name is Tristan Raffo, and I'm a rising Senior at TJ! I love Economics and Public Policy, and I've done research which includes work on tax systems as well as on AI behavior in cooperative games. Outside of school, I enjoy cooking (and eating...), playing soccer, learning new things, and collecting perfume!",
+    image: MENTOR_IMG("Tristan_Raffo.jpg"),
+    pos: DEFAULT_POS,
+  },
+  {
+    name: "Kossara Tabakova",
+    grade: "Rising Junior",
+    focus: "Medicine, Biology & Mathematics",
+    bio: "Hi! I'm Kossara Tabakova, and I'm a rising junior at TJHSST! My interests lie in the fields of medicine, biology, and mathematics, and I have completed projects in the medical and biological fields by combining the use of computer science and mathematical models and their real-world applications. My favorite subjects are math and biology, and in my free time I love playing the violin and the piano, solving problems, and teaching taekwondo.",
+    image: MENTOR_IMG("Kossara_Tabakova.jpg"),
+    pos: DEFAULT_POS,
+  },
+  {
+    name: "Mahrukh Kiyani",
+    grade: "Rising Senior",
+    focus: "Chemistry & DNA Science",
+    bio: "Hi! My name is Kiyani and I'm a Rising Senior. I'm really interested in hands-on laboratory sciences, like Chemistry and DNA Science, and hope to help other people express their interest in them too! In my free time I volunteer at my local hospital, read, watercolor, and go out for forestry walks!",
+    image: MENTOR_IMG("Mahrukh_Kiyani.jpg"),
+    pos: DEFAULT_POS,
+  },
+  {
+    name: "Rhea Desai",
+    grade: "Rising Sophomore",
+    focus: "Environmental Science",
+    bio: "Hey, my name is Rhea Desai and I'm a rising sophomore at TJ. In the past, I have done a wide range of projects, such as how nitrate concentrations affect aquatic organisms and scientific papers. I enjoy English and History, and I love to play soccer and hang out with my friends!",
+    image: MENTOR_IMG("Rhea_Desai.jpg"),
+    pos: DEFAULT_POS,
+  },
+  {
+    name: "Shritha Adapala",
+    grade: "Rising Junior",
+    focus: "Neuroscience & Biomechanics",
+    bio: "Hi, my name is Shritha Adapala and I'm a rising junior at TJ! I love everything biology related, especially neuroscience and biomechanics. I've done some projects in fields like tissue engineering, skin cancer, and neurodegenerative diseases. I'm also part of the tennis team and in my free time, I love playing the violin, watching movies, and sleeping!",
+    image: MENTOR_IMG("Shritha_Adapala.jpg"),
+    pos: DEFAULT_POS,
+  },
+  {
+    name: "Juwon Kim",
+    grade: "Rising Sophomore",
+    focus: "Biomedical Engineering & Biotechnology",
+    bio: "Hi everyone! My name is Juwon Kim and I'm a rising Sophomore at TJ. As a member of TJ's Science Olympiad team, I have had the opportunity to explore so many different areas of science, and now I am planning on specializing in Biomedical Engineering and Biotechnology through independent research. Outside of all of that though, I love making cinematic videos, organizing class-wide events, and playing Roblox and Minecraft!",
+    image: MENTOR_IMG("Juwon_Kim.jpg"),
+    pos: DEFAULT_POS,
+  },
+  {
+    name: "Fatma Hidara",
+    grade: "Rising Junior",
+    focus: "Epidemiology & Medicine",
+    bio: "Hello! I'm Fatma Hidara, a rising junior at TJ. I love listening to music, watching new TV shows, and traveling. As a fun fact, I have Moroccan heritage, so Morocco is my most frequent destination, and this summer will mark my 14th trip there! I'm passionate about biology, especially epidemiology and medicine, and I look forward to diving even deeper into the fields during my remaining years at TJ.",
+    image: MENTOR_IMG("Fatma_Hidara.jpg"),
+    pos: DEFAULT_POS,
+  },
+  {
+    name: "Rabiha Junaid",
+    grade: "Rising Senior",
+    focus: "Social Research (YPAR)",
+    bio: "Hi! My name is Rabiha and I'm about to enter my last year of high school! I love exploring new things, drawing, learning, and reading. Recently I've been doing a YPAR research project and teaching weekend school at my local Mosque. Idealistically I would like to work on a self-improvement journey and learn more about my all-encompassing religion, Islam.",
+    image: MENTOR_IMG("Rabiha_Junaid.jpg"),
+    pos: DEFAULT_POS,
+  },
+  {
+    name: "Yuthee Thota",
+    grade: "Rising Junior",
+    focus: "Engineering & CAD",
+    bio: "Hi! I'm Yuthee Thota, a rising junior at TJHSST with a passion for engineering and hands-on projects. I've worked on projects ranging from woodworking builds and gearbox design to chassis construction, TSA competitions, and even creating miniature dollhouses. Outside of engineering, I like CAD, gardening, baking, and swimming.",
+    image: MENTOR_IMG("Yuthee_Thota.jpg"),
+    pos: DEFAULT_POS,
+  },
+  {
+    name: "Avni Khare",
+    grade: "Rising Junior",
+    focus: "AI & Competitive Programming",
+    bio: "Hi everyone, my name is Avni Khare and I'm a Rising Junior at TJ! I'm really interested in AI development and competitive programming, and I've done competitions since middle school. My favorite subjects are CS and Economics, and I like dancing, playing piano, and doing puzzles in my free time.",
+    image: MENTOR_IMG("Avni_Khare.jpg"),
+    pos: DEFAULT_POS,
+  },
+  {
+    name: "Ava Liu",
+    grade: "Rising Senior",
+    focus: "Bioinformatics & Neuroscience",
+    bio: "Hi, I'm Ava and I'm a rising senior at TJ. I love anything biology, especially bioinformatics and neuroscience, and I've done research projects on neurodegenerative diseases using computer science and data analysis techniques. My favorite subject is Biology (obviously) and in my free time I love baking, reading, and going out with friends!",
+    image: MENTOR_IMG("Ava_Liu.jpg"),
+    pos: DEFAULT_POS,
+  },
+  {
+    name: "Kedar Kalluri",
+    grade: "Rising Junior",
+    focus: "Aerospace & Mechanical Engineering",
+    bio: "Hello! My name is Kedar Kalluri and I am a rising Junior in TJ. I am mainly interested in aerospace, electrical, and mechanical engineering. I like biking, playing the guitar, and drawing.",
+    image: MENTOR_IMG("Kedar_Kalluri.jpg"),
+    pos: DEFAULT_POS,
+  },
+  {
+    name: "Armaan Bajwa",
+    grade: "Rising Sophomore",
+    focus: "Chemistry & Engineering",
+    bio: "Hey everyone, my name is Armaan Bajwa and I'm a rising sophomore at TJ! I'm really interested in chemistry and engineering, and I love getting hands-on with projects whether it's building something with my friends or crafting. In my free time I play basketball, hang out with my friends, and make things.",
+    image: MENTOR_IMG("Armaan_Bajwa.jpg"),
+    pos: DEFAULT_POS,
+  },
+  {
+    name: "Bhavesh Adivi",
+    grade: "Rising Junior",
+    focus: "Oncology & Omics Data / AI",
+    bio: "Hey, I'm Bhavesh Adivi, a rising junior at TJ and I'm really interested in oncology, tumor dynamics, and omics data analysis. I've done projects related to artificial intelligence, computer vision, and predictive modeling for cancer, as well as cognitive impairment tracking. In my free time, I love to code, play chess, and build something new!",
+    image: MENTOR_IMG("Bhavesh_Adivi.jpg"),
+    pos: DEFAULT_POS,
+  },
+  {
+    name: "Kate Russell",
+    grade: "Rising Junior",
+    focus: "Biochemistry",
+    bio: "Kate Russell is a rising junior at TJ who is interested in biochemistry. In her free time, she enjoys reading, creative writing, and taking walks outside!",
+    image: MENTOR_IMG("Kate_Russell.jpg"),
+    pos: DEFAULT_POS,
+  },
+  {
+    name: "Prisha Hasija",
+    grade: "Rising Sophomore",
+    focus: "Engineering & Astronomy",
+    bio: "Hi! I'm Prisha Hasija, a rising sophomore at TJ. I'm especially interested in engineering, astronomy, and exploring how they can be applied to solve real-world problems. Through robotics and astronomy clubs here at TJ, I've had the opportunity to explore these passions, and I'm always excited to learn something new! Outside of academics, I enjoy reading, baking, and crocheting.",
+    image: MENTOR_IMG("Prisha_Hasija.jpg"),
+    pos: DEFAULT_POS,
   },
 ];
 
 const MENTOR_SPECIALTIES = [
-  "Computer Science",
-  "Machine Learning",
+  "Computer Science & ML",
   "Neuroscience",
-  "Public Health",
-  "Finance & Consulting",
-  "Electrical Engineering",
+  "Public Health & Policy",
+  "Biology & Chemistry",
+  "Biomedical Engineering",
+  "Bioinformatics",
+  "Aerospace & Mechanical Eng.",
+  "Economics & Finance",
+  "Cancer Research",
+  "Mathematics",
+  "Environmental Science",
+  "Astronomy",
 ];
 
 const SMP_PHOTOS = [
@@ -228,25 +445,10 @@ const MISC_PHOTOS = [
   alt: "Mentor achievement highlight",
 }));
 
+// Community links — student Discord and parent WhatsApp are intentionally
+// NOT listed here for safety. Parents reach out by email first and receive
+// invite links directly after contact.
 const COMMUNITY_LINKS = [
-  {
-    name: "Discord",
-    label: "Students",
-    desc: "Join the student community server",
-    href: "https://discord.gg/r8xaD9xTA",
-    color: "text-[#5865F2]",
-    bg: "bg-[#5865F2]/10",
-    border: "border-[#5865F2]/20 hover:border-[#5865F2]/40",
-  },
-  {
-    name: "WhatsApp",
-    label: "Parents",
-    desc: "Parent communication group",
-    href: "https://chat.whatsapp.com/IftxgwnHhtaDYdGvQbMz22?mode=gi_t",
-    color: "text-[#25D366]",
-    bg: "bg-[#25D366]/10",
-    border: "border-[#25D366]/20 hover:border-[#25D366]/40",
-  },
   {
     name: "Google Classroom",
     label: "Phase 1",
@@ -255,6 +457,57 @@ const COMMUNITY_LINKS = [
     color: "text-[#EA4335]",
     bg: "bg-[#EA4335]/10",
     border: "border-[#EA4335]/20 hover:border-[#EA4335]/40",
+  },
+];
+
+// ── Summer 2026 workshop schedule ──
+const ASHBURN = {
+  name: "Ashburn Library",
+  room: "Meeting Rooms A + B + C",
+  address: "43316 Hay Road, Ashburn, VA 20147",
+};
+const BRAMBLETON = {
+  name: "Brambleton Library",
+  room: "Meeting Room A",
+  address: "22850 Brambleton Plaza, Brambleton, VA 20148",
+};
+
+const WORKSHOPS = [
+  { n: 1, date: "Wednesday, June 17", time: "5:00 – 6:00 PM", title: "The Research Process", topic: "Foundations", loc: ASHBURN, tbd: false },
+  { n: 2, date: "Friday, June 26", time: "4:00 – 5:00 PM", title: "Deliverable Introduction", topic: "Foundations", loc: ASHBURN, tbd: false },
+  { n: 3, date: "Wednesday, July 1", time: "4:30 – 5:30 PM", title: "Responsible AI Usage", topic: "Skills", loc: BRAMBLETON, tbd: false },
+  { n: 4, date: "Thursday, July 9", time: "4:00 – 5:00 PM", title: "Applied Computer Science", topic: "Skills", loc: ASHBURN, tbd: false },
+  { n: 5, date: "Thursday, July 16", time: "4:00 – 5:00 PM", title: "Topic to be announced", topic: "Skills", loc: ASHBURN, tbd: true },
+  { n: 6, date: "Thursday, July 23", time: "4:00 – 5:00 PM", title: "Topic to be announced", topic: "Skills", loc: ASHBURN, tbd: true },
+  { n: 7, date: "Thursday, July 30", time: "4:00 – 5:00 PM", title: "Topic to be announced", topic: "Skills", loc: BRAMBLETON, tbd: true },
+  { n: 8, date: "Thursday, August 6", time: "Time TBD", title: "Finalizing Student Posters / Projects", topic: "Publishing", loc: null, tbd: false },
+  { n: 9, date: "Thursday, August 13", time: "Time TBD", title: "Practicing Presentation", topic: "Publishing", loc: null, tbd: false },
+];
+
+const VOLUNTEER_SIGNUP_URL =
+  "https://www.signupgenius.com/go/10C0A4BA4AA29A2FAC43-64530107-workshop#/";
+
+// Google Classroom calendar (decoded from the shared cid) embedded read-only.
+const CALENDAR_EMBED_SRC =
+  "classroom114578935361340227206%40group.calendar.google.com";
+const CALENDAR_PUBLIC_URL =
+  "https://calendar.google.com/calendar/u/0/r?cid=Y2xhc3Nyb29tMTE0NTc4OTM1MzYxMzQwMjI3MjA2QGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20";
+
+// ── Our Students (placeholder showcase) ──
+const GRADE_LEVELS = ["All", "6th Grade", "7th Grade", "8th Grade", "9th Grade"];
+
+const STUDENT_PROJECTS = [
+  {
+    name: "Sample Student Project",
+    grade: "7th Grade",
+    blurb:
+      "This is a placeholder for a future student showcase. Soon, each card here will introduce a student (or project group), describe their interests, display a gallery of their work, and link to their finished deliverables.",
+    tags: ["Coming Soon"],
+    gallery: 3,
+    deliverables: [
+      { label: "Research Poster", type: "poster" },
+      { label: "Project Write-up", type: "doc" },
+    ],
   },
 ];
 
@@ -981,6 +1234,95 @@ function HomePage({ setActivePage }) {
         </div>
       </section>
 
+      {/* ── By the Numbers + Values ── */}
+      <section className="py-24 bg-deep-navy border-t border-white/5">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-14"
+          >
+            <SectionLabel>By the Numbers</SectionLabel>
+            <h2 className="font-display text-3xl sm:text-4xl font-bold text-ice">
+              A serious program, built on access
+            </h2>
+          </motion.div>
+
+          {/* Stat band */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-16">
+            {[
+              { value: `${MENTORS.length}`, label: "TJHSST Mentors" },
+              { value: `${MENTOR_SPECIALTIES.length}+`, label: "STEM Specialties" },
+              { value: "100%", label: "Free — No Cost Ever" },
+              { value: `${LOGOS.length}+`, label: "Schools Served" },
+            ].map((s, i) => (
+              <motion.div
+                key={s.label}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08 }}
+                className="rounded-3xl border border-white/8 bg-white/[0.03] px-6 py-8 text-center"
+              >
+                <div className="font-display text-4xl sm:text-5xl font-bold text-coral">
+                  {s.value}
+                </div>
+                <div className="text-xs uppercase tracking-widest text-steel-blue/60 mt-2">
+                  {s.label}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Values / what sets us apart */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              {
+                icon: <ShieldCheck className="w-5 h-5" />,
+                title: "Safe & Supervised",
+                text: "An adult is present at every in-person session, and community invite links are shared privately — never posted online.",
+              },
+              {
+                icon: <GraduationCap className="w-5 h-5" />,
+                title: "Top-Tier Mentors",
+                text: "Mentors are students at TJHSST, the #1-ranked public high school in the nation, each with real research experience.",
+              },
+              {
+                icon: <Award className="w-5 h-5" />,
+                title: "Publishable Outcomes",
+                text: "Students finish with something real — a competition entry, a live project, or a paper submitted to journals like NHSJS, JEI, or IEEE.",
+              },
+              {
+                icon: <Heart className="w-5 h-5" />,
+                title: "Open to Everyone",
+                text: "No experience required and no cost to participate. We welcome every curious middle schooler, at every skill level.",
+              },
+            ].map((v, i) => (
+              <motion.div
+                key={v.title}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08 }}
+                className="rounded-3xl border border-white/8 bg-white/[0.02] p-6 hover:border-coral/25 hover:bg-coral/5 transition-colors"
+              >
+                <div className="w-11 h-11 rounded-2xl bg-coral/10 border border-coral/20 text-coral flex items-center justify-center mb-4">
+                  {v.icon}
+                </div>
+                <h3 className="font-display text-lg font-bold text-ice mb-2">
+                  {v.title}
+                </h3>
+                <p className="text-steel-blue/75 text-sm leading-relaxed">
+                  {v.text}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── Logo Marquee ── */}
       <section className="py-16 border-y border-white/5 bg-mid-blue/5">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -1165,10 +1507,32 @@ function TeamPage() {
     <div className="pt-24 pb-24">
       <div className="mx-auto max-w-5xl px-6 lg:px-8">
         <PageHeading
-          label="The Team"
+          label="About Us"
           title="Built by students, for students"
-          subtitle="Our program is run by Rising Seniors at Thomas Jefferson High School for Science and Technology — one of the top-ranked STEM schools in the nation."
+          subtitle="Next In Research is run entirely by students at Thomas Jefferson High School for Science and Technology (TJHSST) — consistently ranked the #1 public high school in the nation. We've assembled a team of mentors across more than a dozen STEM disciplines, each bringing real research and project experience to the students they guide."
         />
+
+        {/* At-a-glance stats */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-20">
+          {[
+            { value: `${MENTORS.length}`, label: "Mentors" },
+            { value: `${MENTOR_SPECIALTIES.length}+`, label: "STEM Specialties" },
+            { value: "1", label: "Top-Ranked School" },
+            { value: "1–3", label: "Students / Mentor" },
+          ].map((s) => (
+            <div
+              key={s.label}
+              className="rounded-2xl border border-white/8 bg-white/[0.03] px-5 py-6 text-center"
+            >
+              <div className="font-display text-3xl font-bold text-coral">
+                {s.value}
+              </div>
+              <div className="text-[11px] uppercase tracking-widest text-steel-blue/60 mt-1.5">
+                {s.label}
+              </div>
+            </div>
+          ))}
+        </div>
 
         {/* Founders */}
         <section className="mb-20">
@@ -1225,9 +1589,10 @@ function TeamPage() {
             Our Mentors
           </h3>
           <p className="text-steel-blue text-base leading-relaxed mb-6 max-w-2xl">
-            We will have a team of 30 mentors, each with a distinct STEM
-            specialty. Mentors are assigned to students based on alignment with
-            their project interests.
+            Meet the {MENTORS.length} TJHSST mentors guiding our Summer 2026
+            cohort. Each brings hands-on research and project experience, and
+            students are matched with a mentor based on their interests and
+            goals.
           </p>
 
           {/* Specialty tags */}
@@ -1242,48 +1607,44 @@ function TeamPage() {
             ))}
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-            {MENTORS.map((mentor, i) => (
-              <motion.div
+          {/* Masonry of mentor bio cards */}
+          <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 mb-8">
+            {MENTORS.map((mentor) => (
+              <div
                 key={mentor.name}
-                initial={{ opacity: 0, y: 14 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.06 }}
-                className="rounded-2xl border border-white/8 bg-white/[0.03] overflow-hidden hover:border-coral/30 hover:bg-coral/5 transition-all"
+                className="break-inside-avoid mb-4 rounded-2xl border border-white/8 bg-white/[0.03] overflow-hidden hover:border-coral/30 hover:bg-coral/5 transition-all"
               >
-                <div className="h-56 sm:h-60 overflow-hidden bg-mid-blue/15 flex items-center justify-center">
-                  <div className="w-16 h-16 rounded-2xl border border-dashed border-white/12 bg-white/[0.03] flex items-center justify-center">
-                    <Star className="w-7 h-7 text-steel-blue/35" />
-                  </div>
+                <div className="h-52 overflow-hidden bg-mid-blue/15">
+                  <img
+                    src={mentor.image}
+                    alt={mentor.name}
+                    className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+                    style={{ objectPosition: mentor.pos }}
+                    loading="lazy"
+                  />
                 </div>
                 <div className="p-5">
-                  <h4 className="font-display text-lg font-bold text-ice">
+                  <h4 className="font-display text-lg font-bold text-ice leading-tight">
                     {mentor.name}
                   </h4>
-                  <p className="text-coral text-xs font-semibold mt-1">
-                    {mentor.school}
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-1.5">
+                    {mentor.grade && (
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-steel-blue/50">
+                        {mentor.grade} · TJHSST
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-coral text-xs font-semibold mt-2">
+                    {mentor.focus}
                   </p>
-                  <p className="text-steel-blue/75 text-sm mt-3 leading-relaxed">
-                    {mentor.interest}
-                  </p>
+                  {mentor.bio && (
+                    <p className="text-steel-blue/75 text-sm mt-3 leading-relaxed">
+                      {mentor.bio}
+                    </p>
+                  )}
                 </div>
-              </motion.div>
-            ))}
-            <motion.div
-              initial={{ opacity: 0, y: 14 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: MENTORS.length * 0.06 }}
-              className="rounded-2xl border border-dashed border-white/10 bg-white/[0.02] p-6 flex flex-col items-center justify-center text-center gap-3 min-h-[130px]"
-            >
-              <div className="w-10 h-10 rounded-xl border border-white/8 bg-white/4 flex items-center justify-center">
-                <Star className="w-5 h-5 text-steel-blue/30" />
               </div>
-              <p className="text-xs text-steel-blue/35 font-medium">
-                The rest: TBD
-              </p>
-            </motion.div>
+            ))}
           </div>
 
           <motion.div
@@ -1294,12 +1655,12 @@ function TeamPage() {
           >
             <p className="text-steel-blue text-sm leading-relaxed">
               <span className="font-semibold text-ice">
-                Mentor profiles will be published ahead of orientation.
+                Our roster keeps growing.
               </span>{" "}
-              Each mentor is a Rising Senior at TJHSST with published papers,
-              science fair placements, internships, or research assistant
-              experience. Full profiles and specialties will be shared at the
-              April 28th/May end orientation.
+              Every mentor is a current TJHSST student with experience in
+              published papers, science fair placements, internships, or
+              research-assistant work. Students are paired with their mentor
+              after orientation based on shared interests.
             </p>
           </motion.div>
         </section>
@@ -1609,6 +1970,343 @@ function ApplyPage() {
 }
 
 // ─────────────────────────────────────────────
+// SCHEDULE PAGE  (/schedule + /summerschedule)
+// ─────────────────────────────────────────────
+
+const TOPIC_STYLES = {
+  Foundations: "text-coral bg-coral/10 border-coral/20",
+  Skills: "text-steel-blue bg-steel-blue/10 border-steel-blue/20",
+  Publishing: "text-[#98C1D9] bg-mid-blue/20 border-mid-blue/30",
+};
+
+function SchedulePage() {
+  return (
+    <div className="pt-24 pb-24">
+      <div className="mx-auto max-w-5xl px-6 lg:px-8">
+        <PageHeading
+          label="Summer Schedule"
+          title="Summer Mentorship Program — Workshop Series"
+          subtitle="Nine in-person workshops across the summer take students from the fundamentals of research all the way through presenting their finished work. All workshops are free and held at Loudoun County public libraries."
+        />
+
+        {/* Volunteer sign-up callout */}
+        <motion.a
+          href={VOLUNTEER_SIGNUP_URL}
+          target="_blank"
+          rel="noreferrer"
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="group flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-3xl border border-coral/25 bg-coral/5 p-6 mb-12 hover:border-coral/45 hover:bg-coral/10 transition-all"
+        >
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-coral/15 border border-coral/20 flex items-center justify-center flex-shrink-0">
+              <UserCheck className="w-6 h-6 text-coral" />
+            </div>
+            <div>
+              <h3 className="font-display text-lg font-bold text-ice">
+                Mentors &amp; volunteers — sign up to lead a workshop
+              </h3>
+              <p className="text-steel-blue/70 text-sm mt-1">
+                Claim a session on our SignUpGenius volunteer sheet.
+              </p>
+            </div>
+          </div>
+          <span className="inline-flex items-center gap-2 text-coral font-bold text-sm whitespace-nowrap self-start sm:self-center">
+            Open Sign-Up
+            <ExternalLink className="w-4 h-4 group-hover:scale-110 transition-transform" />
+          </span>
+        </motion.a>
+
+        {/* Workshop timeline */}
+        <div className="space-y-4 mb-20">
+          {WORKSHOPS.map((w, i) => (
+            <motion.div
+              key={w.n}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.5, delay: (i % 3) * 0.08 }}
+              className="group grid sm:grid-cols-[auto_1fr] gap-5 rounded-2xl border border-white/8 bg-white/[0.03] p-6 hover:border-coral/30 transition-colors"
+            >
+              {/* Number badge */}
+              <div className="flex sm:flex-col items-center sm:items-start gap-3">
+                <div className="w-14 h-14 rounded-2xl bg-mid-blue/20 border border-white/8 flex flex-col items-center justify-center flex-shrink-0">
+                  <span className="text-[9px] uppercase tracking-widest text-steel-blue/50 leading-none">
+                    No.
+                  </span>
+                  <span className="font-display text-2xl font-bold text-ice leading-none mt-0.5">
+                    {w.n}
+                  </span>
+                </div>
+              </div>
+
+              <div>
+                <div className="flex flex-wrap items-center gap-3 mb-2">
+                  <span
+                    className={cn(
+                      "px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border",
+                      TOPIC_STYLES[w.topic]
+                    )}
+                  >
+                    {w.topic}
+                  </span>
+                  {w.tbd && (
+                    <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border border-white/10 text-steel-blue/50">
+                      Topic TBD
+                    </span>
+                  )}
+                </div>
+                <h3 className="font-display text-xl font-bold text-ice mb-3">
+                  Workshop #{w.n}: {w.title}
+                </h3>
+                <div className="flex flex-col sm:flex-row sm:flex-wrap gap-x-8 gap-y-2 text-sm">
+                  <span className="inline-flex items-center gap-2 text-steel-blue/80">
+                    <CalendarDays className="w-4 h-4 text-coral flex-shrink-0" />
+                    {w.date}
+                  </span>
+                  <span className="inline-flex items-center gap-2 text-steel-blue/80">
+                    <Clock className="w-4 h-4 text-coral flex-shrink-0" />
+                    {w.time}
+                  </span>
+                </div>
+                {w.loc ? (
+                  <div className="flex items-start gap-2 mt-2 text-sm text-steel-blue/70">
+                    <MapPin className="w-4 h-4 text-coral flex-shrink-0 mt-0.5" />
+                    <span>
+                      <span className="text-ice font-medium">{w.loc.name}</span>
+                      {" · "}
+                      {w.loc.room}
+                      <br />
+                      <span className="text-steel-blue/50">{w.loc.address}</span>
+                    </span>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2 mt-2 text-sm text-steel-blue/50">
+                    <MapPin className="w-4 h-4 flex-shrink-0" />
+                    Location to be announced
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Embedded Google Calendar */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
+            <div>
+              <SectionLabel>Program Calendar</SectionLabel>
+              <h2 className="font-display text-3xl font-bold text-ice">
+                Everything in one place
+              </h2>
+              <p className="text-steel-blue/70 text-sm mt-2 max-w-xl">
+                Workshops, orientations, and 1-on-1 sessions sync straight from
+                our shared Google Calendar below.
+              </p>
+            </div>
+            <a
+              href={CALENDAR_PUBLIC_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-coral hover:text-coral/80 transition-colors whitespace-nowrap"
+            >
+              Add to your calendar
+              <ExternalLink className="w-4 h-4" />
+            </a>
+          </div>
+          <div className="rounded-3xl border border-white/8 bg-white/[0.03] p-2 sm:p-3 shadow-2xl overflow-hidden">
+            <iframe
+              title="Next In Research Program Calendar"
+              src={`https://calendar.google.com/calendar/embed?src=${CALENDAR_EMBED_SRC}&ctz=America%2FNew_York&mode=AGENDA&showTitle=0&showPrint=0&showCalendars=0&bgcolor=%23293241`}
+              className="w-full rounded-2xl h-[480px] sm:h-[560px]"
+              style={{ border: 0 }}
+              loading="lazy"
+            />
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// OUR STUDENTS PAGE  (/students)
+// ─────────────────────────────────────────────
+
+function StudentsPage() {
+  const [grade, setGrade] = useState("All");
+
+  const filtered =
+    grade === "All"
+      ? STUDENT_PROJECTS
+      : STUDENT_PROJECTS.filter((p) => p.grade === grade);
+
+  return (
+    <div className="pt-24 pb-24">
+      <div className="mx-auto max-w-6xl px-6 lg:px-8">
+        <PageHeading
+          label="Our Students"
+          title="Meet the projects of all of our students"
+          subtitle="This is where our students shine. Each profile introduces a student or project group, shares a bit about who they are, and showcases a gallery of their work alongside links to their finished deliverables."
+        />
+
+        {/* Under construction banner */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="flex items-center gap-4 rounded-2xl border border-coral/25 bg-coral/5 px-6 py-5 mb-10"
+        >
+          <Construction className="w-6 h-6 text-coral flex-shrink-0" />
+          <p className="text-steel-blue text-sm leading-relaxed">
+            <span className="font-semibold text-ice">Under construction.</span>{" "}
+            Student showcases will be published as the Summer 2026 cohort
+            completes their projects. The example below is a placeholder preview
+            of what's coming.
+          </p>
+        </motion.div>
+
+        {/* Grade filter */}
+        <div className="flex flex-wrap items-center gap-3 mb-10">
+          <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-steel-blue/60 mr-1">
+            <Filter className="w-4 h-4" />
+            Filter by grade level
+          </span>
+          {GRADE_LEVELS.map((g) => (
+            <button
+              key={g}
+              onClick={() => setGrade(g)}
+              className={cn(
+                "px-4 py-1.5 rounded-full text-sm font-semibold border transition-all",
+                grade === g
+                  ? "border-coral bg-coral text-white"
+                  : "border-steel-blue/15 bg-steel-blue/5 text-steel-blue hover:border-coral/40 hover:text-ice"
+              )}
+            >
+              {g}
+            </button>
+          ))}
+        </div>
+
+        {/* Student cards */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filtered.map((p) => (
+            <StudentCard key={p.name} project={p} />
+          ))}
+
+          {/* Always-present "your project here" slot */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="rounded-3xl border border-dashed border-white/12 bg-white/[0.02] p-8 flex flex-col items-center justify-center text-center gap-3 min-h-[320px]"
+          >
+            <div className="w-12 h-12 rounded-2xl border border-white/10 bg-white/[0.04] flex items-center justify-center">
+              <Sparkles className="w-6 h-6 text-coral/60" />
+            </div>
+            <p className="font-display text-lg font-bold text-ice">
+              Your project here
+            </p>
+            <p className="text-steel-blue/50 text-sm">
+              Apply, build something real this summer, and earn your spot in the
+              showcase.
+            </p>
+          </motion.div>
+        </div>
+
+        {filtered.length === 0 && (
+          <p className="text-steel-blue/50 text-center py-16">
+            No projects in this grade level yet — check back soon!
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function StudentCard({ project }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="rounded-3xl border border-white/8 bg-white/[0.03] overflow-hidden hover:border-coral/30 transition-all"
+    >
+      {/* Photo placeholder */}
+      <div className="relative h-44 bg-gradient-to-br from-mid-blue/30 to-deep-navy flex items-center justify-center">
+        <Users className="w-10 h-10 text-steel-blue/30" />
+        <span className="absolute top-3 right-3 px-3 py-1 rounded-full bg-deep-navy/70 border border-white/10 text-[10px] font-bold uppercase tracking-widest text-steel-blue">
+          {project.grade}
+        </span>
+      </div>
+
+      <div className="p-6">
+        <h3 className="font-display text-xl font-bold text-ice mb-2">
+          {project.name}
+        </h3>
+        <div className="flex flex-wrap gap-2 mb-3">
+          {project.tags.map((t) => (
+            <span
+              key={t}
+              className="px-2.5 py-0.5 rounded-full bg-coral/10 border border-coral/20 text-coral text-[10px] font-bold uppercase tracking-wider"
+            >
+              {t}
+            </span>
+          ))}
+        </div>
+        <p className="text-steel-blue/75 text-sm leading-relaxed mb-5">
+          {project.blurb}
+        </p>
+
+        {/* Gallery placeholder */}
+        <p className="text-[10px] font-bold uppercase tracking-widest text-steel-blue/40 mb-2">
+          Gallery
+        </p>
+        <div className="grid grid-cols-3 gap-2 mb-5">
+          {Array.from({ length: project.gallery }).map((_, i) => (
+            <div
+              key={i}
+              className="aspect-square rounded-xl border border-white/8 bg-white/[0.04] flex items-center justify-center"
+            >
+              <Microscope className="w-5 h-5 text-steel-blue/20" />
+            </div>
+          ))}
+        </div>
+
+        {/* Deliverables */}
+        <p className="text-[10px] font-bold uppercase tracking-widest text-steel-blue/40 mb-2">
+          Deliverables
+        </p>
+        <div className="space-y-2">
+          {project.deliverables.map((d) => (
+            <span
+              key={d.label}
+              className="flex items-center gap-2 text-sm text-steel-blue/50 rounded-xl border border-white/8 bg-white/[0.02] px-3 py-2 cursor-not-allowed"
+            >
+              {d.type === "poster" ? (
+                <Presentation className="w-4 h-4 text-steel-blue/40" />
+              ) : (
+                <FileText className="w-4 h-4 text-steel-blue/40" />
+              )}
+              {d.label}
+              <span className="ml-auto text-[10px] uppercase tracking-widest text-steel-blue/30">
+                Soon
+              </span>
+            </span>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+// ─────────────────────────────────────────────
 // FOOTER
 // ─────────────────────────────────────────────
 
@@ -1663,9 +2361,22 @@ function Footer({ setActivePage }) {
 // ─────────────────────────────────────────────
 
 export default function App() {
-  const [activePage, setActivePage] = useState("home");
+  const [activePage, setActivePage] = useState(() =>
+    pathToPage(typeof window !== "undefined" ? window.location.pathname : "/")
+  );
+
+  // Keep state in sync with browser back/forward navigation.
+  useEffect(() => {
+    const onPop = () => setActivePage(pathToPage(window.location.pathname));
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
 
   const navigate = (page) => {
+    const path = pageToPath(page);
+    if (window.location.pathname !== path) {
+      window.history.pushState({ page }, "", path);
+    }
     setActivePage(page);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -1685,6 +2396,8 @@ export default function App() {
           {activePage === "home" && <HomePage setActivePage={navigate} />}
           {activePage === "timeline" && <TimelinePage />}
           {activePage === "team" && <TeamPage />}
+          {activePage === "schedule" && <SchedulePage />}
+          {activePage === "students" && <StudentsPage />}
           {activePage === "involved" && <GetInvolvedPage />}
           {activePage === "faq" && <FAQPage />}
           {activePage === "contact" && <ContactPage />}

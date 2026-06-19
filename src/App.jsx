@@ -214,6 +214,7 @@ const MENTORS = [
     name: "Aashka Doshi",
     grade: "Rising Senior",
     focus: "Neuroscience",
+    bio: "Hey everyone, my name is Aashka Doshi, and I am a rising senior at TJHSST! I am really interested in Neuroscience, and plan to major in it in college. I have conducted research in the past concerning water filtration methods and explored different lab skills in doing so. Outside of school, I love to read, get Chipotle, and hang out with my friends!",
     image: MENTOR_IMG("Aashka_Doshi.jpg"),
     pos: "50% 22%",
   },

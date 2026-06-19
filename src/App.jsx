@@ -505,8 +505,10 @@ const WORKSHOPS = [
 const WORKSHOP_GALLERIES = [
   {
     n: 1,
-    thumbnail: `${WORKSHOP_ROOT}/workshop-1/photos/Thumbnail_img.jpg`,
     photos: [
+      `${WORKSHOP_ROOT}/workshop-1/photos/Thumbnail_img.jpg`,
+      `${WORKSHOP_ROOT}/workshop-1/brochures/brochure1.jpg`,
+      `${WORKSHOP_ROOT}/workshop-1/brochures/brochure2.jpg`,
       "IMG_0284.jpg",
       "IMG_0285.jpg",
       "IMG_0288.jpg",
@@ -521,11 +523,9 @@ const WORKSHOP_GALLERIES = [
       "IMG_6993.jpg",
       "IMG_6994.jpg",
       "IMG_6995.jpg",
-    ].map((file) => `${WORKSHOP_ROOT}/workshop-1/photos/${file}`),
-    brochures: [
-      `${WORKSHOP_ROOT}/workshop-1/brochures/brochure1.jpg`,
-      `${WORKSHOP_ROOT}/workshop-1/brochures/brochure2.jpg`,
-    ],
+    ].map((file) =>
+      file.startsWith(WORKSHOP_ROOT) ? file : `${WORKSHOP_ROOT}/workshop-1/photos/${file}`
+    ),
     slides: `${WORKSHOP_ROOT}/workshop-1/slides/the-research-process.pdf`,
   },
 ];
@@ -2101,8 +2101,8 @@ function WorkshopPhotoAlbum({ photos, title }) {
   const next = () => setActive((current) => (current + 1) % photos.length);
 
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-white/8 bg-white/[0.03] shadow-2xl">
-      <div className="aspect-[4/3] sm:aspect-[16/11] bg-mid-blue/15 p-4 flex items-center justify-center">
+    <div className="relative overflow-hidden rounded-3xl border border-white/8 bg-white/[0.03] shadow-2xl h-full">
+      <div className="h-[520px] bg-mid-blue/15 p-4 flex items-center justify-center">
         <AnimatePresence mode="wait">
           <motion.img
             key={photos[active]}
@@ -2196,83 +2196,49 @@ function WorkshopsPage() {
                 viewport={{ once: true, margin: "-40px" }}
                 className="rounded-3xl border border-white/8 bg-white/[0.02] p-5 sm:p-7"
               >
-                <div className="mb-7 flex flex-col md:flex-row md:items-end gap-6">
-                  <div className="flex-1">
-                    <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-coral mb-3">
-                      {workshop.date} · {workshop.time}
+                <div className="mb-7">
+                  <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-coral mb-3">
+                    {workshop.date} · {workshop.time}
+                  </p>
+                  <h2 className="font-display text-3xl sm:text-4xl font-bold text-ice">
+                    {title}
+                  </h2>
+                  {workshop.loc && (
+                    <p className="text-steel-blue/65 text-sm mt-3">
+                      {workshop.loc.name} · {workshop.loc.room}
                     </p>
-                    <h2 className="font-display text-3xl sm:text-4xl font-bold text-ice">
-                      {title}
-                    </h2>
-                    {workshop.loc && (
-                      <p className="text-steel-blue/65 text-sm mt-3">
-                        {workshop.loc.name} · {workshop.loc.room}
-                      </p>
-                    )}
-                  </div>
-                  <img
-                    src={gallery.thumbnail}
-                    alt={`${title} thumbnail`}
-                    className="w-full md:w-56 aspect-[16/10] rounded-2xl border border-white/8 bg-mid-blue/15 object-cover"
-                    loading="lazy"
-                  />
+                  )}
                 </div>
 
-                <div className="grid lg:grid-cols-[1.15fr_0.85fr] gap-6 items-start">
+                <div className="grid lg:grid-cols-2 gap-6 items-stretch">
                   <WorkshopPhotoAlbum photos={gallery.photos} title={title} />
 
-                  <aside className="space-y-5">
-                    <div className="rounded-3xl border border-white/8 bg-white/[0.03] p-4">
-                      <div className="flex items-center justify-between gap-4 mb-4">
-                        <div>
-                          <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-coral">
-                            Slideshow
-                          </p>
-                          <h3 className="font-display text-xl font-bold text-ice mt-1">
-                            Workshop Slides
-                          </h3>
-                        </div>
-                        <a
-                          href={gallery.slides}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="inline-flex items-center gap-2 text-xs font-bold text-coral hover:text-coral/80 transition-colors"
-                        >
-                          Open
-                          <ExternalLink className="w-4 h-4" />
-                        </a>
+                  <aside className="rounded-3xl border border-white/8 bg-white/[0.03] p-4 h-full shadow-2xl">
+                    <div className="flex items-center justify-between gap-4 mb-4">
+                      <div>
+                        <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-coral">
+                          Slideshow
+                        </p>
+                        <h3 className="font-display text-xl font-bold text-ice mt-1">
+                          Workshop Slides
+                        </h3>
                       </div>
-                      <iframe
-                        src={gallery.slides}
-                        title={`${title} slideshow`}
-                        className="w-full h-[420px] rounded-2xl border border-white/8 bg-mid-blue/15"
-                        loading="lazy"
-                      />
+                      <a
+                        href={gallery.slides}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-2 text-xs font-bold text-coral hover:text-coral/80 transition-colors"
+                      >
+                        Open
+                        <ExternalLink className="w-4 h-4" />
+                      </a>
                     </div>
-
-                    <div className="grid sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-4">
-                      {gallery.brochures.map((brochure, i) => (
-                        <a
-                          key={brochure}
-                          href={brochure}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="group rounded-2xl border border-white/8 bg-white/[0.03] p-3 hover:border-coral/25 transition-colors"
-                        >
-                          <div className="aspect-[8.5/11] rounded-xl bg-mid-blue/15 p-2 flex items-center justify-center overflow-hidden">
-                            <img
-                              src={brochure}
-                              alt={`${title} brochure ${i + 1}`}
-                              className="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-[1.02]"
-                              loading="lazy"
-                            />
-                          </div>
-                          <p className="text-xs font-semibold text-steel-blue/70 mt-3">
-                            Brochure page {i + 1}
-                          </p>
-                        </a>
-                      ))}
-                    </div>
+                    <iframe
+                      src={gallery.slides}
+                      title={`${title} slideshow`}
+                      className="w-full h-[520px] rounded-2xl border border-white/8 bg-mid-blue/15"
+                      loading="lazy"
+                    />
                   </aside>
                 </div>
               </motion.section>

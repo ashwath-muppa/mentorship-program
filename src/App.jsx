@@ -469,8 +469,6 @@ const MISC_PHOTOS = [
 const COMMUNITY_LINKS = [
   {
     name: "Google Classroom",
-    label: "Phase 1",
-    desc: "Optional enrichment assignments",
     href: "https://classroom.google.com/c/ODU4OTg1MjM3NzQw?cjc=ucluu7jr",
     color: "text-[#EA4335]",
     bg: "bg-[#EA4335]/10",
@@ -1981,13 +1979,17 @@ function ContactPage() {
             >
               <div className="flex items-center justify-between">
                 <ExternalLink className={cn("w-4 h-4", link.color)} />
-                <span className={cn("text-[10px] font-bold tracking-widest uppercase", link.color)}>
-                  {link.label}
-                </span>
+                {link.label && (
+                  <span className={cn("text-[10px] font-bold tracking-widest uppercase", link.color)}>
+                    {link.label}
+                  </span>
+                )}
               </div>
               <div>
                 <p className={cn("font-bold text-sm", link.color)}>{link.name}</p>
-                <p className="text-steel-blue/60 text-xs mt-0.5">{link.desc}</p>
+                {link.desc && (
+                  <p className="text-steel-blue/60 text-xs mt-0.5">{link.desc}</p>
+                )}
               </div>
             </motion.a>
           ))}

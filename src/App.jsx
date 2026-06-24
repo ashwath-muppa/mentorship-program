@@ -221,6 +221,14 @@ const MENTORS = [
     pos: "50% 22%",
   },
   {
+    name: "Akshaya Lokam",
+    grade: "Rising Senior",
+    focus: "Psychology & Neuroscience",
+    bio: "Hi everyone, my name is Akshaya Lokam and I'm a Rising Senior at TJ! I'm passionate about pursuing research and plan on majoring in psychology and neuroscience. I've done projects exploring the different sciences and am currently working on a paper on brain plasticity. My favorite subjects are Neurobiology and Psychology. In my free time I love to dance, hang out with my friends, and draw!",
+    image: MENTOR_IMG("Akshaya_Lokam.jpg"),
+    pos: DEFAULT_POS,
+  },
+  {
     name: "Diana Soltani",
     grade: "Rising Sophomore",
     focus: "Neuroscience & AI in Medicine",

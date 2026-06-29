@@ -498,14 +498,14 @@ const BRAMBLETON = {
 
 const WORKSHOPS = [
   { n: 1, date: "Wednesday, June 17", time: "5:00 – 6:00 PM", title: "The Research Process", topic: "Foundations", loc: ASHBURN, tbd: false },
-  { n: 2, date: "Friday, June 26", time: "4:00 – 5:00 PM", title: "Deliverable Introduction", topic: "Foundations", loc: ASHBURN, tbd: false },
-  { n: 3, date: "Wednesday, July 1", time: "4:30 – 5:30 PM", title: "Responsible AI Usage", topic: "Skills", loc: BRAMBLETON, tbd: false },
-  { n: 4, date: "Thursday, July 9", time: "4:00 – 5:00 PM", title: "Applied Computer Science", topic: "Skills", loc: ASHBURN, tbd: false },
-  { n: 5, date: "Thursday, July 16", time: "4:00 – 5:00 PM", title: "Topic to be announced", topic: "Skills", loc: ASHBURN, tbd: true },
-  { n: 6, date: "Thursday, July 23", time: "4:00 – 5:00 PM", title: "Topic to be announced", topic: "Skills", loc: ASHBURN, tbd: true },
-  { n: 7, date: "Thursday, July 30", time: "4:00 – 5:00 PM", title: "Topic to be announced", topic: "Skills", loc: BRAMBLETON, tbd: true },
-  { n: 8, date: "Thursday, August 6", time: "Time TBD", title: "Finalizing Student Posters / Projects", topic: "Publishing", loc: null, tbd: false },
-  { n: 9, date: "Thursday, August 13", time: "Time TBD", title: "Practicing Presentation", topic: "Publishing", loc: null, tbd: false },
+  { n: 2, date: "Friday, June 26", time: "4:00 – 5:00 PM", title: "Refining Research Questions + Deliverable Introduction", topic: "Foundations", loc: ASHBURN, tbd: false },
+  { n: 3, date: "Wednesday, July 1", time: "4:30 – 5:30 PM", title: "Hypothesis Building + Materials and Methods Outlining", topic: "Skills", loc: BRAMBLETON, tbd: false },
+  { n: 4, date: "Thursday, July 9", time: "4:00 – 5:00 PM", title: "Data Analysis, Statistical Tests, and Applied Computer Science", topic: "Skills", loc: ASHBURN, tbd: false },
+  { n: 5, date: "Thursday, July 16", time: "4:00 – 5:00 PM", title: "Scientific Writing Part 1: Overview & Responsible AI Usage", topic: "Skills", loc: ASHBURN, tbd: false },
+  { n: 6, date: "Thursday, July 23", time: "4:00 – 5:00 PM", title: "Scientific Writing Part 2: Reading, Interpreting, and Summarizing Data", topic: "Skills", loc: ASHBURN, tbd: false },
+  { n: 7, date: "Thursday, July 30", time: "4:00 – 5:00 PM", title: "TBD", topic: "Skills", loc: BRAMBLETON, tbd: true },
+  { n: 8, date: "Thursday, August 6", time: "Time + Location TBD", title: "Finalizing Student Posters / Projects", topic: "Publishing", loc: null, tbd: false },
+  { n: 9, date: "Thursday, August 13", time: "Time + Location TBD", title: "Practicing Presentation", topic: "Publishing", loc: null, tbd: false },
 ];
 
 const WORKSHOP_GALLERIES = [
@@ -533,6 +533,30 @@ const WORKSHOP_GALLERIES = [
       file.startsWith(WORKSHOP_ROOT) ? file : `${WORKSHOP_ROOT}/workshop-1/photos/${file}`
     ),
     slides: `${WORKSHOP_ROOT}/workshop-1/slides/the-research-process.pdf`,
+  },
+  {
+    n: 2,
+    photos: [
+      "First.jpg",
+      "Second.jpg",
+      "IMG_0473.jpg",
+      "IMG_0474.jpg",
+      "IMG_0475.jpg",
+      "IMG_0477.jpg",
+      "IMG_0479.jpg",
+      "IMG_0480.jpg",
+      "IMG_0557.jpg",
+      "IMG_0564.jpg",
+      "IMG_0565.jpg",
+      "IMG_0571.jpg",
+      "IMG_0572.jpg",
+      "IMG_0573.jpg",
+      "IMG_0574.jpg",
+      "IMG_0576.jpg",
+      "IMG_0578.jpg",
+    ].map((file) => `${WORKSHOP_ROOT}/workshop-2/photos/${file}`),
+    slides: `${WORKSHOP_ROOT}/workshop-2/slides/slideshow-2.pdf`,
+    handout: `${WORKSHOP_ROOT}/workshop-2/handouts/second.pdf`,
   },
 ];
 
@@ -2233,15 +2257,28 @@ function WorkshopsPage() {
                           Workshop Slides
                         </h3>
                       </div>
-                      <a
-                        href={gallery.slides}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-2 text-xs font-bold text-coral hover:text-coral/80 transition-colors"
-                      >
-                        Open
-                        <ExternalLink className="w-4 h-4" />
-                      </a>
+                      <div className="flex items-center gap-4">
+                        {gallery.handout && (
+                          <a
+                            href={gallery.handout}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-2 text-xs font-bold text-steel-blue/70 hover:text-coral transition-colors"
+                          >
+                            Handout
+                            <ExternalLink className="w-4 h-4" />
+                          </a>
+                        )}
+                        <a
+                          href={gallery.slides}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-2 text-xs font-bold text-coral hover:text-coral/80 transition-colors"
+                        >
+                          Open
+                          <ExternalLink className="w-4 h-4" />
+                        </a>
+                      </div>
                     </div>
                     <iframe
                       src={gallery.slides}

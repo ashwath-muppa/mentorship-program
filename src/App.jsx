@@ -229,6 +229,14 @@ const MENTORS = [
     pos: DEFAULT_POS,
   },
   {
+    name: "Bhargavi Shinde",
+    grade: "Rising Senior",
+    focus: "Psychology, Neuroscience & Healthcare",
+    bio: "Hi everyone! My name is Bhargavi Shinde, and I'm a Rising Senior at TJ. I'm passionate about psychology, neuroscience, and healthcare, and over the past few years I've had the opportunity to work on several research-based projects that have fueled my interest in science and medicine. In my free time, I enjoy playing guitar, doing henna, and hanging out with friends and family. I'm looking forward to meeting everyone this summer!",
+    image: MENTOR_IMG("Bhargavi_Shinde.jpg"),
+    pos: DEFAULT_POS,
+  },
+  {
     name: "Diana Soltani",
     grade: "Rising Sophomore",
     focus: "Neuroscience & AI in Medicine",

@@ -614,6 +614,28 @@ const WORKSHOP_GALLERIES = [
     slides: `${WORKSHOP_ROOT}/workshop-4/slides/slideshow.pdf`,
     handout: `${WORKSHOP_ROOT}/workshop-4/handouts/second.pdf`,
   },
+  {
+    n: 5,
+    photos: [
+      "First.jpg",
+      "Second.jpg",
+      "IMG_0850.jpg",
+      "IMG_0853.jpg",
+      "IMG_0854.jpg",
+      "IMG_0855.jpg",
+      "IMG_0856.jpg",
+      "IMG_0858.jpg",
+      "Photo_01.jpg",
+      "Photo_02.jpg",
+      "Photo_03.jpg",
+      "Photo_04.jpg",
+      "Photo_05.jpg",
+      "Photo_06.jpg",
+      "Photo_07.jpg",
+    ].map((file) => `${WORKSHOP_ROOT}/workshop-5/photos/${file}`),
+    slides: `${WORKSHOP_ROOT}/workshop-5/slides/slideshow-w5.pdf`,
+    handout: `${WORKSHOP_ROOT}/workshop-5/handouts/second.pdf`,
+  },
 ];
 
 const VOLUNTEER_SIGNUP_URL =

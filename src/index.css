@@ -1,21 +1,25 @@
-@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 html {
   scroll-behavior: smooth;
-  background-color: #293241;
+  background-color: #f3f1ec;
 }
 
 body {
   margin: 0;
   min-width: 320px;
-  background-color: #293241;
-  color: #98C1D9;
+  background-color: #f3f1ec;
+  color: #20313b;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Rotated prints and pre-animation stamps must never widen the page. */
+html,
+body {
+  overflow-x: clip;
 }
 
 a {
@@ -23,12 +27,58 @@ a {
 }
 
 ::selection {
-  background: rgba(238, 108, 77, 0.25);
-  color: #E0FBFC;
+  background: rgba(185, 60, 21, 0.85);
+  color: #fdfcfa;
 }
 
-.glass-panel {
-  @apply bg-white/5 backdrop-blur-md border border-white/10;
+:focus-visible {
+  outline: 2px solid #be3a27;
+  outline-offset: 2px;
+}
+
+.bg-cloth :focus-visible,
+.bg-cloth-deep :focus-visible,
+.bg-flame :focus-visible,
+.bg-flame-deep :focus-visible {
+  outline-color: #fdfcfa;
+}
+
+@layer components {
+  /* Fine paper grain shared by cloth, flame, and paper surfaces */
+  .grain {
+    position: relative;
+  }
+  .grain::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+  }
+
+  /* Ruled index-card lines */
+  .ruled {
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 27px,
+      rgba(47, 90, 119, 0.22) 27px,
+      rgba(47, 90, 119, 0.22) 28px
+    );
+  }
+
+  /* The red left rule of a catalog card */
+  .red-rule {
+    background-image: linear-gradient(
+      to right,
+      transparent 0,
+      transparent 2.25rem,
+      rgba(190, 58, 39, 0.5) 2.25rem,
+      rgba(190, 58, 39, 0.5) calc(2.25rem + 1.5px),
+      transparent calc(2.25rem + 1.5px)
+    );
+  }
 }
 
 .no-scrollbar {
@@ -37,4 +87,17 @@ a {
 
 .no-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

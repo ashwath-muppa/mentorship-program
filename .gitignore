@@ -1,3 +1,8 @@
 node_modules/
 dist/
 .DS_Store
+
+# Local Claude Code state (skill installs, local settings)
+.claude/
+.impeccable/questions/
+.impeccable/live/

@@ -4,31 +4,35 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        display: ['"Fraunces"', "Georgia", "serif"],
-        body: ['"DM Sans"', "system-ui", "sans-serif"],
+        display: ['"Bricolage Grotesque"', "Georgia", "serif"],
+        body: ['"Public Sans"', "system-ui", "sans-serif"],
+        mono: ['"Courier Prime"', "Courier", "monospace"],
       },
       colors: {
-        "deep-navy": "#293241",
-        "mid-blue": "#3D5A80",
-        "steel-blue": "#98C1D9",
-        ice: "#E0FBFC",
-        coral: "#EE6C4D",
-      },
-      animation: {
-        marquee: "marquee 35s linear infinite",
-        "pulse-dot": "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-      },
-      keyframes: {
-        marquee: {
-          "0%": { transform: "translateX(0)" },
-          "100%": { transform: "translateX(-50%)" },
-        },
+        // Brand flame orange — the theme color; deep enough for white text (AA)
+        flame: "#B93C15",
+        "flame-deep": "#9E3211",
+        "flame-bright": "#EE6C4D",
+        // Buckram book cloth green — secondary register (nav, footer, select bands)
+        cloth: "#1D4A40",
+        "cloth-deep": "#14352E",
+        // Clean paper neutrals — cards and content bands (no warm manila)
+        paper: "#F3F1EC",
+        "paper-bright": "#FDFCFA",
+        "paper-shade": "#E1DED6",
+        // Blue-black catalog ink
+        ink: "#20313B",
+        "ink-soft": "#51616B",
+        // Rubber-stamp inks
+        stamp: "#BE3A27",
+        "stamp-blue": "#2F5A77",
       },
       boxShadow: {
-        coral: "0 0 30px rgba(238,108,77,0.35)",
-        "coral-sm": "0 0 16px rgba(238,108,77,0.25)",
+        print: "0 1px 2px rgba(32,49,59,0.18), 0 6px 16px rgba(32,49,59,0.22)",
+        "print-lg":
+          "0 2px 4px rgba(32,49,59,0.16), 0 14px 34px rgba(32,49,59,0.28)",
+        card: "0 1px 1px rgba(32,49,59,0.12), 0 4px 10px rgba(32,49,59,0.14)",
       },
     },
   },
-  plugins: [],
 };

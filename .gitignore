@@ -6,3 +6,7 @@ dist/
 .claude/
 .impeccable/questions/
 .impeccable/live/
+.impeccable/review/
+
+# Form-response exports carry personal data; never commit them.
+*.csv

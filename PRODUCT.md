@@ -8,92 +8,83 @@ web
 
 ## Users
 
-The site is an **information and documentation site**, not a conversion funnel. Its job is to explain the mission, show what the program has actually done, and state where it is going. No visitor is being pushed toward a decision right now.
+As of September 2026 the site is the **public record of a finished, successful first cohort** — and the program's front door for publicity and for support of Cohort Two. It is no longer a planning or recruiting site. Its first job is to make a visitor believe, within seconds, that this happened, at scale, and that it was real research rather than tutoring.
 
-Three real audiences read it, none of them being "converted":
+Four real audiences read it:
 
-- **Prospective and enrolled middle school families** (LCPS and FCPS, Loudoun and Fairfax County, Virginia) — students entering roughly 6th–9th grade and their parents/guardians. They read to understand what the program is, who runs it, and what happens over the summer.
-- **Prospective TJHSST high school mentors** — the one live recruiting ask on the site (`/getinvolved`, mentor application form + intro video). This page is explicitly self-described as partially "under construction."
-- **Schools, libraries, and community observers** — people checking that the program is real and credible before hosting, referring, or partnering.
+- **Press and the publicity it brings** — readers arriving from Virginia Tech News, LinkedIn, and (coming) Fox and CBS coverage. They need the story, the numbers, and the photographs immediately.
+- **Supporters for Cohort Two (Summer 2027)** — potential hosts, sponsors, judges, speakers, school-district and university contacts, and grant reviewers. They need proof of scale and credibility, then one clear way to reach the directors.
+- **Families for 2027** — middle school families (grades 6–8) across Northern Virginia deciding whether this is worth their child's summer.
+- **Future mentors** — TJHSST students who want to join the 2027 staff.
 
 ## Product Purpose
 
-Next In Research is a free summer mentorship program that pairs middle school students with TJHSST (Thomas Jefferson High School for Science and Technology) student mentors to conduct real research, build real projects, and publish the result.
+Next In Research is a free, student-run summer research mentorship program founded in 2026 by Dev Srivastava and Deborah Torrico-Pardo (TJHSST, Class of 2027). It pairs middle schoolers with TJHSST student mentors in groups of one to three to design and complete an original research project over a single summer.
 
-The program runs **May – August 2026** in three phases:
+**Mission:** The research experience we wish we'd had — free, for every middle schooler.
 
-1. **Phase 1 · Planning** (May–June) — orientation, onboarding assignments, project selection.
-2. **Phase 2 · Building** (June–July) — weekly in-person workshops at Loudoun County libraries plus weekly 1-on-1 Zoom sessions.
-3. **Phase 3 · Publishing** (August) — final polish and public release: competition submissions, blog posts, videos, or journal papers (NHSJS, JEI, IEEE named as targets).
+**Vision:** A self-sustaining cycle: mentees grow into mentors, and near-peer research mentorship becomes as normal as tutoring — in every district.
 
-Success for the *program* is a finished, shareable deliverable in every student's hands by the end of August. Success for the *website* is that a reader comes away understanding the mission, seeing evidence of the work done, and knowing what comes next.
+Cohort One ran **April – August 2026** in three phases — **Plan** (April 28 kickoff, mentor matching), **Build** (nine free workshops at the Ashburn and Brambleton public libraries, June 17 – August 13, plus weekly one-on-one mentoring), **Publish** (paper review, conference submissions, and the August 22 Symposium & Expo at Virginia Tech).
+
+Success for the *website* is that a first-time visitor understands in one viewport what Next In Research did, believes it, and knows how to help Cohort Two happen.
 
 ## Positioning
 
-Near-peer mentorship at a scale and price a formal program cannot match: mentors are current TJHSST students — close enough in age to be credible, credentialed enough to be useful (published papers, science fair placements, internships) — working with **1–3 students each**, for **free**, toward a **published** outcome rather than a certificate.
-
-The specific combination a neighboring program could not truthfully copy: a 29-mentor TJHSST roster spanning 12 STEM specialties, hosted in public county libraries, producing publishable middle school research at zero cost.
+Near-peer research mentorship at a scale and price no formal program matches: current TJHSST students — close enough in age to be credible, experienced enough to be useful — mentoring **1–3 middle schoolers each**, for **free**, toward a **finished, presented research project** rather than a certificate of attendance. The thing a vague "summer tutoring" program cannot claim: 99 middle schoolers, real research questions, papers reviewed by a Virginia Tech scientist, and a public symposium at Virginia Tech's Institute for Advanced Computing.
 
 ## Operating Context
 
-- **Program state (as of August 2026): mid-cohort, wrapping up.** Summer 2026 is running and finishing in August. The near-term job is documenting this cohort and publishing student work — not recruiting.
-- **Hybrid delivery.** In-person workshops at Ashburn Library (Meeting Rooms A+B+C) and Brambleton Library (Meeting Room A); 1-on-1 mentorship over Zoom.
-- **Nine-workshop summer curriculum**, Workshop 1 (June 17) through Workshop 9 (August 13), moving from the research process → hypothesis and methods → data analysis and statistics → scientific writing (incl. responsible AI usage) → poster finalization → presentation practice.
-- **Google Classroom** carries optional enrichment assignments (coding courses, scientific method, brainstorming). Optional, not required; may influence advanced-mentor matching.
-- **Google Forms and Google Calendar** are the operational backbone — student application, mentor application, mentor intake, and the shared program calendar all live in Google tools. The site links or embeds them rather than replacing them.
-- **SignUpGenius** handles mentor workshop volunteer slots.
-- **Communication is email-first.** Parents and guardians contact the two coordinators directly by email; private student/parent channels are shared individually after that contact rather than posted on the site.
+- **Program state (September 2026): Cohort One is complete and documented.** Planning for Cohort Two (Summer 2027) is under way; support and funding are being sought. The founders plan to incorporate as a 501(c)(3) — the site never claims that status until it is real.
+- **Communication is email-first.** The directors are reached at devsrivastava@nextinresearch.org and deborah.ctp@nextinresearch.org. Private student/parent channels are shared individually, never posted.
+- **The site's one ask is email.** No donation link (the GoFundMe was removed by the founders), no mentor application form (the 2026 form was retired). Hosts, sponsors, judges, speakers, 2027 mentors, and 2027 families all email the directors.
+- Google Classroom remains the enrolled students' enrichment space; it is linked, not replaced.
 
 ## Capabilities and Constraints
 
-**Live surfaces:** Our Initiative (`/`), Timeline, Team, Schedule, Workshops, Our Students, Get Involved, FAQ, Contact, Apply. Path aliases exist for `/home`, `/summerschedule`, `/team-and-mentors`.
+**Live surfaces:** Home (`/`), the Cohort One archive (`/cohort-one` with subpages Symposium & Gallery, Student Projects, Workshops, Schedule (2026), The Summer), Team, News, Get Involved (Back Cohort Two), FAQ, Contact. Legacy paths (`/workshops`, `/schedule`, `/summerschedule`, `/students`, `/timeline`, `/team-and-mentors`, `/apply`) redirect.
 
-**Stack:** React 18 + Vite 5 + Tailwind 3, Framer Motion, lucide-react. Single-file app (`src/App.jsx`, ~2,800 lines) with a hand-rolled path→page router; deployed on Vercel with SPA rewrites (`vercel.json`, `public/_redirects`). All content is hardcoded in-file — there is no CMS, backend, database, or auth.
+**Stack:** React 18 + Vite 5 + Tailwind 3, Framer Motion, lucide-react. Components live in `src/App.jsx` with a hand-rolled path→page router; Cohort One facts, press, and photo lists live in `src/data/cohortOne.js`. Deployed on Vercel with SPA rewrites (`vercel.json`, `public/_redirects`). All content is hardcoded — no CMS, backend, database, or auth.
 
-**Terminology:** "Next In Research" is the program name (the repo and package name `SMP` / `mentorship-program` are legacy and not user-facing). Mentors are described by rising grade — Rising Senior / Junior / Sophomore. Program stages are "Phase 1/2/3," not "weeks" or "modules."
-
-**Explicitly undecided / open:**
-
-- Whether the student Apply page and the "Now Accepting Applications" hero badge should remain live now that the cohort is mid-flight and wrapping up. Not yet decided — do not silently remove or silently keep; raise it.
-- The Our Students showcase is a single placeholder card ("Sample Student Project"). Real student work has not been published to the site yet. Future goals for the site include filling this in.
-- `/getinvolved` is self-described as partially "under construction" beyond the mentor application form and video.
-- Workshops 7–9 have TBD titles, times, or locations in the schedule data.
+**Terminology:** "Next In Research" is the program name (the symposium flyer and Virginia Tech style it "NextInResearch"). Program stages are Plan / Build / Publish. The founders are "program directors" (older copy says "coordinators"). Mentors are described by rising grade.
 
 ## Brand Commitments
 
-- **Name:** Next In Research (the symposium flyer styles it "NextInResearch").
-- **Theme color (user-pinned, Aug 2026):** the brand orange — the coral/flame family (`#EE6C4D` legacy coral; deep `#B93C15` for fields) is the primary theme color. Library green stays as a secondary register (the founder likes it), but orange leads. No warm-manila/yellowed paper grounds — clean paper neutrals instead.
-- **Retired visual worlds:** the original navy/steel/coral dark SaaS theme (Fraunces + DM Sans), and the Aug 2026 redesign's manila-forward rendition. Current world is recorded in DESIGN.md.
-- **Voice:** warm, plain, and non-gatekeeping. The FAQ answers a beginner's anxiety directly ("None at all! We do not prefer students with more experience. The goal is growth, not prior knowledge."). Never adopt selective, elite, or competitive framing — it contradicts the program's actual admissions posture.
+- **Theme color (user-pinned, Aug 2026):** brand flame orange (`#B93C15`; legacy coral `#EE6C4D`) leads; library green is the secondary register; clean paper neutrals, never manila.
+- **Voice:** confident, specific, and proud — the program is "tuff," unlike any vague summer tutoring program — but never selective, elite, or gatekeeping. Beginners are welcome; most of Cohort One had never done research before. Confidence comes from facts, not superlatives.
+- **Retired visual worlds:** the navy/steel/coral dark SaaS theme; the manila-forward rendition. Current world is recorded in DESIGN.md.
 
 ## Evidence on Hand
 
-**Real, usable:**
+**Verified public figures** (Virginia Tech News, Sept 11, 2026, unless noted):
 
-- 29 mentor profiles with real headshots (`public/images/NextInResearch/optimized/Mentor_Imgs/`) and first-person bios sourced from the mentor intake form.
-- Source of those bios: `Mentor Website Information (Responses) - Form Responses 1.csv` in the repo root.
-- 2 coordinator/cofounder profiles: Dev Srivastava and Deborah Torrico-Pardo, both TJHSST, with real emails.
-- 5 completed workshop galleries with real photos, brochures, and slide PDFs (`public/images/NextInResearch/workshops/workshop-1` … `workshop-5`).
-- ~24 program and mentor-achievement photos (`Misc_imgs/`, `SMP_*.jpg`, `Misc_*.jpg`).
-- 19 real school affiliations in the marquee (LCPS, FCPS, TJHSST, and 16 named middle schools) — **these are where students and mentors come from, not sponsors or endorsers.**
-- **The Symposium & Expo (official flyer, Aug 2026):** "NextInResearch Symposium & Expo" — August 22nd, 3–7 PM, 3625 Potomac Ave, Alexandria, VA 22305. Agenda: student set-up 3:00, guest arrival 3:30, welcome 3:45, expo 4:00–5:30, social time with partner booths (Invention Convention, VJAS) 6:30, closing ceremony and guest speakers 7:00. The flyer credits "Working with" Virginia Tech, Fairfax County Public Schools, and Loudoun County Public Schools. Assets: `public/images/NextInResearch/symposium/symposium-flyer.{pdf,jpg}`.
-- Live external links: student application form, mentor application form, Google Classroom, mentor intake video, embedded program calendar, SignUpGenius volunteer sheet.
+- 99 middle schoolers (grades 6–8) matched with 29 TJHSST mentors; 105 applications (program records).
+- Students from 21 schools.
+- 9 free workshops at the Ashburn and Brambleton public libraries (June 17 – August 13, 2026).
+- 11 student papers reviewed by Dr. V. Andreea Sistrunk (Virginia Tech Technical Education and Workforce Development); 2 projects submitted to the IEEE MIT Undergraduate Research Technology Conference.
+- August 22, 2026 Symposium & Expo, hosted by the Virginia Tech Institute for Advanced Computing in the Boeing Auditorium, Academic Building One, Alexandria: 60 student presenters, 250+ attendees (people, not students), partner booths from Invention Virginia, the Virginia Junior Academy of Science, and Bridge2Success Virginia. Opening remarks by Dr. Jim Egenrieder (Director, Virginia Tech Thinkabit Lab).
+- Certificates of Achievement for every presenting student and every mentor (no ranked awards were given).
+- $0 cost to any family.
+
+**Assets:** 107 curated symposium photographs (event photography by Nagaraju Kashayi for Virginia Tech, plus program phone photos) in `public/images/NextInResearch/symposium/`, including the team's own Top 10; nine workshop albums with slides; 29 mentor profiles with portraits; press: Virginia Tech News article and the Virginia Tech in the D.C. Area LinkedIn post.
 
 **Deliberately absent — never fabricate:**
 
-- No testimonials, quotes, or endorsements from students, parents, or schools.
-- No outcome statistics, cohort sizes, acceptance rates, publication counts, or success metrics.
-- No sponsor or funder relationships. (The symposium flyer's "Working with" credits — Virginia Tech, FCPS, LCPS — are the one citable institutional collaboration, scoped to the symposium; do not inflate them into program-wide partnerships.)
-- No published student projects yet.
+- Student names — anywhere. Photos show the work; captions name the research, not the researcher. (Founders, mentors, and faculty may be named.)
+- Volunteer-hour totals and money raised (no verified totals exist).
+- Award winners or rankings (none were given).
+- "Partnership" with Virginia Tech, FCPS, or LCPS — say "hosted by the Virginia Tech Institute for Advanced Computing" until a partnership is confirmed in writing.
+- 501(c)(3) or tax-deductibility claims.
+- Testimonials or quotes from students or parents without consent.
 
 ## Product Principles
 
-1. **Inform, don't sell.** The site's job right now is to explain the mission and show the work. Persuasion architecture — urgency, scarcity, social proof, conversion pressure — is off-brief until the program says otherwise.
-2. **Free is the position, not a promotion.** "100% free" is permanent and structural. Never introduce pricing, tiers, paid add-ons, or a donation ask that could be misread as a fee.
-3. **Only real proof.** Every claim traces to something that actually happened. No invented testimonials, metrics, partnerships, or endorsements — and school names are attendance facts, not sponsorships.
-4. **No prerequisite gatekeeping.** Every surface must read as open to a beginner. Prior experience is explicitly not preferred.
-5. **The evidence is the argument.** Real mentor faces, real workshop photos, real slide decks, real library rooms. Where proof doesn't exist yet, say "coming" rather than filling the space.
+1. **Proof, loudly.** Lead with what actually happened — the photograph, the numbers, the press — at full volume. Every claim traces to Virginia Tech News or the program's own records.
+2. **Free is the position, not a promotion.** "Free for every family" is permanent and structural. The support ask never reads as a fee.
+3. **Protect the students.** Middle schoolers are shown, never named; nothing from applications, rosters, or release forms reaches the site.
+4. **No prerequisite gatekeeping.** Confidence about outcomes, openness about entry: no experience required, none preferred.
+5. **One ask, clearly made.** Every page leads to the same place: email the directors to back Cohort Two.
 
 ## Accessibility & Inclusion
 
-No project-specific standard has been established. Note the real audience floor: primary readers include middle schoolers and parents on phones, so plain language, generous touch targets, and legible contrast on the dark theme are baseline expectations rather than enhancements.
+Readers include middle schoolers and parents on phones, and press readers skimming fast: plain language, generous touch targets, legible contrast on flame and cloth fields, meaningful alt text on every photograph, and full keyboard access to navigation, galleries, and embeds.

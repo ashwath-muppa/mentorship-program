@@ -1,15 +1,21 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, createContext, useContext } from "react";
 import { motion, AnimatePresence, MotionConfig } from "framer-motion";
 import {
   Mail, ExternalLink, Menu, X, ChevronDown,
-  ChevronLeft, ChevronRight, ArrowRight, ArrowDown,
-  Play, Pause,
+  ChevronLeft, ChevronRight, ArrowRight,
 } from "lucide-react";
 import { cn } from "./lib/utils";
+import {
+  MISSION, VISION, HEADLINE, HERO_PHOTO, PHOTO_CREDIT, HEADLINE_NUMBERS,
+  COHORT_STORY, PRESS, SYMPOSIUM_DAY, THANKS, RESEARCH_FIELDS,
+  GALLERY_CATEGORIES, SYMPOSIUM_PHOTOS, TOP_TEN, FOUNDER_QUOTES, WAYS_TO_HELP,
+  symposiumPhotoSrc,
+} from "./data/cohortOne";
 
 /*
-  THE LIBRARY RECORD — direction contract lives in index.html (seed 1ec49fef).
-  Buckram cloth fields · paper card objects · rubber-stamp ink · typed records.
+  THE LIBRARY RECORD — world contract: seed 1ec49fef. The home page is
+  "The Front Page" (seed afe8fa7a); both live in index.html.
+  Flame fields · buckram cloth · paper objects · rubber-stamp ink · typed records.
 */
 
 // ─────────────────────────────────────────────
@@ -19,36 +25,88 @@ import { cn } from "./lib/utils";
 const IMAGE_ROOT = `${import.meta.env.BASE_URL}images/NextInResearch/optimized`;
 const WORKSHOP_ROOT = `${import.meta.env.BASE_URL}images/NextInResearch/workshops`;
 
-// Route table — each tab maps to a real URL path. /apply removed with Cohort One wrapping.
-const NAV_TABS = [
-  { id: "home", path: "/", label: "The Record" },
-  { id: "timeline", path: "/timeline", label: "The Summer" },
-  { id: "team", path: "/team", label: "Mentors" },
-  { id: "schedule", path: "/schedule", label: "Schedule" },
-  { id: "workshops", path: "/workshops", label: "Workshops" },
-  { id: "students", path: "/students", label: "Student Work" },
-  { id: "involved", path: "/getinvolved", label: "Get Involved" },
-  { id: "faq", path: "/faq", label: "FAQ" },
-  { id: "contact", path: "/contact", label: "Contact" },
+// The Cohort One archive — one top-level tab, its pages always one click away.
+const COHORT_PAGES = [
+  { id: "cohort", path: "/cohort-one", label: "Cohort One", title: "Cohort One, Summer 2026" },
+  { id: "cohort-symposium", path: "/cohort-one/symposium", label: "Symposium & Gallery", title: "The Symposium & Expo" },
+  { id: "cohort-projects", path: "/cohort-one/projects", label: "Student Projects", title: "Student Projects" },
+  { id: "cohort-workshops", path: "/cohort-one/workshops", label: "Workshops", title: "Workshop Albums" },
+  { id: "cohort-schedule", path: "/cohort-one/schedule", label: "Schedule (2026)", title: "The 2026 Schedule" },
+  { id: "cohort-summer", path: "/cohort-one/summer", label: "The Summer", title: "How the Summer Ran" },
 ];
 
+// Route table — each tab maps to a real URL path.
+const NAV_TABS = [
+  { id: "home", path: "/", label: "Home" },
+  { id: "cohort", path: "/cohort-one", label: "Cohort One", children: COHORT_PAGES },
+  { id: "team", path: "/team", label: "Team", title: "The Team" },
+  { id: "news", path: "/news", label: "News", title: "In the News" },
+  { id: "involved", path: "/getinvolved", label: "Get Involved", title: "Back Cohort Two" },
+  { id: "faq", path: "/faq", label: "FAQ", title: "FAQ" },
+  { id: "contact", path: "/contact", label: "Contact", title: "Contact" },
+];
+
+const ROUTES = [...NAV_TABS.filter((tab) => !tab.children), ...COHORT_PAGES];
+
+// Old addresses keep working — they land on the page's new home in the archive.
 const PATH_ALIASES = {
   "/home": "home",
-  "/summerschedule": "schedule",
   "/team-and-mentors": "team",
   "/apply": "contact",
+  "/press": "news",
+  "/timeline": "cohort-summer",
+  "/schedule": "cohort-schedule",
+  "/summerschedule": "cohort-schedule",
+  "/workshops": "cohort-workshops",
+  "/students": "cohort-projects",
+  "/symposium": "cohort-symposium",
 };
 
+function cleanPath(pathname) {
+  return (pathname || "/").replace(/\/+$/, "") || "/";
+}
+
 function pathToPage(pathname) {
-  const clean = (pathname || "/").replace(/\/+$/, "") || "/";
+  const clean = cleanPath(pathname);
   if (PATH_ALIASES[clean]) return PATH_ALIASES[clean];
-  const match = NAV_TABS.find((r) => r.path === clean);
+  const match = ROUTES.find((r) => r.path === clean);
   return match ? match.id : "home";
 }
 
 function pageToPath(id) {
-  const match = NAV_TABS.find((r) => r.id === id);
+  const match = ROUTES.find((r) => r.id === id);
   return match ? match.path : "/";
+}
+
+function isCohortPage(id) {
+  return id === "cohort" || id.startsWith("cohort-");
+}
+
+const HOME_TITLE = "Next In Research — 99 middle schoolers. Real research. Free.";
+
+function pageTitle(id) {
+  const route = ROUTES.find((r) => r.id === id);
+  return route?.title ? `${route.title} · Next In Research` : HOME_TITLE;
+}
+
+// In-app navigation, shared by every link on the site.
+const NavigateContext = createContext(() => {});
+
+// A real link (so cmd-click and "copy link" work) that routes in-app on a plain click.
+function PageLink({ to, className, children, ...rest }) {
+  const navigate = useContext(NavigateContext);
+  const onClick = (e) => {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) {
+      return;
+    }
+    e.preventDefault();
+    navigate(to);
+  };
+  return (
+    <a href={pageToPath(to)} onClick={onClick} className={className} {...rest}>
+      {children}
+    </a>
+  );
 }
 
 const FAQ_DATA = [
@@ -62,7 +120,7 @@ const FAQ_DATA = [
   },
   {
     q: "When and where does the program take place?",
-    a: "The program runs May through August. Cohort One met for introduction sessions at the end of May, then gathered for weekly workshops at Loudoun County public libraries — Ashburn and Brambleton — with weekly 1-on-1 Zoom sessions alongside. The program is hybrid: students work online with mentors as well as in person.",
+    a: "Cohort One ran April through August 2026: a kickoff on April 28 at Brambleton Library, nine free workshops at the Ashburn and Brambleton public libraries from June 17 to August 13, weekly one-on-one mentoring online, and a closing symposium at Virginia Tech's Institute for Advanced Computing in Alexandria on August 22.",
   },
   {
     q: "What kind of projects do students work on?",
@@ -82,7 +140,7 @@ const FAQ_DATA = [
   },
   {
     q: "How do students and parents communicate with the program?",
-    a: "Parents and guardians reach out to the program coordinators directly by email. Once you've connected with us, we'll personally share access to our private student and parent communication channels — for everyone's safety, those invite links are never posted publicly on this website.",
+    a: "Parents and guardians reach out to the program directors directly by email. Once you've connected with us, we'll personally share access to our private student and parent communication channels — for everyone's safety, those invite links are never posted publicly on this website.",
   },
   {
     q: "What is the Google Classroom for?",
@@ -90,7 +148,7 @@ const FAQ_DATA = [
   },
   {
     q: "What happens at the end of the program?",
-    a: "By the end of Phase 3 (August), students have a finished, shareable product. Younger students may submit to competitions or create a blog post or video. Older students may submit research papers to journals like NHSJS, JEI, or IEEE.",
+    a: "Every student finishes a real research project. In Cohort One, 60 students presented their work at the August 22 Symposium & Expo at Virginia Tech, 11 student papers were reviewed by a Virginia Tech scientist, and two projects were submitted to the IEEE MIT Undergraduate Research Technology Conference. Students are also encouraged to enter competitions and journals for young researchers.",
   },
   {
     q: "Are adults present at all meetings?",
@@ -98,7 +156,11 @@ const FAQ_DATA = [
   },
   {
     q: "How do I join the next cohort?",
-    a: "Cohort One is wrapping up, and applications for Summer 2027 will open in the spring. Email the coordinators — see the Contact page — and we'll let you know the moment they do.",
+    a: "Applications for Cohort Two (Summer 2027) open in the spring. Email the program directors — see the Contact page — and we'll let you know the moment they do.",
+  },
+  {
+    q: "How can my school or organization support Cohort Two?",
+    a: "Host a workshop or the symposium, sponsor posters and supplies, judge or speak, or connect us with a school district. Email the program directors — every note gets a reply.",
   },
 ];
 
@@ -153,23 +215,29 @@ const PHASES = [
 const FOUNDERS = [
   {
     name: "Dev Srivastava",
-    role: "Program Coordinator / Cofounder",
+    role: "Program Director / Cofounder",
     school: "TJHSST",
     interest: "Electrical Engineering + Computer Science",
-    email: "devsrivastava1221@gmail.com",
+    email: "devsrivastava@nextinresearch.org",
     image: `${IMAGE_ROOT}/Mentor_Imgs/Dev_Srivastava.jpg`,
     call: "621.3 SRI",
   },
   {
     name: "Deborah Torrico-Pardo",
-    role: "Program Coordinator / Cofounder",
+    role: "Program Director / Cofounder",
     school: "TJHSST",
     interest: "Neuroscience",
-    email: "ctp.deborah@gmail.com",
+    email: "deborah.ctp@nextinresearch.org",
     image: `${IMAGE_ROOT}/Mentor_Imgs/Deborah_Torrico_Pardo.jpg`,
     call: "612.8 TOR",
   },
 ];
+
+// Every ask on the site lands in both directors' inboxes.
+const directorsMailto = (subject) =>
+  `mailto:${FOUNDERS.map((f) => f.email).join(",")}${
+    subject ? `?subject=${encodeURIComponent(subject)}` : ""
+  }`;
 
 const MENTOR_IMG = (file) => `${IMAGE_ROOT}/Mentor_Imgs/${file}`;
 const DEFAULT_POS = "50% 25%";
@@ -460,14 +528,6 @@ const TIMELINE_PHOTOS = ["SMP_2.jpg", "SMP_4.jpg", "SMP_5.jpg"].map((file) => ({
   alt: "Families at a Next In Research introduction session",
 }));
 
-const MISC_PHOTOS = [
-  "Misc_1.jpg", "Misc_2.jpg", "Misc_3.jpg", "Misc_4.jpg", "Misc_5.jpg", "Misc_6.jpg",
-  "Misc_7.jpg", "Misc_8.jpg", "Misc_9.jpg", "Misc_10.jpg", "Misc_11.jpg", "Misc_12.jpg",
-].map((file) => ({
-  src: `${IMAGE_ROOT}/Misc_imgs/${file}`,
-  alt: "Mentor achievement photo",
-}));
-
 // Community links — student Discord and parent WhatsApp are intentionally
 // NOT listed here for safety. Parents reach out by email first and receive
 // invite links directly after contact.
@@ -523,7 +583,6 @@ const WORKSHOP_GALLERIES = [
     ].map((file) =>
       file.startsWith(WORKSHOP_ROOT) ? file : `${WORKSHOP_ROOT}/workshop-1/photos/${file}`
     ),
-    homePicks: [0, 5, 13],
     slides: `${WORKSHOP_ROOT}/workshop-1/slides/the-research-process.pdf`,
   },
   {
@@ -534,7 +593,6 @@ const WORKSHOP_GALLERIES = [
       "IMG_0565.jpg", "IMG_0571.jpg", "IMG_0572.jpg", "IMG_0573.jpg", "IMG_0574.jpg",
       "IMG_0576.jpg", "IMG_0578.jpg",
     ].map((file) => `${WORKSHOP_ROOT}/workshop-2/photos/${file}`),
-    homePicks: [1, 9, 13],
     slides: `${WORKSHOP_ROOT}/workshop-2/slides/slideshow-2.pdf`,
     handout: `${WORKSHOP_ROOT}/workshop-2/handouts/second.pdf`,
   },
@@ -547,7 +605,6 @@ const WORKSHOP_GALLERIES = [
       "IMG_0642.jpg", "IMG_0644.jpg", "IMG_0645.jpg", "IMG_0646.jpg", "IMG_0647.jpg",
       "IMG_0649.jpg",
     ].map((file) => `${WORKSHOP_ROOT}/workshop-3/photos/${file}`),
-    homePicks: [0, 6, 14],
     slides: `${WORKSHOP_ROOT}/workshop-3/slides/workshop-3.pdf`,
   },
   {
@@ -557,7 +614,6 @@ const WORKSHOP_GALLERIES = [
       "Photo_02.jpg", "Photo_03.jpg", "Photo_04.jpg", "Photo_05.jpg", "Photo_06.jpg",
       "Photo_07.jpg", "Photo_08.jpg", "Photo_09.jpg", "Photo_10.jpg",
     ].map((file) => `${WORKSHOP_ROOT}/workshop-4/photos/${file}`),
-    homePicks: [0, 4, 9],
     slides: `${WORKSHOP_ROOT}/workshop-4/slides/slideshow.pdf`,
     handout: `${WORKSHOP_ROOT}/workshop-4/handouts/second.pdf`,
   },
@@ -568,7 +624,6 @@ const WORKSHOP_GALLERIES = [
       "IMG_0855.jpg", "IMG_0856.jpg", "IMG_0858.jpg", "Photo_01.jpg", "Photo_02.jpg",
       "Photo_03.jpg", "Photo_04.jpg", "Photo_05.jpg", "Photo_06.jpg", "Photo_07.jpg",
     ].map((file) => `${WORKSHOP_ROOT}/workshop-5/photos/${file}`),
-    homePicks: [0, 4, 10],
     slides: `${WORKSHOP_ROOT}/workshop-5/slides/slideshow-w5.pdf`,
     handout: `${WORKSHOP_ROOT}/workshop-5/handouts/second.pdf`,
   },
@@ -578,7 +633,6 @@ const WORKSHOP_GALLERIES = [
       "IMG_0807.jpg", "IMG_0804.jpg", "IMG_0805.jpg", "IMG_0810.jpg", "IMG_0812.jpg",
       "IMG_0813.jpg", "IMG_0815.jpg", "IMG_0817.jpg", "IMG_0820.jpg",
     ].map((file) => `${WORKSHOP_ROOT}/workshop-6/photos/${file}`),
-    homePicks: [0, 5, 6],
     slides: `${WORKSHOP_ROOT}/workshop-6/slides/workshop-6-scientific-writing-part-2.pdf`,
   },
   {
@@ -588,7 +642,6 @@ const WORKSHOP_GALLERIES = [
       "IMG_0839.jpg", "IMG_0841.jpg", "IMG_1046.jpg", "IMG_1047.jpg", "IMG_0845.jpg",
       "IMG_7656.jpg", "IMG_1052.jpg",
     ].map((file) => `${WORKSHOP_ROOT}/workshop-7/photos/${file}`),
-    homePicks: [0, 4, 7],
     slides: `${WORKSHOP_ROOT}/workshop-7/slides/workshop-7-mental-health-time-management.pdf`,
   },
   {
@@ -597,7 +650,6 @@ const WORKSHOP_GALLERIES = [
       "IMG_2258.jpg", "IMG_2228.jpg", "IMG_2232.jpg", "IMG_2233.jpg", "IMG_2254.jpg",
       "IMG_2256.jpg", "IMG_2262.jpg", "IMG_2266.jpg",
     ].map((file) => `${WORKSHOP_ROOT}/workshop-8/photos/${file}`),
-    homePicks: [0, 4, 7],
     slides: `${WORKSHOP_ROOT}/workshop-8/slides/workshop-8-finalizing-projects-posters.pdf`,
   },
   {
@@ -606,68 +658,11 @@ const WORKSHOP_GALLERIES = [
       "IMG_9013.jpg", "IMG_9024.jpg", "IMG_7835.jpg", "IMG_7836.jpg", "IMG_7839.jpg",
       "IMG_7841.jpg", "IMG_7843.jpg",
     ].map((file) => `${WORKSHOP_ROOT}/workshop-9/photos/${file}`),
-    homePicks: [0, 2, 5],
     slides: `${WORKSHOP_ROOT}/workshop-9/slides/workshop-9-presentation-prep.pdf`,
   },
 ];
 
-// One cover photo per workshop album — the hero carousel's reel.
-const WORKSHOP_COVERS = WORKSHOP_GALLERIES.map((g) => {
-  const w = WORKSHOPS.find((x) => x.n === g.n);
-  return { src: g.photos[0], n: g.n, title: w.title };
-});
-
-// ── The Symposium & Expo (facts from the official flyer) ──
-const SYMPOSIUM = {
-  name: "NextInResearch Symposium & Expo",
-  date: "August 22nd",
-  time: "3:00 – 7:00 PM",
-  address: "3625 Potomac Ave, Alexandria, VA 22305",
-  agenda: [
-    { time: "3:00 PM", item: "Student arrival & set-up — poster boards and props" },
-    { time: "3:30 PM", item: "Doors open for families, friends, and guests" },
-    { time: "3:45 PM", item: "Welcome, introductions, and a brief thank-you" },
-    { time: "4:00 PM", item: "Symposium Expo — students present their research" },
-    { time: "6:30 PM", item: "Social time — snacks and partner booths (Invention Convention, VJAS)" },
-    { time: "7:00 PM", item: "Closing ceremony and guest speakers (runs to 8:00 PM)" },
-  ],
-  workingWith: [
-    "Virginia Tech",
-    "Fairfax County Public Schools",
-    "Loudoun County Public Schools",
-  ],
-  flyerImg: `${import.meta.env.BASE_URL}images/NextInResearch/symposium/symposium-flyer.jpg`,
-  flyerPdf: `${import.meta.env.BASE_URL}images/NextInResearch/symposium/symposium-flyer.pdf`,
-};
-
-const MISSION_PHOTO = {
-  src: `${IMAGE_ROOT}/Misc_imgs/SMP_1.jpg`,
-  alt: "Families filling the room at a Next In Research introduction session",
-  caption: "Introduction session · Spring 2026",
-};
-
-const VOLUNTEER_SIGNUP_URL =
-  "https://www.signupgenius.com/go/10C0A4BA4AA29A2FAC43-64530107-workshop#/";
-
-const MENTOR_APPLICATION_URL =
-  "https://docs.google.com/forms/d/e/1FAIpQLSdJbFPGDU8FRyottDfEDJQwSOIfFLhuafah0TjfgBVjAiHZyQ/viewform?usp=header";
-
-const MENTOR_VIDEO_EMBED =
-  "https://drive.google.com/file/d/1qm5lC6jQDy3LLs7C_SLQ52WUySAfspQN/preview";
-
-// Google Classroom calendar (decoded from the shared cid) embedded read-only.
-const CALENDAR_EMBED_SRC =
-  "classroom114578935361340227206%40group.calendar.google.com";
-const CALENDAR_PUBLIC_URL =
-  "https://calendar.google.com/calendar/u/0/r?cid=Y2xhc3Nyb29tMTE0NTc4OTM1MzYxMzQwMjI3MjA2QGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20";
-
 // School roster — where students and mentors go to school. Attendance facts, not sponsorships.
-const DISTRICTS = [
-  "Loudoun County Public Schools",
-  "Fairfax County Public Schools",
-  "Thomas Jefferson HS for Science & Technology",
-];
-
 const SCHOOLS = [
   "Katherine Johnson Middle School",
   "Trailside Middle School",
@@ -748,27 +743,6 @@ function PhotoPrint({ src, alt, caption, rotate = -1.5, className, imgClassName 
   );
 }
 
-// A paper card pocket — the card sits inside and pulls up on hover.
-function CardPocket({ label, children }) {
-  return (
-    <div className="group relative pt-4">
-      <div className="relative z-0 transition-transform duration-300 group-hover:-translate-y-3 group-focus-within:-translate-y-3">
-        {children}
-      </div>
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-24 border border-paper-shade bg-paper-shade/90 shadow-[0_-2px_8px_rgba(32,49,59,0.10)] [clip-path:polygon(0_18%,100%_0,100%_100%,0_100%)]"
-      />
-      <p
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-3 z-20 text-center font-mono text-[10px] font-bold uppercase tracking-[0.24em] text-ink-soft"
-      >
-        {label}
-      </p>
-    </div>
-  );
-}
-
 // The rod hole at the bottom of every catalog card.
 function RodHole({ ground = "bg-paper" }) {
   return (
@@ -782,117 +756,211 @@ function RodHole({ ground = "bg-paper" }) {
   );
 }
 
-// The hero reel: one archival print, cycling through each workshop's cover photo.
-function CoverCarousel() {
-  const [active, setActive] = useState(0);
-  const [hovered, setHovered] = useState(false);
-  // Any manual interaction (arrows, dots, pause button) hands control to the visitor.
-  const [playing, setPlaying] = useState(true);
+// Full-size viewer for the symposium photographs. Arrow keys and swipes page
+// through, Escape or the backdrop closes, and focus returns to the opener.
+function Lightbox({ photos, index, onIndex, onClose }) {
+  const dialogRef = useRef(null);
+  const touchX = useRef(null);
+  const count = photos.length;
+  const photo = photos[index];
+  const step = (delta) => onIndex((i) => (i + delta + count) % count);
 
-  // Warm the reel so a crossfade never lands on an unloaded photo.
   useEffect(() => {
-    WORKSHOP_COVERS.forEach((c) => {
-      const img = new Image();
-      img.src = c.src;
-    });
+    const opener = document.activeElement;
+    document.body.style.overflow = "hidden";
+    dialogRef.current?.querySelector("[data-autofocus]")?.focus();
+    return () => {
+      document.body.style.overflow = "";
+      opener?.focus?.();
+    };
   }, []);
 
   useEffect(() => {
-    if (!playing || hovered) return undefined;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      return undefined;
-    }
-    const timer = setInterval(
-      () => setActive((a) => (a + 1) % WORKSHOP_COVERS.length),
-      4500
-    );
-    return () => clearInterval(timer);
-  }, [playing, hovered]);
+    const onKey = (e) => {
+      if (e.key === "Escape") onClose();
+      else if (e.key === "ArrowRight") step(1);
+      else if (e.key === "ArrowLeft") step(-1);
+      else if (e.key === "Tab") {
+        // Keep keyboard focus inside the viewer while it is open.
+        const focusable = dialogRef.current?.querySelectorAll("button");
+        if (!focusable?.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  });
 
-  const cover = WORKSHOP_COVERS[active];
-  const show = (index) => {
-    setPlaying(false);
-    setActive((index + WORKSHOP_COVERS.length) % WORKSHOP_COVERS.length);
+  // Warm the neighbors so paging never lands on an unloaded photo.
+  useEffect(() => {
+    [1, -1].forEach((d) => {
+      const img = new Image();
+      img.src = photos[(index + d + count) % count].src;
+    });
+  }, [index, photos, count]);
+
+  const closeOnBackdrop = (e) => {
+    if (e.target === e.currentTarget) onClose();
   };
 
   return (
-    <div
-      role="group"
-      aria-roledescription="carousel"
-      aria-label="Workshop cover photos"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      onFocus={() => setHovered(true)}
-      onBlur={() => setHovered(false)}
-      className="relative mx-auto w-full max-w-[640px]"
+    <motion.div
+      ref={dialogRef}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Photo viewer"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.18 }}
+      className="fixed inset-0 z-[70] flex flex-col bg-cloth-deep text-paper"
     >
-      <figure className="rotate-[-1.2deg] bg-white p-2 pb-3 shadow-print-lg transition-transform duration-300 hover:rotate-0">
-        <div className="relative aspect-[4/3] overflow-hidden bg-ink/5">
-          <AnimatePresence initial={false}>
-            <motion.img
-              key={cover.src}
-              src={cover.src}
-              alt={`Workshop ${cover.n}: ${cover.title}`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.55 }}
-              className="absolute inset-0 h-full w-full object-cover"
-            />
-          </AnimatePresence>
-        </div>
-        <figcaption className="flex items-baseline justify-between gap-3 pt-2.5">
-          <span className="min-w-0 truncate font-mono text-[11px] text-ink-soft">
-            Workshop {cover.n} · {cover.title}
-          </span>
-          <span className="shrink-0 font-mono text-[11px] font-bold text-ink">
-            {String(active + 1).padStart(2, "0")}/
-            {String(WORKSHOP_COVERS.length).padStart(2, "0")}
-          </span>
-        </figcaption>
-      </figure>
+      <div className="flex items-center justify-between gap-4 px-5 py-3 sm:px-8">
+        <p className="font-mono text-[13px] font-bold tabular-nums text-paper-bright">
+          {String(index + 1).padStart(2, "0")} / {String(count).padStart(2, "0")}
+        </p>
+        <button
+          data-autofocus
+          onClick={onClose}
+          aria-label="Close the photo viewer"
+          className="flex h-11 w-11 items-center justify-center border border-paper/40 text-paper-bright transition-colors hover:bg-paper-bright hover:text-cloth-deep"
+        >
+          <X className="h-5 w-5" />
+        </button>
+      </div>
 
-      <div className="mt-4 flex items-center justify-between">
-        <div className="flex items-center gap-1.5 sm:gap-2">
-          {WORKSHOP_COVERS.map((c, i) => (
-            <button
-              key={c.n}
-              onClick={() => show(i)}
-              aria-label={`Show workshop ${c.n} cover`}
-              aria-current={i === active}
-              className={cn(
-                "h-2.5 w-2.5 rounded-full border border-paper-bright/70 transition-colors",
-                i === active ? "bg-paper-bright" : "bg-transparent hover:bg-paper-bright/40"
-              )}
-            />
-          ))}
-        </div>
-        <div className="flex gap-2">
+      <div
+        onClick={closeOnBackdrop}
+        onTouchStart={(e) => {
+          touchX.current = e.touches[0].clientX;
+        }}
+        onTouchEnd={(e) => {
+          if (touchX.current === null) return;
+          const dx = e.changedTouches[0].clientX - touchX.current;
+          touchX.current = null;
+          if (Math.abs(dx) > 48) step(dx < 0 ? 1 : -1);
+        }}
+        className="flex min-h-0 flex-1 items-center justify-center px-3 sm:px-8"
+      >
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.img
+            key={photo.src}
+            src={photo.src}
+            alt={photo.alt}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="max-h-[calc(100dvh-10rem)] max-w-full border-4 border-white object-contain shadow-print-lg"
+          />
+        </AnimatePresence>
+      </div>
+
+      <div className="flex items-start justify-between gap-4 px-5 py-4 sm:px-8">
+        <p className="max-w-3xl font-mono text-[13px] leading-relaxed text-paper/90">
+          {photo.caption || photo.alt}
+        </p>
+        <div className="flex shrink-0 gap-2">
           <button
-            onClick={() => setPlaying(!playing)}
-            aria-pressed={!playing}
-            aria-label={playing ? "Pause the photo reel" : "Play the photo reel"}
-            className="flex h-10 w-10 items-center justify-center border border-paper-bright/50 text-paper-bright transition-colors hover:bg-paper-bright hover:text-flame"
-          >
-            {playing ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-          </button>
-          <button
-            onClick={() => show(active - 1)}
-            aria-label="Previous workshop photo"
-            className="flex h-10 w-10 items-center justify-center border border-paper-bright/50 text-paper-bright transition-colors hover:bg-paper-bright hover:text-flame"
+            onClick={() => step(-1)}
+            aria-label="Previous photo"
+            className="flex h-11 w-11 items-center justify-center border border-paper/40 text-paper-bright transition-colors hover:bg-paper-bright hover:text-cloth-deep"
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
           <button
-            onClick={() => show(active + 1)}
-            aria-label="Next workshop photo"
-            className="flex h-10 w-10 items-center justify-center border border-paper-bright/50 text-paper-bright transition-colors hover:bg-paper-bright hover:text-flame"
+            onClick={() => step(1)}
+            aria-label="Next photo"
+            className="flex h-11 w-11 items-center justify-center border border-paper/40 text-paper-bright transition-colors hover:bg-paper-bright hover:text-cloth-deep"
           >
             <ChevronRight className="h-5 w-5" />
           </button>
         </div>
       </div>
-    </div>
+    </motion.div>
+  );
+}
+
+// Lightbox-ready form of a symposium photo from the data file.
+function toViewerPhoto(photo) {
+  return {
+    src: symposiumPhotoSrc(photo.slug, "full"),
+    alt: photo.alt,
+    caption: photo.caption,
+  };
+}
+
+// One photo thumbnail that opens the viewer. The box is sized from the
+// photo's own proportions, so the grid never jumps while images load.
+function GalleryThumb({ photo, onOpen, className }) {
+  return (
+    <button
+      onClick={onOpen}
+      className={cn(
+        "group block w-full bg-white p-1 shadow-card transition-shadow hover:shadow-print",
+        className
+      )}
+    >
+      <img
+        src={symposiumPhotoSrc(photo.slug, "thumb")}
+        alt={photo.alt}
+        width={photo.w}
+        height={photo.h}
+        loading="lazy"
+        decoding="async"
+        style={{ aspectRatio: `${photo.w} / ${photo.h}` }}
+        className="block h-auto w-full object-cover transition-opacity group-hover:opacity-90"
+      />
+    </button>
+  );
+}
+
+// The archive's own tab strip: every Cohort One page is one click from the others.
+function CohortSubnav({ active }) {
+  const stripRef = useRef(null);
+
+  // On a phone the strip scrolls sideways; bring the current page's tab into view.
+  useEffect(() => {
+    const strip = stripRef.current;
+    const current = strip?.querySelector('[aria-current="page"]');
+    if (strip && current && strip.scrollWidth > strip.clientWidth) {
+      strip.scrollLeft = current.offsetLeft - 20;
+    }
+  }, [active]);
+
+  return (
+    <nav
+      ref={stripRef}
+      aria-label="Cohort One archive"
+      className="-mx-5 mb-12 overflow-x-auto border-b border-ink/15 sm:mx-0"
+    >
+      <ul className="flex w-max gap-1 px-5 sm:px-0">
+        {COHORT_PAGES.map((page) => (
+          <li key={page.id}>
+            <PageLink
+              to={page.id}
+              aria-current={active === page.id ? "page" : undefined}
+              className={cn(
+                "-mb-px block whitespace-nowrap border-b-2 px-3 py-3 font-mono text-[12px] font-bold uppercase tracking-[0.12em] transition-colors",
+                active === page.id
+                  ? "border-stamp text-ink"
+                  : "border-transparent text-ink-soft hover:border-ink/30 hover:text-ink"
+              )}
+            >
+              {page.label}
+            </PageLink>
+          </li>
+        ))}
+      </ul>
+    </nav>
   );
 }
 
@@ -921,9 +989,11 @@ function PageTitle({ title, lead }) {
 // NAVIGATION
 // ─────────────────────────────────────────────
 
-function Navigation({ activePage, setActivePage }) {
+function Navigation({ activePage }) {
   const [open, setOpen] = useState(false);
+  const [archiveOpen, setArchiveOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const archiveRef = useRef(null);
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 12);
@@ -939,10 +1009,33 @@ function Navigation({ activePage, setActivePage }) {
     };
   }, [open]);
 
-  const go = (id) => {
+  // Any page change closes both menus.
+  useEffect(() => {
     setOpen(false);
-    setActivePage(id);
-  };
+    setArchiveOpen(false);
+  }, [activePage]);
+
+  // The archive menu closes on Escape or a click anywhere outside it.
+  useEffect(() => {
+    if (!archiveOpen) return undefined;
+    const onPointer = (e) => {
+      if (!archiveRef.current?.contains(e.target)) setArchiveOpen(false);
+    };
+    const onKey = (e) => {
+      if (e.key === "Escape") {
+        setArchiveOpen(false);
+        archiveRef.current?.querySelector("button")?.focus();
+      }
+    };
+    document.addEventListener("pointerdown", onPointer);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("pointerdown", onPointer);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [archiveOpen]);
+
+  const inArchive = isCohortPage(activePage);
 
   return (
     <header
@@ -952,36 +1045,84 @@ function Navigation({ activePage, setActivePage }) {
       )}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-6 px-5 sm:px-8">
-        <button
-          onClick={() => go("home")}
-          className="flex min-w-0 items-baseline gap-3 text-left"
-        >
+        <PageLink to="home" className="flex min-w-0 items-baseline gap-3">
           <span className="whitespace-nowrap font-display text-lg font-bold tracking-tight text-paper-bright">
             Next In Research
           </span>
           <span className="hidden whitespace-nowrap font-mono text-[10px] tracking-[0.22em] text-paper/75 md:inline">
             PUBLIC RECORD · EST. 2026
           </span>
-        </button>
+        </PageLink>
 
         <nav className="hidden lg:block" aria-label="Primary">
           <ul className="flex items-center gap-1">
-            {NAV_TABS.map((tab) => (
-              <li key={tab.id}>
-                <button
-                  onClick={() => go(tab.id)}
-                  aria-current={activePage === tab.id ? "page" : undefined}
-                  className={cn(
-                    "border-b-2 px-2.5 py-1.5 text-[13px] font-semibold transition-colors",
-                    activePage === tab.id
-                      ? "border-stamp text-paper-bright"
-                      : "border-transparent text-paper/75 hover:border-paper/30 hover:text-paper-bright"
-                  )}
-                >
-                  {tab.label}
-                </button>
-              </li>
-            ))}
+            {NAV_TABS.map((tab) =>
+              tab.children ? (
+                <li key={tab.id} ref={archiveRef} className="relative">
+                  <button
+                    onClick={() => setArchiveOpen(!archiveOpen)}
+                    aria-expanded={archiveOpen}
+                    aria-controls="archive-menu"
+                    className={cn(
+                      "inline-flex items-center gap-1 border-b-2 px-2.5 py-1.5 text-[13px] font-semibold transition-colors",
+                      inArchive
+                        ? "border-stamp text-paper-bright"
+                        : "border-transparent text-paper/75 hover:border-paper/30 hover:text-paper-bright"
+                    )}
+                  >
+                    {tab.label}
+                    <ChevronDown
+                      className={cn("h-3.5 w-3.5 transition-transform duration-200", archiveOpen && "rotate-180")}
+                    />
+                  </button>
+                  <AnimatePresence>
+                    {archiveOpen && (
+                      <motion.ul
+                        id="archive-menu"
+                        initial={{ opacity: 0, y: -4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -4 }}
+                        transition={{ duration: 0.16 }}
+                        className="absolute left-0 top-full mt-3 w-64 border border-paper/15 bg-cloth-deep py-2 shadow-[0_10px_28px_rgba(20,53,46,0.5)]"
+                      >
+                        {tab.children.map((page) => (
+                          <li key={page.id}>
+                            <PageLink
+                              to={page.id}
+                              aria-current={activePage === page.id ? "page" : undefined}
+                              className={cn(
+                                "flex items-center justify-between gap-3 px-4 py-2.5 text-[14px] font-semibold transition-colors hover:bg-cloth",
+                                activePage === page.id ? "text-paper-bright" : "text-paper/80 hover:text-paper-bright"
+                              )}
+                            >
+                              {page.id === "cohort" ? "Overview" : page.label}
+                              {activePage === page.id && (
+                                <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-flame-bright" />
+                              )}
+                            </PageLink>
+                          </li>
+                        ))}
+                      </motion.ul>
+                    )}
+                  </AnimatePresence>
+                </li>
+              ) : (
+                <li key={tab.id}>
+                  <PageLink
+                    to={tab.id}
+                    aria-current={activePage === tab.id ? "page" : undefined}
+                    className={cn(
+                      "block border-b-2 px-2.5 py-1.5 text-[13px] font-semibold transition-colors",
+                      activePage === tab.id
+                        ? "border-stamp text-paper-bright"
+                        : "border-transparent text-paper/75 hover:border-paper/30 hover:text-paper-bright"
+                    )}
+                  >
+                    {tab.label}
+                  </PageLink>
+                </li>
+              )
+            )}
           </ul>
         </nav>
 
@@ -1005,18 +1146,20 @@ function Navigation({ activePage, setActivePage }) {
             aria-label="Primary"
             className="grain fixed inset-x-0 top-16 bottom-0 z-40 overflow-y-auto bg-paper lg:hidden"
           >
-            <ul className="relative px-6 py-8">
+            <ul className="relative px-6 py-6">
               {NAV_TABS.map((tab, i) => (
                 <li key={tab.id} className="border-b border-ink/10">
-                  <button
-                    onClick={() => go(tab.id)}
+                  <PageLink
+                    to={tab.id}
                     aria-current={activePage === tab.id ? "page" : undefined}
-                    className="flex w-full items-baseline justify-between py-4 text-left"
+                    className="flex w-full items-baseline justify-between py-3.5"
                   >
                     <span
                       className={cn(
                         "font-display text-2xl font-bold tracking-tight",
-                        activePage === tab.id ? "text-stamp" : "text-ink"
+                        (tab.children ? inArchive : activePage === tab.id)
+                          ? "text-stamp"
+                          : "text-ink"
                       )}
                     >
                       {tab.label}
@@ -1024,13 +1167,33 @@ function Navigation({ activePage, setActivePage }) {
                     <span className="font-mono text-xs text-ink-soft">
                       {String(i + 1).padStart(2, "0")}
                     </span>
-                  </button>
+                  </PageLink>
+                  {tab.children && (
+                    <ul className="-mt-1 mb-3 ml-1 border-l border-ink/15 pl-4">
+                      {tab.children
+                        .filter((page) => page.id !== "cohort")
+                        .map((page) => (
+                          <li key={page.id}>
+                            <PageLink
+                              to={page.id}
+                              aria-current={activePage === page.id ? "page" : undefined}
+                              className={cn(
+                                "block py-2 font-mono text-[13px] font-bold uppercase tracking-[0.12em]",
+                                activePage === page.id ? "text-stamp" : "text-ink-soft"
+                              )}
+                            >
+                              {page.label}
+                            </PageLink>
+                          </li>
+                        ))}
+                    </ul>
+                  )}
                 </li>
               ))}
             </ul>
             <p className="px-6 pb-10 font-mono text-[11px] leading-relaxed text-ink-soft">
-              A free research mentorship program recorded at Ashburn &amp;
-              Brambleton Public Libraries, Loudoun County, Virginia.
+              A free research mentorship program for middle schoolers, run by
+              TJHSST students. Cohort One: Summer 2026.
             </p>
           </motion.nav>
         )}
@@ -1040,470 +1203,485 @@ function Navigation({ activePage, setActivePage }) {
 }
 
 // ─────────────────────────────────────────────
-// HOME — THE RECORD
+// PRESS — shared by the front page and the News page
 // ─────────────────────────────────────────────
 
-function HomePage({ setActivePage }) {
-  const heldCount = WORKSHOPS.filter(workshopHeld).length;
+// The lead story: a link card (VT News refuses to be framed).
+function PressStory({ item, large = false }) {
+  return (
+    <article className="group relative flex flex-col border border-paper-shade bg-paper-bright shadow-card transition-shadow hover:shadow-print-lg">
+      <div className="p-3 pb-0">
+        <img
+          src={item.image.src}
+          alt={item.image.alt}
+          loading="lazy"
+          decoding="async"
+          className="aspect-[16/9] w-full object-cover object-[50%_40%]"
+        />
+      </div>
+      <div className="flex flex-1 flex-col p-6 sm:p-8">
+        <h3
+          className={cn(
+            "font-display font-bold leading-[1.1] tracking-tight text-ink",
+            large ? "text-3xl sm:text-4xl" : "text-2xl sm:text-3xl"
+          )}
+        >
+          <a
+            href={item.url}
+            target="_blank"
+            rel="noreferrer"
+            className="after:absolute after:inset-0 after:content-['']"
+          >
+            {item.title}
+          </a>
+        </h3>
+        <p className="mt-3 font-mono text-[13px] text-ink-soft">
+          {item.outlet} · {item.dateLabel}
+        </p>
+        {item.quote && (
+          <p className="mt-5 font-display text-xl font-semibold leading-snug tracking-tight text-flame sm:text-2xl">
+            “{item.quote}”
+          </p>
+        )}
+        <p className="mt-auto inline-flex items-center gap-2 pt-6 font-semibold text-stamp transition-colors group-hover:text-ink">
+          Read it on {item.outlet.split(" · ")[0]}
+          <ExternalLink className="h-4 w-4" />
+        </p>
+      </div>
+    </article>
+  );
+}
+
+// A second story, told briefly, linking out to the original post.
+function PressBrief({ item }) {
+  return (
+    <article className="group relative flex flex-col border border-paper-shade bg-paper-bright shadow-card transition-shadow hover:shadow-print-lg">
+      <div className="p-3 pb-0">
+        <img
+          src={item.image.src}
+          alt={item.image.alt}
+          loading="lazy"
+          decoding="async"
+          className="aspect-[4/3] w-full object-cover"
+        />
+      </div>
+      <div className="flex flex-1 flex-col p-6">
+        <h3 className="font-display text-xl font-bold leading-snug tracking-tight text-ink">
+          <a
+            href={item.url}
+            target="_blank"
+            rel="noreferrer"
+            className="after:absolute after:inset-0 after:content-['']"
+          >
+            {item.outlet.split(" · ")[0]}
+          </a>
+        </h3>
+        <p className="mt-2 font-mono text-[13px] text-ink-soft">
+          {item.outlet.split(" · ")[1] || item.outlet} · {item.dateLabel}
+        </p>
+        <p className="mt-3 leading-relaxed text-ink">{item.summary}</p>
+        <p className="mt-auto inline-flex items-center gap-2 pt-5 font-semibold text-stamp transition-colors group-hover:text-ink">
+          View the post
+          <ExternalLink className="h-4 w-4" />
+        </p>
+      </div>
+    </article>
+  );
+}
+
+// ─────────────────────────────────────────────
+// HOME — THE FRONT PAGE
+// ─────────────────────────────────────────────
+
+// The flagship photo is the team's Top 10 #1; the spread carries #2–#10.
+// Where each sits in the spread (12 columns on desktop).
+const SPREAD = [
+  "col-span-2 lg:col-span-8 lg:row-span-2",
+  "lg:col-span-4",
+  "lg:col-span-4",
+  "lg:col-span-4",
+  "lg:col-span-4",
+  "lg:col-span-4 lg:row-span-2",
+  "lg:col-span-4",
+  "lg:col-span-4",
+  "lg:col-span-4",
+];
+
+function HomePage() {
+  const [viewer, setViewer] = useState(null);
+  // #1 is the flagship above; the opening on the stairs (#4) leads the spread.
+  const spread = [TOP_TEN[3], ...TOP_TEN.slice(1).filter((_, i) => i !== 2)];
+  const spreadPhotos = spread.map(toViewerPhoto);
+  const [leadStory, secondStory] = PRESS;
 
   return (
     <div>
-      {/* ── First viewport: the symposium welcome ── */}
+      {/* ── First viewport: the front page ── */}
       <section className="grain bg-flame text-paper-bright">
-        <div className="mx-auto grid max-w-7xl items-center gap-14 px-5 pt-32 pb-20 sm:px-8 lg:grid-cols-[0.98fr_1.02fr] lg:gap-12 lg:pt-36 lg:pb-24">
-          <div className="relative max-w-xl">
-            <h1 className="font-display text-[2.9rem] font-extrabold leading-[0.98] tracking-tight text-paper-bright sm:text-6xl lg:text-[4.4rem]">
-              Welcome to our Symposium&nbsp;&amp;&nbsp;Expo.
-            </h1>
-            <p className="mt-7 text-lg leading-relaxed text-paper-bright/95 sm:text-xl">
-              On <span className="font-semibold">{SYMPOSIUM.date}</span>, Cohort
-              One's summer of real research goes public — poster boards up,
-              partner booths open, guest speakers to close. {SYMPOSIUM.time} at{" "}
-              {SYMPOSIUM.address}. Families, friends, and guests welcome.
-            </p>
-            <p className="mt-4 text-base leading-relaxed text-paper-bright/85">
-              It caps Next In Research's first summer: {MENTORS.length} TJHSST
-              student mentors and their middle schoolers doing research worth
-              publishing, in our public libraries, free for every family. This
-              site is the record.
-            </p>
-            <div className="mt-9 flex flex-wrap items-center gap-4">
-              <a
-                href="#symposium"
-                className="inline-flex items-center gap-2 bg-paper-bright px-6 py-3.5 font-semibold text-flame shadow-card transition-colors hover:bg-white"
-              >
-                Symposium details
-                <ArrowDown className="h-4 w-4" />
-              </a>
-              <a
-                href="#record"
-                className="inline-flex items-center gap-2 border border-paper-bright/50 px-6 py-3.5 font-semibold text-paper-bright transition-colors hover:border-paper-bright"
-              >
-                Browse the record
-                <ArrowDown className="h-4 w-4" />
-              </a>
-            </div>
-            <div className="mt-10">
-              <Stamp color="paper" rotate={-2.5} className="whitespace-normal text-center">
-                Free · No fees · No prerequisites
-              </Stamp>
-            </div>
+        <div className="relative mx-auto max-w-7xl px-5 pt-[5.25rem] pb-16 sm:px-8 lg:pt-[5.75rem] lg:pb-20">
+          <div className="flex items-center justify-between gap-6 border-y border-paper-bright/40 py-2.5 font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-paper-bright/90">
+            <span>Cohort One · Summer 2026</span>
+            <span className="hidden md:inline">
+              Symposium &amp; Expo · Aug. 22, 2026 · Virginia Tech, Alexandria
+            </span>
+            <span className="hidden lg:inline">Free for every family</span>
           </div>
 
-          <CoverCarousel />
-        </div>
-      </section>
-
-      {/* ── The Symposium & Expo ── */}
-      <section id="symposium" className="grain scroll-mt-16 border-t-8 border-flame-deep bg-paper">
-        <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8 lg:py-28">
-          <div className="max-w-3xl">
-            <h2 className="font-display text-3xl font-bold leading-[1.04] tracking-tight text-ink sm:text-5xl">
-              {SYMPOSIUM.date}: the work goes public.
-            </h2>
-            <p className="mt-5 text-lg leading-relaxed text-ink-soft">
-              The {SYMPOSIUM.name} closes Cohort One's summer — every student
-              presenting finished research to families, friends, and guests,
-              with partner booths and a closing ceremony. Free and open, like
-              everything we do.
-            </p>
-          </div>
-
-          <div className="mt-12 grid items-start gap-8 lg:grid-cols-[1.05fr_0.95fr]">
-            <div className="red-rule relative border border-paper-shade bg-paper-bright p-7 pl-14 pb-12 shadow-print-lg sm:p-8 sm:pl-14">
-              <Stamp rotate={-2}>
-                {SYMPOSIUM.date} · {SYMPOSIUM.time}
-              </Stamp>
-              <p className="mt-4 font-mono text-[14px] font-bold text-ink">
-                {SYMPOSIUM.address}
+          <div className="mt-6 grid gap-x-8 gap-y-6 lg:mt-7 lg:grid-cols-12 lg:gap-y-7">
+            {/* Sized to the column, not the window: on desktop the banner always
+                sets in two full-width lines and the mission in one. */}
+            <header className="[container-type:inline-size] lg:col-span-12">
+              <h1 className="font-display text-[2.3rem] font-extrabold leading-[1.02] tracking-tight text-paper-bright [text-wrap:balance] sm:text-[3.1rem] lg:text-[length:5cqi] lg:leading-[0.98]">
+                {HEADLINE}
+              </h1>
+              <p className="mt-6 max-w-4xl text-lg leading-relaxed text-paper-bright/95 [text-wrap:pretty] sm:text-xl lg:max-w-none lg:text-[length:2.36cqi] lg:leading-snug">
+                <span className="font-bold text-paper-bright">Our mission:</span>{" "}
+                {MISSION}
               </p>
-              <ul className="mt-6">
-                {SYMPOSIUM.agenda.map((slot) => (
+            </header>
+
+            <figure className="order-first -mx-5 sm:mx-0 lg:order-none lg:col-span-8">
+              <div className="relative sm:bg-white sm:p-2 sm:shadow-print-lg">
+                <img
+                  src={HERO_PHOTO.src}
+                  srcSet={HERO_PHOTO.srcSet}
+                  sizes="(min-width: 1280px) 840px, (min-width: 1024px) 64vw, 100vw"
+                  alt={HERO_PHOTO.alt}
+                  width={1600}
+                  height={1067}
+                  fetchpriority="high"
+                  decoding="async"
+                  className="block aspect-[4/3] w-full object-cover object-[50%_55%] sm:aspect-[16/9]"
+                />
+                <div className="absolute left-4 top-4 sm:left-6 sm:top-6">
+                  <Stamp rotate={-4} className="bg-paper-bright/90 text-[11px] sm:text-[13px]">
+                    Held · Aug 22 2026 · Virginia Tech
+                  </Stamp>
+                </div>
+              </div>
+              <figcaption className="mt-3 px-5 font-mono text-[11px] leading-relaxed text-paper-bright/95 sm:px-0 sm:text-[12px]">
+                {HERO_PHOTO.caption} Photo: Nagaraju Kashayi for Virginia Tech.
+              </figcaption>
+            </figure>
+
+            <aside
+              aria-labelledby="by-the-numbers"
+              className="red-rule relative self-start border border-paper-shade bg-paper-bright pb-11 pl-12 pr-5 pt-5 text-ink shadow-print-lg sm:pr-6 lg:col-span-4"
+            >
+              <h2
+                id="by-the-numbers"
+                className="border-b-2 border-ink pb-2 font-mono text-[13px] font-bold uppercase tracking-[0.16em]"
+              >
+                By the numbers · Cohort One
+              </h2>
+              <ul>
+                {HEADLINE_NUMBERS.map((row) => (
                   <li
-                    key={slot.time}
-                    className="flex items-baseline gap-4 border-b border-ink/10 py-2.5"
+                    key={row.label}
+                    className="grid grid-cols-[5.75rem_1fr] items-center gap-3 border-b border-ink/10 py-2 sm:grid-cols-[6.5rem_1fr]"
                   >
-                    <span className="w-20 shrink-0 font-mono text-[13px] font-bold text-stamp">
-                      {slot.time}
+                    <span className="font-display text-[2.4rem] font-extrabold leading-none tracking-tight text-flame tabular-nums">
+                      {row.value}
                     </span>
-                    <span className="font-mono text-[13px] leading-relaxed text-ink">
-                      {slot.item}
+                    <span className="font-mono text-[13px] leading-snug text-ink">
+                      {row.label}
                     </span>
                   </li>
                 ))}
               </ul>
-              <p className="mt-5 font-mono text-[12px] leading-relaxed text-ink-soft">
-                Working with {SYMPOSIUM.workingWith.join(" · ")}
-              </p>
-              <a
-                href={SYMPOSIUM.flyerPdf}
-                target="_blank"
-                rel="noreferrer"
-                className="mt-6 inline-flex items-center gap-2 bg-flame px-6 py-3.5 font-semibold text-paper-bright transition-colors hover:bg-flame-deep"
-              >
-                Download the flyer (PDF)
-                <ExternalLink className="h-4 w-4" />
-              </a>
-              <RodHole ground="bg-paper-bright" />
-            </div>
-
-            <PhotoPrint
-              src={SYMPOSIUM.flyerImg}
-              alt="NextInResearch Symposium & Expo flyer — August 22nd, 3 to 7 PM, 3625 Potomac Ave, Alexandria, VA"
-              caption="The official flyer · share it with a friend"
-              rotate={1.6}
-              className="mx-auto w-full max-w-[420px]"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* ── Mission ── */}
-      <section className="grain border-t border-ink/10 bg-paper">
-        <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 py-20 sm:px-8 lg:grid-cols-[1.1fr_0.9fr] lg:py-28">
-          <div className="max-w-xl">
-            <h2 className="font-display text-3xl font-bold leading-[1.04] tracking-tight text-ink sm:text-5xl">
-              Real research shouldn't wait for college — or cost a dime.
-            </h2>
-            <div className="mt-6 space-y-4 text-lg leading-relaxed text-ink">
-              <p>
-                Our mentors are TJHSST students — close enough in age to be
-                believed, experienced enough to be useful. Each one works with
-                just 1–3 middle schoolers, from first question to finished,
-                shareable work: competition entries, blog posts, videos, and
-                papers aimed at journals like NHSJS, JEI, and IEEE.
-              </p>
-              <p>
-                No experience is required, and none is preferred. The goal is
-                growth, not prior knowledge — and the whole thing is free,
-                permanently, because the public library taught us what that
-                makes possible.
-              </p>
-            </div>
-            <button
-              onClick={() => setActivePage("timeline")}
-              className="mt-8 inline-flex items-center gap-2 font-semibold text-stamp transition-colors hover:text-ink"
-            >
-              How the summer ran, phase by phase
-              <ArrowRight className="h-4 w-4" />
-            </button>
-          </div>
-          <PhotoPrint
-            src={MISSION_PHOTO.src}
-            alt={MISSION_PHOTO.alt}
-            caption={MISSION_PHOTO.caption}
-            rotate={1.8}
-            className="mx-auto w-full max-w-md"
-            imgClassName="aspect-[4/3]"
-          />
-        </div>
-      </section>
-
-      {/* ── The record, workshop by workshop ── */}
-      <section id="record" className="grain scroll-mt-16 border-t border-ink/10 bg-paper">
-        <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8 lg:py-28">
-          <div className="max-w-3xl">
-            <h2 className="font-display text-3xl font-bold leading-[1.04] tracking-tight text-ink sm:text-5xl">
-              What happened, week by week
-            </h2>
-            <p className="mt-5 text-lg leading-relaxed text-ink-soft">
-              {WORKSHOP_GALLERIES.length === WORKSHOPS.length ? (
-                <>
-                  All nine workshops are stamped into the record, and every
-                  one has its photo album shelved on the Workshops page.
-                </>
-              ) : (
-                <>
-                  {["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"][heldCount]}{" "}
-                  of nine workshops are stamped into the record so far —{" "}
-                  {WORKSHOP_GALLERIES.length} photo albums are shelved on the
-                  Workshops page, and the rest are in processing.
-                </>
-              )}
-            </p>
-          </div>
-
-          <ol className="mt-14">
-            {WORKSHOPS.map((w) => {
-              const gallery = WORKSHOP_GALLERIES.find((g) => g.n === w.n);
-              const held = workshopHeld(w);
-              return (
-                <li
-                  key={w.n}
-                  className="grid gap-6 border-t border-ink/15 py-10 md:grid-cols-[220px_1fr] lg:grid-cols-[220px_1fr_auto]"
+              <div className="mt-5 grid gap-2.5">
+                <PageLink
+                  to="involved"
+                  className="inline-flex w-full items-center justify-center gap-2 bg-flame px-5 py-3.5 font-semibold text-paper-bright transition-colors hover:bg-flame-deep"
                 >
-                  <div>
-                    {held ? (
-                      <Stamp rotate={w.n % 2 ? -3 : 2}>{stampDate(w.iso)}</Stamp>
-                    ) : (
-                      <Stamp color="blue" rotate={1.5}>
-                        DUE {stampDate(w.iso)}
-                      </Stamp>
-                    )}
-                    <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.18em] text-ink-soft">
-                      Workshop {w.n} · {w.topic}
-                    </p>
-                  </div>
-
-                  <div className="max-w-xl">
-                    <h3 className="font-display text-2xl font-bold leading-tight tracking-tight text-ink">
-                      {w.title}
-                    </h3>
-                    <p className="mt-2 font-mono text-[13px] text-ink-soft">
-                      {w.loc
-                        ? `${w.loc.name} · ${w.loc.room} · ${w.time}`
-                        : "Details shared with families directly"}
-                    </p>
-                    {gallery ? (
-                      <button
-                        onClick={() => setActivePage("workshops")}
-                        className="mt-4 inline-flex items-center gap-2 font-semibold text-stamp transition-colors hover:text-ink"
-                      >
-                        View the album ({gallery.photos.length} photos)
-                        <ArrowRight className="h-4 w-4" />
-                      </button>
-                    ) : held ? (
-                      <p className="mt-4 font-mono text-[13px] text-stamp-blue">
-                        Photos in processing — album coming soon.
-                      </p>
-                    ) : (
-                      <p className="mt-4 font-mono text-[13px] text-stamp-blue">
-                        The last session before the showcase.
-                      </p>
-                    )}
-                  </div>
-
-                  {gallery && (
-                    <div className="flex items-start gap-3 md:col-span-2 lg:col-span-1 lg:w-[340px]">
-                      {gallery.homePicks.map((idx, i) => (
-                        <PhotoPrint
-                          key={idx}
-                          src={gallery.photos[idx]}
-                          alt={`Workshop ${w.n} photo ${i + 1}`}
-                          rotate={i === 1 ? 1.6 : -1.8}
-                          className={cn("w-1/3", i === 1 && "mt-4")}
-                          imgClassName="aspect-square"
-                        />
-                      ))}
-                    </div>
-                  )}
-                </li>
-              );
-            })}
-          </ol>
+                  Back Cohort Two
+                  <ArrowRight className="h-4 w-4" />
+                </PageLink>
+                <PageLink
+                  to="cohort"
+                  className="inline-flex w-full items-center justify-center gap-2 border border-ink/30 px-5 py-3 font-semibold text-ink transition-colors hover:border-ink"
+                >
+                  See Cohort One
+                </PageLink>
+              </div>
+              <RodHole ground="bg-paper-bright" />
+            </aside>
+          </div>
         </div>
       </section>
 
-      {/* ── The ledger ── */}
-      <section className="grain bg-cloth text-paper">
-        <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 py-20 sm:px-8 lg:grid-cols-2 lg:py-28">
-          <div className="max-w-md">
-            <h2 className="font-display text-3xl font-bold leading-[1.04] tracking-tight text-paper-bright sm:text-5xl">
-              The collection, counted
+      {/* ── In the news ── */}
+      <section className="grain border-t-8 border-flame-deep bg-paper">
+        <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8 lg:py-24">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <h2 className="font-display text-3xl font-bold leading-[1.04] tracking-tight text-ink sm:text-5xl">
+              In the news
             </h2>
-            <p className="mt-5 text-lg leading-relaxed text-paper/85">
-              No inflated impact math here. Every number in this ledger is
-              countable on this site — click a row and count for yourself.
-              Student totals and volunteer hours join the record once the
-              symposium closes the summer.
-            </p>
+            <PageLink
+              to="news"
+              className="inline-flex items-center gap-2 font-semibold text-stamp transition-colors hover:text-ink"
+            >
+              All coverage
+              <ArrowRight className="h-4 w-4" />
+            </PageLink>
           </div>
+          <div className="mt-10 grid items-start gap-6 lg:grid-cols-[1.4fr_0.6fr]">
+            <PressStory item={leadStory} />
+            <div className="grid gap-6">
+              <PressBrief item={secondStory} />
+              <div className="border-t-2 border-ink pt-4">
+                <h3 className="font-display text-xl font-bold tracking-tight text-ink">
+                  Press inquiries
+                </h3>
+                <p className="mt-2 leading-relaxed text-ink">
+                  Interviews, photographs, and the full Cohort One story.
+                </p>
+                <a
+                  href={directorsMailto("Press inquiry")}
+                  className="mt-3 inline-flex items-center gap-2 font-semibold text-stamp transition-colors hover:text-ink"
+                >
+                  <Mail className="h-4 w-4" />
+                  Email the program directors
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-          <div className="ruled relative border border-paper-shade bg-paper-bright px-6 pt-6 pb-10 shadow-print-lg sm:px-8">
-            <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-soft">
-              Accession ledger · Summer 2026
+      {/* ── What Cohort One did ── */}
+      <section className="grain border-t border-ink/10 bg-paper">
+        <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8 lg:py-28">
+          <h2 className="max-w-3xl font-display text-3xl font-bold leading-[1.04] tracking-tight text-ink sm:text-5xl">
+            What Cohort One did
+          </h2>
+          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-soft">
+            From a kickoff in a public library to a symposium at Virginia Tech —
+            one summer, three phases, free for every family.
+          </p>
+          <div className="relative mt-12 border border-paper-shade bg-paper-bright pb-4 shadow-print-lg">
+            <p className="border-b border-ink/15 px-6 py-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-soft sm:px-8">
+              Circulation record · Cohort One, 2026
             </p>
-            <ul className="mt-4">
-              {[
-                { label: "TJHSST student mentors", value: MENTORS.length, page: "team" },
-                { label: "Workshop photo albums shelved", value: WORKSHOP_GALLERIES.length, page: "workshops" },
-                { label: "Workshops in the series", value: WORKSHOPS.length, page: "workshops" },
-                { label: "Public library branches", value: 2, page: "schedule" },
-                { label: "Schools represented", value: SCHOOLS.length, page: null },
-                { label: "Students per mentor", value: "1–3", page: "faq" },
-                { label: "Cost to any family, ever", value: "$0", page: "faq" },
-              ].map((row) => {
-                const inner = (
-                  <>
-                    <span className="font-mono text-[15px] text-ink">{row.label}</span>
-                    <span
-                      aria-hidden="true"
-                      className="mx-2 flex-1 border-b border-dotted border-ink/35"
-                    />
-                    <span className="font-mono text-xl font-bold text-stamp">
-                      {row.value}
-                    </span>
-                  </>
-                );
-                return (
-                  <li key={row.label}>
-                    {row.page ? (
-                      <button
-                        onClick={() => setActivePage(row.page)}
-                        className="flex w-full items-baseline py-2 text-left transition-colors hover:bg-paper"
-                      >
-                        {inner}
-                      </button>
-                    ) : (
-                      <a
-                        href="#schools"
-                        className="flex w-full items-baseline py-2 text-left transition-colors hover:bg-paper"
-                      >
-                        {inner}
-                      </a>
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
-            <p className="mt-4 font-mono text-[11px] leading-relaxed text-ink-soft">
-              Entry pending: students served &amp; mentor volunteer hours —
-              stamped after the August 22 symposium.
-            </p>
+            <ol className="grid lg:grid-cols-3">
+              {COHORT_STORY.map((step, i) => (
+                <li
+                  key={step.id}
+                  className={cn(
+                    "flex flex-col px-6 pb-8 pt-7 sm:px-8",
+                    i > 0 && "border-t border-ink/15 lg:border-l lg:border-t-0"
+                  )}
+                >
+                  <h3 className="font-display text-4xl font-bold tracking-tight text-ink">
+                    {step.title}
+                  </h3>
+                  <p className="mt-1.5 font-mono text-[12px] uppercase tracking-[0.16em] text-stamp">
+                    {step.phase} · {step.when}
+                  </p>
+                  <p className="mt-4 leading-relaxed text-ink">{step.body}</p>
+                  <ul className="mt-5 border-t border-ink/15">
+                    {step.ledger.map((row) => (
+                      <li key={row.label} className="flex items-baseline border-b border-ink/10 py-2">
+                        <span className="font-mono text-[14px] text-ink">{row.label}</span>
+                        <span
+                          aria-hidden="true"
+                          className="mx-2 min-w-[1rem] flex-1 border-b border-dotted border-ink/35"
+                        />
+                        <span className="font-mono text-xl font-bold tabular-nums text-stamp">
+                          {row.value}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                  <PageLink
+                    to={step.link.page}
+                    className="mt-auto inline-flex items-center gap-2 pt-6 font-semibold text-stamp transition-colors hover:text-ink"
+                  >
+                    {step.link.label}
+                    <ArrowRight className="h-4 w-4" />
+                  </PageLink>
+                </li>
+              ))}
+            </ol>
             <RodHole ground="bg-paper-bright" />
           </div>
         </div>
       </section>
 
-      {/* ── Mentor catalog preview ── */}
-      <section className="grain border-t-8 border-cloth-deep bg-paper">
-        <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8 lg:py-28">
-          <div className="flex flex-wrap items-end justify-between gap-6">
-            <h2 className="max-w-2xl font-display text-3xl font-bold leading-[1.04] tracking-tight text-ink sm:text-5xl">
-              Twenty-nine mentors, catalogued
+      {/* ── The Top 10 ── */}
+      <section className="grain border-t border-ink/10 bg-paper">
+        <div className="mx-auto max-w-7xl px-5 py-20 sm:px-8 lg:py-28">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <h2 className="max-w-3xl font-display text-3xl font-bold leading-[1.04] tracking-tight text-ink sm:text-5xl">
+              The day in photographs
             </h2>
-            <button
-              onClick={() => setActivePage("team")}
-              className="inline-flex items-center gap-2 bg-ink px-5 py-3 font-semibold text-paper-bright transition-colors hover:bg-cloth"
+            <PageLink
+              to="cohort-symposium"
+              className="inline-flex items-center gap-2 font-semibold text-stamp transition-colors hover:text-ink"
             >
-              Open the card catalog
+              All {SYMPOSIUM_PHOTOS.length} photographs
               <ArrowRight className="h-4 w-4" />
-            </button>
+            </PageLink>
           </div>
-          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-soft">
-            Every mentor is a TJHSST student with real research behind them —
-            published papers, science fair placements, internships — filed
-            here under their own call number.
-          </p>
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {[MENTORS[0], MENTORS[16], MENTORS[11]].map((m) => (
-              <CardPocket key={m.name} label="Cohort One · Staff">
-                <CatalogCard mentor={m} compact />
-              </CardPocket>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* ── Schools ── */}
-      <section id="schools" className="grain scroll-mt-16 bg-cloth-deep text-paper">
-        <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8 lg:py-24">
-          <h2 className="max-w-3xl font-display text-3xl font-bold leading-[1.04] tracking-tight text-paper-bright sm:text-5xl">
-            Registered from sixteen schools
-          </h2>
-          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-paper/85">
-            Where Cohort One's students and mentors go to school, across two
-            counties. Listed as fact — these schools are our community, not our
-            sponsors.
-          </p>
-          <ul className="mt-10 columns-1 gap-x-10 sm:columns-2 lg:columns-3">
-            {SCHOOLS.map((school) => (
-              <li
-                key={school}
-                className="flex items-baseline gap-3 border-b border-paper/15 py-2.5 font-mono text-[14px] text-paper/90"
-              >
-                <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 rounded-full bg-flame-bright" />
-                {school}
+          <ul className="mt-10 grid grid-cols-2 gap-x-4 gap-y-6 sm:gap-x-5 lg:grid-cols-12 lg:auto-rows-[15.5rem] lg:gap-y-5">
+            {spread.map((photo, i) => (
+              <li key={photo.slug} className={SPREAD[i]}>
+                <figure className="flex h-full flex-col">
+                  <button
+                    onClick={() => setViewer(i)}
+                    className="group block min-h-0 bg-white p-1 shadow-card transition-shadow hover:shadow-print lg:flex-1"
+                  >
+                    <img
+                      src={symposiumPhotoSrc(photo.slug, i === 0 ? "full" : "thumb")}
+                      alt={photo.alt}
+                      loading="lazy"
+                      decoding="async"
+                      className="block aspect-[4/3] h-full w-full object-cover transition-opacity group-hover:opacity-90 lg:aspect-auto"
+                    />
+                  </button>
+                  <figcaption className="mt-2 font-mono text-[12px] leading-snug text-ink-soft lg:line-clamp-3">
+                    {photo.caption}
+                  </figcaption>
+                </figure>
               </li>
             ))}
-          </ul>
-          <p className="mt-8 font-mono text-[12px] tracking-[0.06em] text-paper/75">
-            Districts: {DISTRICTS.join(" · ")}
-          </p>
-        </div>
-      </section>
-
-      {/* ── On hold: what's next ── */}
-      <section className="grain bg-paper">
-        <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8 lg:py-28">
-          <h2 className="max-w-3xl font-display text-3xl font-bold leading-[1.04] tracking-tight text-ink sm:text-5xl">
-            On hold for next summer
-          </h2>
-          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-soft">
-            Cohort One is the proof, not the finish line. Three reservations
-            already on the shelf:
-          </p>
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {[
-              {
-                hold: "HOLD FOR: SUMMER 2027",
-                title: "The next cohort",
-                body: "Next In Research returns next summer. Applications open in spring 2027 — email us and you'll hear the moment they do.",
-                rotate: -1.2,
-              },
-              {
-                hold: "HOLD FOR: AUGUST 22",
-                title: "The student collection",
-                body: "After the Symposium & Expo on August 22, Cohort One's posters, papers, and projects get catalogued right here — the shelf this whole site was built for.",
-                rotate: 1.4,
-              },
-              {
-                hold: "HOLD FOR: MORE BRANCHES",
-                title: "A bigger map",
-                body: "More districts, more libraries, more mentors across more specialties — the same free, near-peer model, carried further.",
-                rotate: -0.8,
-              },
-            ].map((slip) => (
-              <div
-                key={slip.title}
-                style={{ "--tilt": `${slip.rotate}deg` }}
-                className="relative rotate-[var(--tilt)] border border-paper-shade bg-paper-bright p-6 pb-12 shadow-card transition-transform duration-300 hover:rotate-0"
+            <li className="col-span-2 lg:col-span-8">
+              <PageLink
+                to="cohort-symposium"
+                className="group flex h-full min-h-[10rem] flex-col justify-between border border-ink/20 bg-paper-bright p-5 shadow-card transition-shadow hover:shadow-print"
               >
-                <p className="font-mono text-[11px] font-bold tracking-[0.2em] text-stamp-blue">
-                  {slip.hold}
-                </p>
-                <h3 className="mt-3 font-display text-2xl font-bold tracking-tight text-ink">
-                  {slip.title}
-                </h3>
-                <p className="mt-3 leading-relaxed text-ink">{slip.body}</p>
-                <RodHole ground="bg-paper-bright" />
-              </div>
-            ))}
+                <span>
+                  <span className="block font-display text-2xl font-bold leading-tight tracking-tight text-ink sm:text-3xl">
+                    {SYMPOSIUM_PHOTOS.length} photographs from the day
+                  </span>
+                  <span className="mt-3 hidden font-mono text-[12px] leading-relaxed text-ink-soft sm:block">
+                    {GALLERY_CATEGORIES.map((c) => c.label).join(" · ")}
+                  </span>
+                </span>
+                <span className="mt-4 inline-flex items-center gap-2 font-semibold text-stamp transition-colors group-hover:text-ink">
+                  Open the gallery
+                  <ArrowRight className="h-4 w-4" />
+                </span>
+              </PageLink>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      {/* ── The vision ── */}
+      <section className="grain bg-cloth text-paper">
+        <div className="mx-auto grid max-w-6xl gap-14 px-5 py-20 sm:px-8 lg:grid-cols-[1.3fr_0.7fr] lg:gap-16 lg:py-28">
+          <div>
+            <h2 className="font-display text-[2rem] font-semibold leading-[1.1] tracking-tight text-paper-bright [text-wrap:balance] sm:text-[2.6rem] lg:text-[3rem]">
+              <span className="font-extrabold">Our vision:</span> {VISION}
+            </h2>
+            <p className="mt-8 max-w-xl text-lg leading-relaxed text-paper/85">
+              Next comes Cohort Two — more students, more schools, the same free
+              model. The founders are also writing up how it works with Virginia
+              Tech's Dr. Jim Egenrieder, so other communities can run it too.
+            </p>
+            <div className="mt-10 grid gap-8 border-t border-paper/20 pt-8 md:grid-cols-2">
+              {FOUNDER_QUOTES.map((q) => (
+                <figure key={q.name}>
+                  <blockquote className="leading-relaxed text-paper-bright">
+                    “{q.quote}”
+                  </blockquote>
+                  <figcaption className="mt-3 font-mono text-[12px] tracking-[0.06em] text-paper/75">
+                    {q.name}, cofounder · as told to Virginia Tech News
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h3 className="font-display text-xl font-bold tracking-tight text-paper-bright">
+              With thanks
+            </h3>
+            <ul className="mt-4 border-t border-paper/20">
+              {THANKS.map((t) => (
+                <li key={t.name} className="border-b border-paper/20 py-3.5">
+                  <p className="font-semibold leading-snug text-paper-bright">{t.name}</p>
+                  <p className="mt-1 font-mono text-[12px] leading-snug text-paper/75">
+                    {t.note}
+                  </p>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>
 
-      {/* ── Close ── */}
+      {/* ── Close: the one ask ── */}
       <section className="grain bg-flame text-paper-bright">
-        <div className="mx-auto max-w-4xl px-5 py-24 text-center sm:px-8 lg:py-32">
-          <Stamp color="paper" rotate={-2}>
-            The record stays open
-          </Stamp>
-          <h2 className="mt-8 font-display text-4xl font-bold leading-[1.02] tracking-tight text-paper-bright sm:text-6xl">
-            Want the next chapter to include you?
+        <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8 lg:py-28">
+          <h2 className="font-display text-5xl font-extrabold leading-[0.98] tracking-tight sm:text-7xl">
+            Back Cohort Two.
           </h2>
-          <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-paper-bright/90">
-            Families: email the coordinators and we'll keep you posted on
-            Summer 2027. TJ students: the mentor desk is hiring.
-          </p>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            <a
-              href={`mailto:${FOUNDERS[0].email},${FOUNDERS[1].email}`}
-              className="inline-flex items-center gap-2 bg-paper-bright px-6 py-3.5 font-semibold text-flame shadow-card transition-colors hover:bg-white"
+          <div className="mt-8 grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
+            <div>
+              <p className="max-w-lg text-lg leading-relaxed text-paper-bright/95 sm:text-xl">
+                Cohort One proved the model. Summer 2027 grows it — more
+                students, more districts, and still free for every family.
+                Here's how to help it happen.
+              </p>
+              <div className="mt-8 flex flex-wrap items-center gap-4">
+                <a
+                  href={directorsMailto("Supporting Cohort Two")}
+                  className="inline-flex w-full items-center justify-center gap-2 bg-paper-bright px-6 py-3.5 font-semibold text-flame shadow-card transition-colors hover:bg-white sm:w-auto"
+                >
+                  <Mail className="h-4 w-4" />
+                  Email the program directors
+                </a>
+                <PageLink
+                  to="involved"
+                  className="inline-flex w-full items-center justify-center gap-2 border border-paper-bright/50 px-6 py-3.5 font-semibold text-paper-bright transition-colors hover:border-paper-bright sm:w-auto"
+                >
+                  More ways to help
+                  <ArrowRight className="h-4 w-4" />
+                </PageLink>
+              </div>
+              <p className="mt-8 max-w-lg text-[15px] leading-relaxed text-paper-bright/95">
+                Families: applications for Summer 2027 open in the spring. Email
+                us and you'll hear the moment they do.
+              </p>
+            </div>
+
+            <div
+              style={{ "--tilt": "-1deg" }}
+              className="relative rotate-[var(--tilt)] border border-paper-shade bg-paper-bright p-6 pb-12 text-ink shadow-print-lg transition-transform duration-300 hover:rotate-0 sm:p-8 sm:pb-12"
             >
-              <Mail className="h-4 w-4" />
-              Email the coordinators
-            </a>
-            <button
-              onClick={() => setActivePage("involved")}
-              className="inline-flex items-center gap-2 border border-paper-bright/50 px-6 py-3.5 font-semibold text-paper-bright transition-colors hover:border-paper-bright"
-            >
-              Become a mentor
-              <ArrowRight className="h-4 w-4" />
-            </button>
+              <p className="font-mono text-[11px] font-bold tracking-[0.2em] text-stamp-blue">
+                HOLD FOR: COHORT TWO · SUMMER 2027
+              </p>
+              <ul className="mt-4 border-t border-ink/15">
+                {WAYS_TO_HELP.map((way) => (
+                  <li
+                    key={way.title}
+                    className="grid gap-1 border-b border-ink/10 py-3.5 sm:grid-cols-[8.5rem_1fr] sm:gap-4"
+                  >
+                    <span className="font-display text-lg font-bold tracking-tight">{way.title}</span>
+                    <span className="leading-relaxed text-ink">{way.body}</span>
+                  </li>
+                ))}
+              </ul>
+              <RodHole ground="bg-paper-bright" />
+            </div>
           </div>
         </div>
       </section>
+
+      <AnimatePresence>
+        {viewer !== null && (
+          <Lightbox
+            photos={spreadPhotos}
+            index={viewer}
+            onIndex={setViewer}
+            onClose={() => setViewer(null)}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -1515,9 +1693,10 @@ function HomePage({ setActivePage }) {
 function TimelinePage() {
   return (
     <PageShell>
+      <CohortSubnav active="cohort-summer" />
       <PageTitle
         title="How the summer ran"
-        lead="Three phases carried Cohort One from first brainstorm to publishable work — planning in spring, building through the library workshop series, publishing in August."
+        lead="Three phases carried Cohort One from first brainstorm to finished research — planning in spring, building through the library workshop series, publishing in August."
       />
 
       <div className="mb-14 flex flex-wrap items-start gap-5">
@@ -1578,20 +1757,35 @@ function TimelinePage() {
 
       <div className="mt-16 border-t-2 border-ink/20 pt-10">
         <h2 className="max-w-2xl font-display text-3xl font-bold leading-[1.05] tracking-tight text-ink sm:text-4xl">
-          And after August?
+          And then, August 22
         </h2>
         <div className="mt-5 max-w-2xl space-y-4 text-lg leading-relaxed text-ink">
           <p>
-            The Symposium & Expo on August 22 closes the summer, and the work
-            goes public: student posters, papers, and projects join this site's
-            collection right after. Then the model grows — Summer 2027, more districts, more
-            libraries, a larger mentor staff.
+            The summer closed in public: 60 students presented their research
+            at Virginia Tech's Institute for Advanced Computing to more than
+            250 people. Along the way, 11 student papers were reviewed by a
+            Virginia Tech scientist and two projects were submitted to the IEEE
+            MIT Undergraduate Research Technology Conference.
           </p>
           <p>
-            Every student leaves with something real to point at — a
-            publication, a competition entry, a live project — and a bench of
-            mentors who believe in their potential.
+            Next comes Cohort Two in Summer 2027 — more students, more
+            districts, the same free model.
           </p>
+        </div>
+        <div className="mt-8 flex flex-wrap gap-4">
+          <PageLink
+            to="cohort-symposium"
+            className="inline-flex items-center gap-2 bg-flame px-5 py-3 font-semibold text-paper-bright transition-colors hover:bg-flame-deep"
+          >
+            See the symposium
+            <ArrowRight className="h-4 w-4" />
+          </PageLink>
+          <PageLink
+            to="involved"
+            className="inline-flex items-center gap-2 border border-ink/30 px-5 py-3 font-semibold text-ink transition-colors hover:border-ink"
+          >
+            Back Cohort Two
+          </PageLink>
         </div>
       </div>
     </PageShell>
@@ -1602,15 +1796,12 @@ function TimelinePage() {
 // TEAM — THE CARD CATALOG
 // ─────────────────────────────────────────────
 
-function CatalogCard({ mentor, compact = false }) {
+function CatalogCard({ mentor }) {
   const [open, setOpen] = useState(false);
 
   return (
     <article
-      className={cn(
-        "relative flex flex-col border border-paper-shade bg-paper-bright shadow-card",
-        compact ? "pb-24" : "pb-9"
-      )}
+      className="relative flex flex-col border border-paper-shade bg-paper-bright pb-9 shadow-card"
     >
       {/* The portrait leads — a full-width print mounted at the top of the card. */}
       <div className="p-3 pb-0">
@@ -1634,42 +1825,36 @@ function CatalogCard({ mentor, compact = false }) {
         <p className="mt-1 font-mono text-[13px] leading-snug text-ink-soft">
           {mentor.focus}
         </p>
-        {!compact && (
-          <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.16em] text-stamp-blue">
-            {mentor.grade} · TJHSST
-          </p>
-        )}
+        <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.16em] text-stamp-blue">
+          {mentor.grade} · TJHSST
+        </p>
       </div>
 
-      {!compact && (
-        <>
-          <button
-            onClick={() => setOpen(!open)}
-            aria-expanded={open}
-            className="mx-4 ml-12 mt-3 flex items-center justify-between border-t border-ink/15 py-2.5 text-left font-mono text-[12px] font-bold uppercase tracking-[0.16em] text-ink transition-colors hover:text-stamp"
+      <button
+        onClick={() => setOpen(!open)}
+        aria-expanded={open}
+        className="mx-4 ml-12 mt-3 flex items-center justify-between border-t border-ink/15 py-2.5 text-left font-mono text-[12px] font-bold uppercase tracking-[0.16em] text-ink transition-colors hover:text-stamp"
+      >
+        {open ? "Close card" : "Read card"}
+        <ChevronDown
+          className={cn("h-4 w-4 transition-transform duration-200", open && "rotate-180")}
+        />
+      </button>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.24 }}
+            className="overflow-hidden"
           >
-            {open ? "Close card" : "Read card"}
-            <ChevronDown
-              className={cn("h-4 w-4 transition-transform duration-200", open && "rotate-180")}
-            />
-          </button>
-          <AnimatePresence initial={false}>
-            {open && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.24 }}
-                className="overflow-hidden"
-              >
-                <p className="px-4 pb-4 pl-12 font-mono text-[13px] leading-relaxed text-ink">
-                  {mentor.bio}
-                </p>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </>
-      )}
+            <p className="px-4 pb-4 pl-12 font-mono text-[13px] leading-relaxed text-ink">
+              {mentor.bio}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <RodHole ground="bg-paper-bright" />
     </article>
   );
@@ -1688,7 +1873,7 @@ function TeamPage() {
     <PageShell>
       <PageTitle
         title="The card catalog"
-        lead="Two coordinators built the program; twenty-nine TJHSST mentors run it. Every card below is a real person who gave their summer to a middle schooler's first research project."
+        lead="Two program directors built Next In Research; twenty-nine TJHSST mentors ran Cohort One with them. Every card below is a real person who gave their summer to a middle schooler's first research project."
       />
 
       {/* Coordinators */}
@@ -1762,27 +1947,6 @@ function TeamPage() {
           <CatalogCard key={m.name} mentor={m} />
         ))}
       </div>
-
-      {/* Achievement wall */}
-      <div className="mt-24">
-        <h2 className="max-w-2xl font-display text-3xl font-bold leading-[1.05] tracking-tight text-ink sm:text-4xl">
-          What the staff has done
-        </h2>
-        <p className="mt-4 max-w-2xl text-lg leading-relaxed text-ink-soft">
-          Science fair medals, published papers, competition podiums — the
-          mentors' own research records, pinned up as prints.
-        </p>
-        <div className="mt-10 columns-2 gap-4 md:columns-3 lg:columns-4 [&>figure]:mb-4 [&>figure]:break-inside-avoid">
-          {MISC_PHOTOS.map((photo, i) => (
-            <PhotoPrint
-              key={photo.src}
-              src={photo.src}
-              alt={photo.alt}
-              rotate={i % 3 === 0 ? -1.5 : i % 3 === 1 ? 1.2 : -0.6}
-            />
-          ))}
-        </div>
-      </div>
     </PageShell>
   );
 }
@@ -1791,21 +1955,13 @@ function TeamPage() {
 // SCHEDULE — THE CIRCULATION CARD
 // ─────────────────────────────────────────────
 
-function SchedulePage({ setActivePage }) {
-  const goToSymposium = (e) => {
-    e.preventDefault();
-    setActivePage("home");
-    // Let the home page paint, then bring the symposium section into view.
-    setTimeout(() => {
-      document.getElementById("symposium")?.scrollIntoView({ behavior: "smooth" });
-    }, 60);
-  };
-
+function SchedulePage() {
   return (
     <PageShell>
+      <CohortSubnav active="cohort-schedule" />
       <PageTitle
-        title="The circulation schedule"
-        lead="Nine free workshops carry the series from the fundamentals of research to presenting finished work — every one hosted at a Loudoun County public library, in Ashburn or Brambleton."
+        title="The 2026 schedule"
+        lead="Nine free workshops carried Cohort One from the fundamentals of research to presenting finished work — every one hosted at a Loudoun County public library, in Ashburn or Brambleton."
       />
 
       {/* Desktop table */}
@@ -1915,30 +2071,28 @@ function SchedulePage({ setActivePage }) {
         {BRAMBLETON.address}
       </p>
 
-      {/* Mentor volunteer slots */}
       {/* The finale */}
       <div className="relative mt-16 border border-paper-shade bg-paper-bright p-7 pb-12 shadow-print-lg sm:p-9">
         <div className="flex flex-wrap items-start justify-between gap-6">
           <div className="max-w-xl">
             <h2 className="font-display text-3xl font-bold leading-[1.05] tracking-tight text-ink sm:text-4xl">
-              Then the series ends where research should: in public.
+              Then the series ended where research should: in public.
             </h2>
             <p className="mt-4 leading-relaxed text-ink">
-              The {SYMPOSIUM.name} — {SYMPOSIUM.date}, {SYMPOSIUM.time} at{" "}
-              {SYMPOSIUM.address}. Students present their finished work;
-              families, friends, and guests are welcome from 3:30 PM.
+              The {SYMPOSIUM_DAY.name} — {SYMPOSIUM_DAY.dateLabel}, hosted by the{" "}
+              {SYMPOSIUM_DAY.host} in Alexandria. Sixty students presented their
+              finished research to more than 250 people.
             </p>
             <div className="mt-6 flex flex-wrap gap-4">
-              <a
-                href="/#symposium"
-                onClick={goToSymposium}
+              <PageLink
+                to="cohort-symposium"
                 className="inline-flex items-center gap-2 bg-flame px-5 py-3 font-semibold text-paper-bright transition-colors hover:bg-flame-deep"
               >
-                Full agenda
+                See the symposium
                 <ArrowRight className="h-4 w-4" />
-              </a>
+              </PageLink>
               <a
-                href={SYMPOSIUM.flyerPdf}
+                href={SYMPOSIUM_DAY.flyerPdf}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-2 border border-ink/30 px-5 py-3 font-semibold text-ink transition-colors hover:border-ink"
@@ -1948,54 +2102,9 @@ function SchedulePage({ setActivePage }) {
               </a>
             </div>
           </div>
-          <Stamp rotate={2}>{SYMPOSIUM.date} · 3–7 PM</Stamp>
+          <Stamp rotate={2}>Held · Aug 22 2026</Stamp>
         </div>
         <RodHole ground="bg-paper-bright" />
-      </div>
-
-      <div className="mt-10 grid items-start gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-        <div className="red-rule relative border border-paper-shade bg-paper-bright p-7 pl-14 pb-10 shadow-card">
-          <h2 className="font-display text-2xl font-bold tracking-tight text-ink">
-            Staff sign-up
-          </h2>
-          <p className="mt-3 leading-relaxed text-ink">
-            Mentors claim workshop shifts through SignUpGenius — every session
-            is staffed by TJHSST mentors plus a supervising adult.
-          </p>
-          <a
-            href={VOLUNTEER_SIGNUP_URL}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-5 inline-flex items-center gap-2 bg-ink px-5 py-3 font-semibold text-paper-bright transition-colors hover:bg-cloth"
-          >
-            Open the volunteer sheet
-            <ExternalLink className="h-4 w-4" />
-          </a>
-          <RodHole ground="bg-paper-bright" />
-        </div>
-
-        <div className="border border-paper-shade bg-paper-bright p-4 shadow-card">
-          <div className="flex items-center justify-between gap-4 px-2 pb-3 pt-1">
-            <h2 className="font-display text-2xl font-bold tracking-tight text-ink">
-              The program calendar
-            </h2>
-            <a
-              href={CALENDAR_PUBLIC_URL}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 font-mono text-[12px] font-bold uppercase tracking-[0.14em] text-stamp transition-colors hover:text-ink"
-            >
-              Add to yours
-              <ExternalLink className="h-4 w-4" />
-            </a>
-          </div>
-          <iframe
-            title="Next In Research program calendar"
-            src={`https://calendar.google.com/calendar/embed?src=${CALENDAR_EMBED_SRC}&ctz=America%2FNew_York&mode=AGENDA&showTitle=0&showPrint=0&showCalendars=0`}
-            className="h-[420px] w-full border border-paper-shade bg-white"
-            loading="lazy"
-          />
-        </div>
       </div>
     </PageShell>
   );
@@ -2058,6 +2167,7 @@ function WorkshopAlbum({ photos, title }) {
 function WorkshopsPage() {
   return (
     <PageShell>
+      <CohortSubnav active="cohort-workshops" />
       <PageTitle
         title="The albums"
         lead="Each workshop's photo album sits beside the slides and handouts the students actually used — all nine sessions, June 17 through August 13."
@@ -2167,106 +2277,525 @@ function WorkshopsPage() {
 }
 
 // ─────────────────────────────────────────────
-// STUDENTS — THE STUDENT COLLECTION
+// COHORT ONE — THE ARCHIVE
 // ─────────────────────────────────────────────
 
-function StudentsPage() {
+function CohortOverviewPage() {
+  const ledger = [
+    { label: "Middle schoolers, grades 6–8", value: "99" },
+    { label: "Applications", value: "105" },
+    { label: "TJHSST student mentors", value: MENTORS.length, page: "team" },
+    { label: "Schools represented", value: "21" },
+    { label: "Free workshops", value: WORKSHOPS.length, page: "cohort-workshops" },
+    { label: "Workshop photo albums", value: WORKSHOP_GALLERIES.length, page: "cohort-workshops" },
+    { label: "Papers reviewed by a Virginia Tech scientist", value: "11", page: "cohort-projects" },
+    { label: "Projects submitted to IEEE MIT URTC", value: "2", page: "cohort-projects" },
+    { label: "Students presenting at Virginia Tech", value: "60", page: "cohort-symposium" },
+    { label: "People at the symposium", value: "250+", page: "cohort-symposium" },
+    { label: "Symposium photographs", value: SYMPOSIUM_PHOTOS.length, page: "cohort-symposium" },
+    { label: "Cost to any family", value: "$0", page: "faq" },
+  ];
+  const shelves = [
+    {
+      id: "cohort-symposium",
+      body: `August 22 at Virginia Tech — the order of the day and all ${SYMPOSIUM_PHOTOS.length} photographs.`,
+      img: symposiumPhotoSrc("img_0589", "thumb"),
+    },
+    {
+      id: "cohort-projects",
+      body: "What Cohort One researched, by field — from diabetic neuropathy to a low-cost bionic arm.",
+      img: symposiumPhotoSrc("img_0496", "thumb"),
+    },
+    {
+      id: "cohort-workshops",
+      body: "Nine photo albums, with the slides and handouts students actually used.",
+      img: WORKSHOP_GALLERIES[0].photos[0],
+    },
+    {
+      id: "cohort-schedule",
+      body: "Every session's date, time, and library, June 17 through August 13.",
+      img: WORKSHOP_GALLERIES[3].photos[0],
+    },
+    {
+      id: "cohort-summer",
+      body: "Plan, build, publish — how the three phases ran.",
+      img: TIMELINE_PHOTOS[0].src,
+    },
+  ];
+
+  return (
+    <PageShell>
+      <CohortSubnav active="cohort" />
+      <PageTitle
+        title="Cohort One, Summer 2026"
+        lead="The first cohort of Next In Research, kept in one place: 99 middle schoolers, 29 TJHSST mentors, nine free workshops in public libraries, and a symposium at Virginia Tech."
+      />
+
+      <div className="grid items-start gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:gap-12">
+        <div className="ruled relative border border-paper-shade bg-paper-bright px-6 pt-6 pb-10 shadow-print-lg sm:px-8">
+          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-soft">
+            Accession ledger · Cohort One
+          </p>
+          <ul className="mt-4">
+            {ledger.map((row) => {
+              const inner = (
+                <>
+                  <span className="font-mono text-[14px] leading-snug text-ink sm:text-[15px]">
+                    {row.label}
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    className="mx-2 min-w-[1rem] flex-1 border-b border-dotted border-ink/35"
+                  />
+                  <span className="font-mono text-xl font-bold tabular-nums text-stamp">
+                    {row.value}
+                  </span>
+                </>
+              );
+              return (
+                <li key={row.label}>
+                  {row.page ? (
+                    <PageLink
+                      to={row.page}
+                      className="flex w-full items-baseline py-2 transition-colors hover:bg-paper"
+                    >
+                      {inner}
+                    </PageLink>
+                  ) : (
+                    <div className="flex w-full items-baseline py-2">{inner}</div>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+          <p className="mt-4 font-mono text-[11px] leading-relaxed text-ink-soft">
+            Sources: Virginia Tech News (Sept. 11, 2026) and the program's own
+            records.
+          </p>
+          <RodHole ground="bg-paper-bright" />
+        </div>
+
+        <ul className="border-t border-ink/15">
+          {shelves.map((shelf) => {
+            const page = COHORT_PAGES.find((p) => p.id === shelf.id);
+            return (
+              <li key={shelf.id} className="border-b border-ink/15">
+                <PageLink
+                  to={shelf.id}
+                  className="group grid grid-cols-[6.5rem_1fr] items-center gap-5 py-5 sm:grid-cols-[8.5rem_1fr_auto]"
+                >
+                  <span className="block bg-white p-1 shadow-card">
+                    <img
+                      src={shelf.img}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                      className="aspect-[4/3] w-full object-cover"
+                    />
+                  </span>
+                  <span>
+                    <span className="block font-display text-2xl font-bold tracking-tight text-ink transition-colors group-hover:text-stamp">
+                      {page.label}
+                    </span>
+                    <span className="mt-1 block leading-relaxed text-ink-soft">
+                      {shelf.body}
+                    </span>
+                  </span>
+                  <ArrowRight className="hidden h-5 w-5 text-stamp sm:block" />
+                </PageLink>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+
+      <div className="mt-20 border-t-2 border-ink/20 pt-10">
+        <h2 className="max-w-2xl font-display text-3xl font-bold leading-[1.05] tracking-tight text-ink sm:text-4xl">
+          Where Cohort One came from
+        </h2>
+        <p className="mt-4 max-w-2xl text-lg leading-relaxed text-ink-soft">
+          Students came from 21 schools across Northern Virginia and beyond —
+          among them:
+        </p>
+        <ul className="mt-8 columns-1 gap-x-10 sm:columns-2 lg:columns-3">
+          {SCHOOLS.map((school) => (
+            <li
+              key={school}
+              className="flex items-baseline gap-3 border-b border-ink/10 py-2.5 font-mono text-[14px] text-ink"
+            >
+              <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 rounded-full bg-stamp" />
+              {school}
+            </li>
+          ))}
+        </ul>
+        <p className="mt-6 font-mono text-[12px] text-ink-soft">
+          Listed as fact — these schools are our community, not our sponsors.
+        </p>
+      </div>
+    </PageShell>
+  );
+}
+
+function SymposiumPage() {
+  const [filter, setFilter] = useState("all");
+  const [viewer, setViewer] = useState(null);
+  const shown =
+    filter === "all" ? SYMPOSIUM_PHOTOS : SYMPOSIUM_PHOTOS.filter((p) => p.cat === filter);
+  const filters = [
+    { id: "all", label: "All", count: SYMPOSIUM_PHOTOS.length },
+    ...GALLERY_CATEGORIES.map((c) => ({
+      ...c,
+      count: SYMPOSIUM_PHOTOS.filter((p) => p.cat === c.id).length,
+    })),
+  ];
+
+  return (
+    <PageShell>
+      <CohortSubnav active="cohort-symposium" />
+      <PageTitle
+        title="The Symposium & Expo"
+        lead={`${SYMPOSIUM_DAY.dateLabel}, hosted by the ${SYMPOSIUM_DAY.host} in the ${SYMPOSIUM_DAY.venue}, Alexandria. Sixty middle schoolers presented their research to more than 250 people.`}
+      />
+
+      <div className="grid items-start gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="red-rule relative border border-paper-shade bg-paper-bright p-7 pl-14 pb-12 shadow-print-lg sm:p-8 sm:pl-14">
+          <Stamp rotate={-2}>Held · Aug 22 2026</Stamp>
+          <p className="mt-4 font-mono text-[14px] font-bold leading-relaxed text-ink">
+            {SYMPOSIUM_DAY.venue} · {SYMPOSIUM_DAY.address}
+          </p>
+          <h2 className="mt-7 font-display text-2xl font-bold tracking-tight text-ink">
+            The order of the day
+          </h2>
+          <ol className="mt-3">
+            {SYMPOSIUM_DAY.order.map((item, i) => (
+              <li
+                key={item}
+                className="flex items-baseline gap-4 border-b border-ink/10 py-2.5"
+              >
+                <span className="w-7 shrink-0 font-mono text-[13px] font-bold text-stamp">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="font-mono text-[13px] leading-relaxed text-ink">{item}</span>
+              </li>
+            ))}
+          </ol>
+          <a
+            href={SYMPOSIUM_DAY.flyerPdf}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-6 inline-flex items-center gap-2 font-mono text-[12px] font-bold uppercase tracking-[0.14em] text-stamp transition-colors hover:text-ink"
+          >
+            The original flyer (PDF)
+            <ExternalLink className="h-4 w-4" />
+          </a>
+          <RodHole ground="bg-paper-bright" />
+        </div>
+
+        <PhotoPrint
+          src={symposiumPhotoSrc("img_0474", "full")}
+          alt="The TJHSST mentor team on the staircase with Dr. Jim Egenrieder of Virginia Tech"
+          caption="Dr. Jim Egenrieder of Virginia Tech opens the symposium, with the TJHSST mentor team on the stairs."
+          rotate={1.4}
+          className="mx-auto w-full max-w-[520px]"
+          imgClassName="aspect-[4/3]"
+        />
+      </div>
+
+      <section className="mt-20" aria-labelledby="photographs">
+        <div className="flex flex-wrap items-end justify-between gap-6">
+          <h2
+            id="photographs"
+            className="font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl"
+          >
+            The photographs
+          </h2>
+          <div role="group" aria-label="Filter the photographs" className="flex flex-wrap gap-2">
+            {filters.map((f) => (
+              <button
+                key={f.id}
+                onClick={() => setFilter(f.id)}
+                aria-pressed={filter === f.id}
+                className={cn(
+                  "border px-4 py-2 font-mono text-[12px] font-bold uppercase tracking-[0.12em] transition-colors",
+                  filter === f.id
+                    ? "border-ink bg-ink text-paper-bright"
+                    : "border-ink/30 text-ink hover:border-ink"
+                )}
+              >
+                {f.label} <span className="font-normal tabular-nums">{f.count}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+        <p className="mt-4 max-w-3xl font-mono text-[12px] leading-relaxed text-ink-soft">
+          {PHOTO_CREDIT}, with additional photos by the Next In Research team.
+          Students are not named on this site.
+        </p>
+        <ul className="mt-8 columns-2 gap-4 sm:columns-3 lg:columns-4 [&>li]:mb-4 [&>li]:break-inside-avoid">
+          {shown.map((photo, i) => (
+            <li key={photo.slug}>
+              <GalleryThumb photo={photo} onOpen={() => setViewer(i)} />
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <AnimatePresence>
+        {viewer !== null && (
+          <Lightbox
+            photos={shown.map(toViewerPhoto)}
+            index={viewer}
+            onIndex={setViewer}
+            onClose={() => setViewer(null)}
+          />
+        )}
+      </AnimatePresence>
+    </PageShell>
+  );
+}
+
+function ProjectsPage() {
+  const [viewer, setViewer] = useState(null);
+  const posters = SYMPOSIUM_PHOTOS.filter((p) => p.cat === "expo").slice(0, 12);
+  const results = [
+    { label: "Students presenting at Virginia Tech", value: "60" },
+    { label: "Papers reviewed by Dr. Andreea Sistrunk, Virginia Tech", value: "11" },
+    { label: "Projects submitted to IEEE MIT URTC", value: "2" },
+  ];
+
+  return (
+    <PageShell>
+      <CohortSubnav active="cohort-projects" />
+      <PageTitle
+        title="What Cohort One researched"
+        lead="Most of Cohort One had never done research before. By August, they were presenting it. Here's a sample of their questions, by field — students aren't named on this site; the work speaks for them."
+      />
+
+      <div className="ruled relative max-w-3xl border border-paper-shade bg-paper-bright px-6 pt-6 pb-10 shadow-print-lg sm:px-8">
+        <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-soft">
+          Results ledger · Cohort One
+        </p>
+        <ul className="mt-4">
+          {results.map((row) => (
+            <li key={row.label} className="flex items-baseline py-2">
+              <span className="font-mono text-[14px] leading-snug text-ink sm:text-[15px]">
+                {row.label}
+              </span>
+              <span
+                aria-hidden="true"
+                className="mx-2 min-w-[1rem] flex-1 border-b border-dotted border-ink/35"
+              />
+              <span className="font-mono text-xl font-bold tabular-nums text-stamp">
+                {row.value}
+              </span>
+            </li>
+          ))}
+        </ul>
+        <RodHole ground="bg-paper-bright" />
+      </div>
+
+      <div className="mt-14 grid gap-6 md:grid-cols-2">
+        {RESEARCH_FIELDS.map((field) => (
+          <section
+            key={field.field}
+            className="red-rule relative border border-paper-shade bg-paper-bright p-7 pl-14 pb-12 shadow-card"
+          >
+            <h2 className="font-display text-2xl font-bold tracking-tight text-ink">
+              {field.field}
+            </h2>
+            <ul className="mt-4 space-y-2.5">
+              {field.topics.map((topic) => (
+                <li key={topic} className="flex items-start gap-3 leading-relaxed text-ink">
+                  <span
+                    aria-hidden="true"
+                    className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-stamp"
+                  />
+                  {topic}
+                </li>
+              ))}
+            </ul>
+            <RodHole ground="bg-paper-bright" />
+          </section>
+        ))}
+      </div>
+      <p className="mt-6 max-w-3xl font-mono text-[12px] leading-relaxed text-ink-soft">
+        A sample drawn from the symposium posters and program records, not the
+        full list. As students publish papers and enter competitions, their
+        work will be linked here.
+      </p>
+
+      <section className="mt-20" aria-labelledby="at-the-posters">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <h2
+            id="at-the-posters"
+            className="font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl"
+          >
+            At the posters
+          </h2>
+          <PageLink
+            to="cohort-symposium"
+            className="inline-flex items-center gap-2 font-semibold text-stamp transition-colors hover:text-ink"
+          >
+            All {SYMPOSIUM_PHOTOS.length} photographs
+            <ArrowRight className="h-4 w-4" />
+          </PageLink>
+        </div>
+        <ul className="mt-8 columns-2 gap-4 sm:columns-3 lg:columns-4 [&>li]:mb-4 [&>li]:break-inside-avoid">
+          {posters.map((photo, i) => (
+            <li key={photo.slug}>
+              <GalleryThumb photo={photo} onOpen={() => setViewer(i)} />
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <AnimatePresence>
+        {viewer !== null && (
+          <Lightbox
+            photos={posters.map(toViewerPhoto)}
+            index={viewer}
+            onIndex={setViewer}
+            onClose={() => setViewer(null)}
+          />
+        )}
+      </AnimatePresence>
+    </PageShell>
+  );
+}
+
+// ─────────────────────────────────────────────
+// NEWS — IN THE NEWS
+// ─────────────────────────────────────────────
+
+function NewsPage() {
+  const [vtNews, linkedIn] = PRESS;
+
   return (
     <PageShell>
       <PageTitle
-        title="The student collection"
-        lead="The shelf this site was built for — and the one honest gap in it, for a few more weeks."
+        title="In the news"
+        lead="Coverage of Next In Research and the Cohort One Symposium & Expo at Virginia Tech."
       />
 
-      <div className="red-rule relative max-w-3xl border border-paper-shade bg-paper-bright p-8 pl-14 pb-14 shadow-print-lg sm:p-10 sm:pl-16">
-        <Stamp color="blue" rotate={-2}>
-          In processing
-        </Stamp>
-        <h2 className="mt-6 font-display text-3xl font-bold leading-[1.05] tracking-tight text-ink sm:text-4xl">
-          Cohort One's work goes public on August 22.
-        </h2>
-        <div className="mt-5 space-y-4 text-lg leading-relaxed text-ink">
-          <p>
-            All summer, students have been building toward finished, shareable
-            deliverables — research posters, papers aimed at journals like
-            NHSJS, JEI, and IEEE, competition entries, blog posts, and videos.
-          </p>
-          <p>
-            When the Symposium & Expo closes the summer on August 22, every finished project
-            gets catalogued here: the student, the question they chased, and
-            the thing they made. No samples, no placeholders — we'd rather show
-            you an empty shelf than a fake one.
-          </p>
+      <div className="grid items-start gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+        <div className="grid gap-8">
+          <PressStory item={vtNews} large />
+
+          <div className="red-rule relative border border-paper-shade bg-paper-bright p-7 pl-14 pb-12 shadow-card sm:p-9 sm:pl-14">
+            <h2 className="font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
+              Press inquiries
+            </h2>
+            <p className="mt-3 leading-relaxed text-ink">
+              Interviews, photographs, and the full Cohort One story — the program
+              directors answer every email.
+            </p>
+            <a
+              href={directorsMailto("Press inquiry")}
+              className="mt-6 inline-flex items-center gap-2 bg-flame px-6 py-3.5 font-semibold text-paper-bright transition-colors hover:bg-flame-deep"
+            >
+              <Mail className="h-4 w-4" />
+              Email the program directors
+            </a>
+            <p className="mt-6 font-mono text-[12px] leading-relaxed text-ink-soft">
+              {PHOTO_CREDIT}.
+            </p>
+            <RodHole ground="bg-paper-bright" />
+          </div>
         </div>
-        <p className="mt-6 font-mono text-[13px] text-ink-soft">
-          Filed under: HOLD FOR AUGUST 22 · see the record's ledger for what's
-          already countable.
-        </p>
-        <RodHole ground="bg-paper-bright" />
+
+        <article className="border border-paper-shade bg-paper-bright p-4 shadow-card">
+          <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 px-1 pb-3 pt-1">
+            <h2 className="font-display text-xl font-bold tracking-tight text-ink">
+              {linkedIn.outlet.split(" · ")[0]}
+            </h2>
+            <a
+              href={linkedIn.url}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 font-mono text-[12px] font-bold uppercase tracking-[0.12em] text-stamp transition-colors hover:text-ink"
+            >
+              On LinkedIn
+              <ExternalLink className="h-4 w-4" />
+            </a>
+          </div>
+          <p className="px-1 pb-3 font-mono text-[12px] text-ink-soft">{linkedIn.dateLabel}</p>
+          <iframe
+            src={linkedIn.embed}
+            title="Virginia Tech in the D.C. Area's LinkedIn post about the Cohort One symposium"
+            loading="lazy"
+            className="h-[780px] w-full border border-paper-shade bg-white"
+          />
+        </article>
       </div>
     </PageShell>
   );
 }
 
 // ─────────────────────────────────────────────
-// GET INVOLVED — JOIN THE STAFF
+// GET INVOLVED — BACK COHORT TWO
 // ─────────────────────────────────────────────
 
 function GetInvolvedPage() {
+  const ways = [
+    ...WAYS_TO_HELP,
+    {
+      title: "Join Cohort Two",
+      body: "Middle schoolers entering grades 6–8: applications open in spring 2027. No experience required — most of Cohort One had never done research before.",
+      subject: "Cohort Two applications",
+    },
+  ];
+
   return (
     <PageShell>
       <PageTitle
-        title="Join the staff"
-        lead="Next In Research is run entirely by TJHSST students. If that's you, the mentor desk is hiring for the seasons ahead — lead a team of 1–3 middle school researchers and earn volunteer hours doing work that actually matters."
+        title="Back Cohort Two"
+        lead="Cohort One proved the model: 99 middle schoolers, 29 TJHSST mentors, and 60 presenters at Virginia Tech — free for every family. Summer 2027 grows it, and it grows with help."
       />
 
-      <div className="grid items-start gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-        <div className="red-rule relative border border-paper-shade bg-paper-bright p-7 pl-14 pb-12 shadow-card">
-          <h2 className="font-display text-2xl font-bold tracking-tight text-ink">
-            The mentor application
-          </h2>
-          <p className="mt-3 leading-relaxed text-ink">
-            Tell us your research background and the fields you'd love to teach.
-            Every mentor gets matched with students whose interests fit their
-            own.
-          </p>
-          <a
-            href={MENTOR_APPLICATION_URL}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-6 inline-flex items-center gap-2 bg-stamp px-6 py-3.5 font-semibold text-paper-bright transition-colors hover:bg-ink"
+      <ul className="max-w-5xl border-t border-ink/15">
+        {ways.map((way) => (
+          <li
+            key={way.title}
+            className="grid gap-3 border-b border-ink/15 py-7 sm:grid-cols-[11rem_1fr_auto] sm:items-baseline sm:gap-8"
           >
-            Open the application
-            <ExternalLink className="h-4 w-4" />
-          </a>
-          <p className="mt-6 border-t border-ink/15 pt-5 leading-relaxed text-ink">
-            Already on staff? Workshop shifts are claimed on{" "}
+            <h2 className="font-display text-2xl font-bold tracking-tight text-ink">
+              {way.title}
+            </h2>
+            <p className="max-w-xl leading-relaxed text-ink">{way.body}</p>
             <a
-              href={VOLUNTEER_SIGNUP_URL}
-              target="_blank"
-              rel="noreferrer"
-              className="font-semibold text-stamp transition-colors hover:text-ink"
+              href={directorsMailto(way.subject)}
+              className="inline-flex items-center gap-2 font-semibold text-stamp transition-colors hover:text-ink"
             >
-              the volunteer sheet
+              <Mail className="h-4 w-4" />
+              Email us
             </a>
-            .
-          </p>
-          <RodHole ground="bg-paper-bright" />
-        </div>
+          </li>
+        ))}
+      </ul>
 
-        <div className="border border-paper-shade bg-paper-bright p-4 shadow-card">
-          <h2 className="px-1 pb-3 pt-1 font-display text-2xl font-bold tracking-tight text-ink">
-            Hear it from the coordinators
-          </h2>
-          <iframe
-            src={MENTOR_VIDEO_EMBED}
-            title="Next In Research mentor application video"
-            allow="autoplay; fullscreen"
-            allowFullScreen
-            className="aspect-video w-full border border-paper-shade bg-white"
-            loading="lazy"
-          />
-        </div>
+      <div className="relative mt-14 max-w-3xl border border-paper-shade bg-paper-bright p-7 pb-12 shadow-print-lg sm:p-9">
+        <h2 className="font-display text-3xl font-bold leading-[1.05] tracking-tight text-ink">
+          One inbox for everything
+        </h2>
+        <p className="mt-3 leading-relaxed text-ink">
+          Every note reaches both program directors, Dev Srivastava and Deborah
+          Torrico-Pardo.
+        </p>
+        <a
+          href={directorsMailto("Supporting Cohort Two")}
+          className="mt-6 inline-flex items-center gap-2 bg-flame px-6 py-3.5 font-semibold text-paper-bright transition-colors hover:bg-flame-deep"
+        >
+          <Mail className="h-4 w-4" />
+          Email the program directors
+        </a>
+        <ul className="mt-6 space-y-1">
+          {FOUNDERS.map((person) => (
+            <li key={person.email} className="break-all font-mono text-[13px] text-ink-soft">
+              {person.email}
+            </li>
+          ))}
+        </ul>
+        <RodHole ground="bg-paper-bright" />
       </div>
     </PageShell>
   );
@@ -2349,7 +2878,7 @@ function ContactPage() {
     <PageShell>
       <PageTitle
         title="The front desk"
-        lead="Questions about the program, next summer, or anything in this record — the coordinators read every email."
+        lead="Press, partnerships, Cohort Two, or anything in this record — the program directors read every email."
       />
 
       <div className="grid gap-6 md:grid-cols-2">
@@ -2429,52 +2958,71 @@ function ContactPage() {
 // FOOTER — THE DESK, AFTER HOURS
 // ─────────────────────────────────────────────
 
-function Footer({ setActivePage }) {
+function Footer() {
   return (
     <footer className="grain bg-cloth-deep text-paper">
-      <div className="mx-auto grid max-w-7xl gap-12 px-5 py-16 sm:px-8 md:grid-cols-[1.2fr_0.8fr_1fr]">
+      <div className="mx-auto grid max-w-7xl gap-12 px-5 py-16 sm:px-8 md:grid-cols-[1.1fr_1.1fr_1fr]">
         <div>
           <p className="font-display text-2xl font-bold tracking-tight text-paper-bright">
             Next In Research
           </p>
           <p className="mt-3 max-w-sm leading-relaxed text-paper/80">
-            A free summer research mentorship program pairing TJHSST student
-            mentors with middle schoolers — recorded at Ashburn &amp;
-            Brambleton Public Libraries, Loudoun County, Virginia.
+            A free, student-run summer research mentorship program pairing
+            TJHSST mentors with middle schoolers. Cohort One, Summer 2026: 99
+            students, nine library workshops, and a symposium at Virginia Tech.
           </p>
           <p className="mt-6 font-mono text-[11px] tracking-[0.18em] text-paper/70">
             NO FEES · NO FINES · NO PREREQUISITES
           </p>
         </div>
 
-        <nav aria-label="Footer">
-          <p className="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-paper/70">
-            The collection
-          </p>
-          <ul className="mt-4 grid grid-cols-2 gap-x-6 gap-y-2">
-            {NAV_TABS.map((tab) => (
-              <li key={tab.id}>
-                <button
-                  onClick={() => setActivePage(tab.id)}
-                  className="py-1 text-[14px] text-paper/85 transition-colors hover:text-paper-bright"
-                >
-                  {tab.label}
-                </button>
-              </li>
-            ))}
-          </ul>
+        <nav aria-label="Footer" className="grid grid-cols-2 gap-x-6">
+          <div>
+            <p className="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-paper/70">
+              The site
+            </p>
+            <ul className="mt-4 space-y-2">
+              {ROUTES.filter((r) => !isCohortPage(r.id)).map((route) => (
+                <li key={route.id}>
+                  <PageLink
+                    to={route.id}
+                    className="py-1 text-[14px] text-paper/85 transition-colors hover:text-paper-bright"
+                  >
+                    {NAV_TABS.find((t) => t.id === route.id)?.label}
+                  </PageLink>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <p className="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-paper/70">
+              Cohort One
+            </p>
+            <ul className="mt-4 space-y-2">
+              {COHORT_PAGES.map((page) => (
+                <li key={page.id}>
+                  <PageLink
+                    to={page.id}
+                    className="py-1 text-[14px] text-paper/85 transition-colors hover:text-paper-bright"
+                  >
+                    {page.id === "cohort" ? "Overview" : page.label}
+                  </PageLink>
+                </li>
+              ))}
+            </ul>
+          </div>
         </nav>
 
         <div>
           <p className="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-paper/70">
-            The desk
+            The directors
           </p>
           <ul className="mt-4 space-y-2">
             {FOUNDERS.map((person) => (
               <li key={person.email}>
                 <a
                   href={`mailto:${person.email}`}
-                  className="inline-flex items-center gap-2 text-[14px] text-paper/85 transition-colors hover:text-paper-bright"
+                  className="inline-flex items-center gap-2 break-all text-[14px] text-paper/85 transition-colors hover:text-paper-bright"
                 >
                   <Mail className="h-4 w-4 shrink-0" />
                   {person.email}
@@ -2496,9 +3044,8 @@ function Footer({ setActivePage }) {
         </div>
       </div>
       <div className="border-t border-paper/15">
-        <p className="mx-auto max-w-7xl px-5 py-5 font-mono text-[11px] tracking-[0.08em] text-paper/70 sm:px-8">
-          Last stamped August 2026 · This record grows as the collection does —
-          student work arrives after the August 22 symposium.
+        <p className="mx-auto max-w-7xl px-5 py-5 font-mono text-[11px] leading-relaxed tracking-[0.08em] text-paper/70 sm:px-8">
+          Last stamped September 2026 · {PHOTO_CREDIT}.
         </p>
       </div>
     </footer>
@@ -2514,11 +3061,23 @@ export default function App() {
     pathToPage(window.location.pathname)
   );
 
+  // Old addresses (and the pre-archive paths) settle on their canonical URL.
+  useEffect(() => {
+    const canonical = pageToPath(activePage);
+    if (cleanPath(window.location.pathname) !== canonical) {
+      window.history.replaceState(null, "", canonical + window.location.hash);
+    }
+  }, []);
+
   useEffect(() => {
     const onPop = () => setActivePageState(pathToPage(window.location.pathname));
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
   }, []);
+
+  useEffect(() => {
+    document.title = pageTitle(activePage);
+  }, [activePage]);
 
   const setActivePage = (id) => {
     const path = pageToPath(id);
@@ -2530,30 +3089,35 @@ export default function App() {
   };
 
   const pages = {
-    home: <HomePage setActivePage={setActivePage} />,
-    timeline: <TimelinePage />,
+    home: <HomePage />,
+    cohort: <CohortOverviewPage />,
+    "cohort-symposium": <SymposiumPage />,
+    "cohort-projects": <ProjectsPage />,
+    "cohort-workshops": <WorkshopsPage />,
+    "cohort-schedule": <SchedulePage />,
+    "cohort-summer": <TimelinePage />,
     team: <TeamPage />,
-    schedule: <SchedulePage setActivePage={setActivePage} />,
-    workshops: <WorkshopsPage />,
-    students: <StudentsPage />,
+    news: <NewsPage />,
     involved: <GetInvolvedPage />,
     faq: <FAQPage />,
     contact: <ContactPage />,
   };
 
   return (
-    <MotionConfig reducedMotion="user">
-      <div className="min-h-screen bg-cloth font-body text-ink">
-        <a
-          href="#main"
-          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:bg-paper-bright focus:px-4 focus:py-2 focus:font-semibold focus:text-ink"
-        >
-          Skip to content
-        </a>
-        <Navigation activePage={activePage} setActivePage={setActivePage} />
-        <main id="main">{pages[activePage] || pages.home}</main>
-        <Footer setActivePage={setActivePage} />
-      </div>
-    </MotionConfig>
+    <NavigateContext.Provider value={setActivePage}>
+      <MotionConfig reducedMotion="user">
+        <div className="min-h-screen bg-cloth font-body text-ink">
+          <a
+            href="#main"
+            className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:bg-paper-bright focus:px-4 focus:py-2 focus:font-semibold focus:text-ink"
+          >
+            Skip to content
+          </a>
+          <Navigation activePage={activePage} />
+          <main id="main">{pages[activePage] || pages.home}</main>
+          <Footer />
+        </div>
+      </MotionConfig>
+    </NavigateContext.Provider>
   );
 }

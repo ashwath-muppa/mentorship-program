@@ -2,19 +2,19 @@
 version: 1
 slug: "route"
 primary_target: "route:/"
-related_targets: ["route:/timeline","route:/team","route:/schedule","route:/workshops","route:/students","route:/getinvolved","route:/faq","route:/contact"]
+related_targets: ["route:/cohort-one","route:/cohort-one/symposium","route:/cohort-one/projects","route:/cohort-one/workshops","route:/cohort-one/schedule","route:/cohort-one/summer","route:/team","route:/news","route:/getinvolved","route:/faq","route:/contact"]
 ---
 
-# Surface brief — `/` (The Record)
+# Surface brief — `/` (The Front Page)
 
-**Scope & mode:** Homepage of the full-site redesign. Persuade — the visitor should believe "this program is real, it happened, it matters," with soft actions (browse the record, email the coordinators, mentor application).
+**Scope & mode:** Homepage of the post–Cohort One site (Sept 2026). Persuade — publicity and support for Cohort Two. The visitor should know within one viewport that 99 middle schoolers did real research, free, and 60 presented it at Virginia Tech; then back Cohort Two by email.
 
-**Audience & job:** LCPS/FCPS families, TJHSST prospective mentors, schools/libraries/community observers. Job: understand the mission, see evidence of Cohort One's summer, learn what comes next. Not a conversion funnel; student applications are removed site-wide.
+**Audience & job:** Press readers (VT News, LinkedIn, coming Fox/CBS), Cohort Two supporters (hosts, sponsors, judges, districts, grant reviewers), 2027 families, 2027 TJHSST mentors.
 
-**Proof/content:** Real workshop photos (hero: workshop-2 group photo), real dates (9 workshops, June 17 – Aug 13), real mentor roster (29), real venues (Ashburn + Brambleton libraries), real school roster. Deliverable-derivable numbers only, set as a typed ledger — never stat tiles. Student counts/hours arrive after the symposium (post-symposium iteration planned).
+**Proof/content:** The team's Top 10 #1 as the hero (IMG_0601 — the program directors kneeling front and center, families around them, the students with their certificates on the staircase behind; the rest of the Top 10 fill the photo spread); VT-verified numbers (99 · 29 · 21 · 60 · 250+ · $0, plus 105 applications, 9 workshops, 11 papers reviewed, 2 IEEE MIT URTC submissions); VT News link card + LinkedIn post; the team's Top 10 photos; Mission and Vision in the founders' words. Data lives in `src/data/cohortOne.js`.
 
-**Constraints:** No fabricated metrics, testimonials, or partners. Free is structural. No prerequisite gatekeeping. No persuasion architecture (urgency/scarcity). Voice warm and plain.
+**Constraints:** Students never named (captions name the research). No "partnership" claim with VT — "hosted by the Virginia Tech Institute for Advanced Computing." No 501(c)(3), donation, or GoFundMe; no mentor application form. The one ask is email to both directors.
 
-**Direction:** The Library Record (seed 1ec49fef, grounded candidate 5/7) — public-library ephemera as the working system: buckram cloth grounds, manila catalog cards, rubber-stamp ink, typed records. Memorable moment: the date-due slip in the hero stamped with all nine real workshop dates — proof of circulation before any claim.
+**Direction:** The Front Page (seed afe8fa7a, candidate 4 of 7) inside The Library Record world. Flame masthead with a dateline rule, banner h1, Mission as the deck, staircase photo (8 cols) beside a paper "By the numbers" box; a HELD · AUG 22 stamp is the one authored motion. Then In the news → What Cohort One did (Plan/Build/Publish) → Top 10 photo spread → Vision + thanks (cloth) → Back Cohort Two (flame).
 
-**Unresolved:** Student work page fills after the August symposium; cohort headcount/hours to be added then. Kickoff (Program_Introduction) photos still live only in Drive.
+**Unresolved:** Fox and CBS coverage slots into `PRESS` when it airs. Student papers/posters get linked on /cohort-one/projects as students publish.

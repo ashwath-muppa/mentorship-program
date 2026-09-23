@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-11T00:00:00Z",
+  "generatedAt": "2026-09-23T01:03:41+00:00",
   "title": "Design System: Next In Research — The Library Record",
   "extensions": {
     "colorMeta": {
@@ -8,111 +8,334 @@
         "role": "primary",
         "displayName": "Brand Flame",
         "canonical": "#B93C15",
-        "tonalRamp": ["oklch(15% 0.16 35)", "oklch(27% 0.16 35)", "oklch(38% 0.16 35)", "oklch(50% 0.16 35)", "oklch(61% 0.16 35)", "oklch(72% 0.16 35)", "oklch(84% 0.12 35)", "oklch(95% 0.05 35)"]
+        "tonalRamp": [
+          "oklch(15% 0.16 35)",
+          "oklch(27% 0.16 35)",
+          "oklch(38% 0.16 35)",
+          "oklch(50% 0.16 35)",
+          "oklch(61% 0.16 35)",
+          "oklch(72% 0.16 35)",
+          "oklch(84% 0.12 35)",
+          "oklch(95% 0.048 35)"
+        ]
       },
       "flame-deep": {
         "role": "primary",
         "displayName": "Deep Flame",
         "canonical": "#9E3211",
-        "tonalRamp": ["oklch(15% 0.15 35)", "oklch(27% 0.15 35)", "oklch(38% 0.15 35)", "oklch(50% 0.15 35)", "oklch(61% 0.15 35)", "oklch(72% 0.15 35)", "oklch(84% 0.11 35)", "oklch(95% 0.05 35)"]
+        "tonalRamp": [
+          "oklch(15% 0.15 35)",
+          "oklch(27% 0.15 35)",
+          "oklch(38% 0.15 35)",
+          "oklch(50% 0.15 35)",
+          "oklch(61% 0.15 35)",
+          "oklch(72% 0.15 35)",
+          "oklch(84% 0.112 35)",
+          "oklch(95% 0.045 35)"
+        ]
       },
       "flame-bright": {
         "role": "primary",
-        "displayName": "Bright Flame (legacy coral — punctuation on cloth grounds only)",
+        "displayName": "Bright Flame (legacy coral)",
         "canonical": "#EE6C4D",
-        "tonalRamp": ["oklch(15% 0.15 30)", "oklch(27% 0.15 30)", "oklch(38% 0.15 30)", "oklch(50% 0.15 30)", "oklch(61% 0.15 30)", "oklch(72% 0.15 30)", "oklch(84% 0.11 30)", "oklch(95% 0.05 30)"]
+        "tonalRamp": [
+          "oklch(15% 0.16 33)",
+          "oklch(27% 0.16 33)",
+          "oklch(38% 0.16 33)",
+          "oklch(50% 0.16 33)",
+          "oklch(61% 0.16 33)",
+          "oklch(72% 0.16 33)",
+          "oklch(84% 0.12 33)",
+          "oklch(95% 0.048 33)"
+        ]
       },
       "cloth": {
         "role": "secondary",
         "displayName": "Buckram Cloth",
         "canonical": "#1D4A40",
-        "tonalRamp": ["oklch(15% 0.055 170)", "oklch(27% 0.055 170)", "oklch(38% 0.055 170)", "oklch(50% 0.055 170)", "oklch(61% 0.055 170)", "oklch(72% 0.055 170)", "oklch(84% 0.055 170)", "oklch(95% 0.055 170)"]
+        "tonalRamp": [
+          "oklch(15% 0.05 170)",
+          "oklch(27% 0.05 170)",
+          "oklch(38% 0.05 170)",
+          "oklch(50% 0.05 170)",
+          "oklch(61% 0.05 170)",
+          "oklch(72% 0.05 170)",
+          "oklch(84% 0.038 170)",
+          "oklch(95% 0.015 170)"
+        ]
       },
       "cloth-deep": {
         "role": "secondary",
         "displayName": "Deep Cloth",
         "canonical": "#14352E",
-        "tonalRamp": ["oklch(15% 0.05 170)", "oklch(27% 0.05 170)", "oklch(38% 0.05 170)", "oklch(50% 0.05 170)", "oklch(61% 0.05 170)", "oklch(72% 0.05 170)", "oklch(84% 0.05 170)", "oklch(95% 0.05 170)"]
+        "tonalRamp": [
+          "oklch(15% 0.045 170)",
+          "oklch(27% 0.045 170)",
+          "oklch(38% 0.045 170)",
+          "oklch(50% 0.045 170)",
+          "oklch(61% 0.045 170)",
+          "oklch(72% 0.045 170)",
+          "oklch(84% 0.034 170)",
+          "oklch(95% 0.013 170)"
+        ]
       },
       "stamp": {
         "role": "tertiary",
         "displayName": "Rubber-Stamp Red",
         "canonical": "#BE3A27",
-        "tonalRamp": ["oklch(15% 0.16 32)", "oklch(27% 0.16 32)", "oklch(38% 0.16 32)", "oklch(50% 0.16 32)", "oklch(61% 0.16 32)", "oklch(72% 0.16 32)", "oklch(84% 0.12 32)", "oklch(95% 0.05 32)"]
+        "tonalRamp": [
+          "oklch(15% 0.16 31)",
+          "oklch(27% 0.16 31)",
+          "oklch(38% 0.16 31)",
+          "oklch(50% 0.16 31)",
+          "oklch(61% 0.16 31)",
+          "oklch(72% 0.16 31)",
+          "oklch(84% 0.12 31)",
+          "oklch(95% 0.048 31)"
+        ]
       },
       "stamp-blue": {
         "role": "tertiary",
         "displayName": "Stamp Blue",
         "canonical": "#2F5A77",
-        "tonalRamp": ["oklch(15% 0.07 240)", "oklch(27% 0.07 240)", "oklch(38% 0.07 240)", "oklch(50% 0.07 240)", "oklch(61% 0.07 240)", "oklch(72% 0.07 240)", "oklch(84% 0.07 240)", "oklch(95% 0.04 240)"]
+        "tonalRamp": [
+          "oklch(15% 0.06 240)",
+          "oklch(27% 0.06 240)",
+          "oklch(38% 0.06 240)",
+          "oklch(50% 0.06 240)",
+          "oklch(61% 0.06 240)",
+          "oklch(72% 0.06 240)",
+          "oklch(84% 0.045 240)",
+          "oklch(95% 0.018 240)"
+        ]
       },
       "paper": {
         "role": "neutral",
         "displayName": "Clean Paper",
         "canonical": "#F3F1EC",
-        "tonalRamp": ["oklch(15% 0.008 100)", "oklch(27% 0.008 100)", "oklch(38% 0.008 100)", "oklch(50% 0.008 100)", "oklch(61% 0.008 100)", "oklch(72% 0.008 100)", "oklch(84% 0.008 100)", "oklch(95% 0.008 100)"]
+        "tonalRamp": [
+          "oklch(15% 0.008 85)",
+          "oklch(27% 0.008 85)",
+          "oklch(38% 0.008 85)",
+          "oklch(50% 0.008 85)",
+          "oklch(61% 0.008 85)",
+          "oklch(72% 0.008 85)",
+          "oklch(84% 0.006 85)",
+          "oklch(95% 0.002 85)"
+        ]
       },
       "paper-bright": {
         "role": "neutral",
         "displayName": "Paper Bright",
         "canonical": "#FDFCFA",
-        "tonalRamp": ["oklch(15% 0.003 90)", "oklch(27% 0.003 90)", "oklch(38% 0.003 90)", "oklch(50% 0.003 90)", "oklch(61% 0.003 90)", "oklch(72% 0.003 90)", "oklch(84% 0.003 90)", "oklch(95% 0.003 90)"]
+        "tonalRamp": [
+          "oklch(15% 0.004 85)",
+          "oklch(27% 0.004 85)",
+          "oklch(38% 0.004 85)",
+          "oklch(50% 0.004 85)",
+          "oklch(61% 0.004 85)",
+          "oklch(72% 0.004 85)",
+          "oklch(84% 0.003 85)",
+          "oklch(95% 0.001 85)"
+        ]
       },
       "paper-shade": {
         "role": "neutral",
         "displayName": "Paper Shade",
         "canonical": "#E1DED6",
-        "tonalRamp": ["oklch(15% 0.012 95)", "oklch(27% 0.012 95)", "oklch(38% 0.012 95)", "oklch(50% 0.012 95)", "oklch(61% 0.012 95)", "oklch(72% 0.012 95)", "oklch(84% 0.012 95)", "oklch(95% 0.012 95)"]
+        "tonalRamp": [
+          "oklch(15% 0.01 85)",
+          "oklch(27% 0.01 85)",
+          "oklch(38% 0.01 85)",
+          "oklch(50% 0.01 85)",
+          "oklch(61% 0.01 85)",
+          "oklch(72% 0.01 85)",
+          "oklch(84% 0.007 85)",
+          "oklch(95% 0.003 85)"
+        ]
       },
       "ink": {
         "role": "neutral",
         "displayName": "Catalog Ink",
         "canonical": "#20313B",
-        "tonalRamp": ["oklch(15% 0.03 235)", "oklch(27% 0.03 235)", "oklch(38% 0.03 235)", "oklch(50% 0.03 235)", "oklch(61% 0.03 235)", "oklch(72% 0.03 235)", "oklch(84% 0.03 235)", "oklch(95% 0.02 235)"]
+        "tonalRamp": [
+          "oklch(15% 0.025 235)",
+          "oklch(27% 0.025 235)",
+          "oklch(38% 0.025 235)",
+          "oklch(50% 0.025 235)",
+          "oklch(61% 0.025 235)",
+          "oklch(72% 0.025 235)",
+          "oklch(84% 0.019 235)",
+          "oklch(95% 0.007 235)"
+        ]
       },
       "ink-soft": {
         "role": "neutral",
         "displayName": "Soft Ink",
         "canonical": "#51616B",
-        "tonalRamp": ["oklch(15% 0.025 230)", "oklch(27% 0.025 230)", "oklch(38% 0.025 230)", "oklch(50% 0.025 230)", "oklch(61% 0.025 230)", "oklch(72% 0.025 230)", "oklch(84% 0.025 230)", "oklch(95% 0.015 230)"]
+        "tonalRamp": [
+          "oklch(15% 0.02 235)",
+          "oklch(27% 0.02 235)",
+          "oklch(38% 0.02 235)",
+          "oklch(50% 0.02 235)",
+          "oklch(61% 0.02 235)",
+          "oklch(72% 0.02 235)",
+          "oklch(84% 0.015 235)",
+          "oklch(95% 0.006 235)"
+        ]
       },
       "print-white": {
         "role": "neutral",
         "displayName": "Print White",
         "canonical": "#FFFFFF",
-        "tonalRamp": ["oklch(15% 0 0)", "oklch(27% 0 0)", "oklch(38% 0 0)", "oklch(50% 0 0)", "oklch(61% 0 0)", "oklch(72% 0 0)", "oklch(84% 0 0)", "oklch(95% 0 0)"]
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(27% 0 0)",
+          "oklch(38% 0 0)",
+          "oklch(50% 0 0)",
+          "oklch(61% 0 0)",
+          "oklch(72% 0 0)",
+          "oklch(84% 0.0 0)",
+          "oklch(95% 0.0 0)"
+        ]
       }
     },
     "typographyMeta": {
-      "display": { "displayName": "Display (Poster Masthead)", "purpose": "Hero masthead only — extrabold Bricolage Grotesque in paper-bright on the flame field." },
-      "headline": { "displayName": "Headline", "purpose": "Section and page openers. Headings begin sections directly; no eyebrow labels above them." },
-      "title": { "displayName": "Title", "purpose": "Card and slip headings on ephemera objects." },
-      "body": { "displayName": "Body", "purpose": "Public Sans narrative prose; leads at 1.125rem; columns capped near 65ch." },
-      "label": { "displayName": "Typed Label", "purpose": "Courier Prime bold uppercase document labels printed on ephemera (ledger captions, HOLD FOR:, table headers, chips, pocket labels)." },
-      "data": { "displayName": "Typed Data", "purpose": "Courier Prime catalog facts — call numbers, dates, agenda rows, captions, statuses, mentor bios. Ledger totals step up to 20px bold." }
+      "display": {
+        "displayName": "Banner",
+        "purpose": "The front-page h1 across the 12-column measure (at lg sized 5cqi to its column: always two full-width lines), and the closing 'Back Cohort Two.' Bricolage 800 on flame."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section and page openers; nothing floats above them."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Card, slip, and press headings."
+      },
+      "numeral": {
+        "displayName": "Numeral",
+        "purpose": "Flame figures inside the By-the-numbers catalog card."
+      },
+      "body": {
+        "displayName": "Body / Deck",
+        "purpose": "Public Sans prose; the front-page mission deck runs 1.125–1.25rem, then at lg a single full-measure line sized 2.36cqi to its column, with an 'Our mission:' run-in."
+      },
+      "label": {
+        "displayName": "Typed Label",
+        "purpose": "Courier uppercase printed parts of objects and chrome: dateline strip, card and sheet headers, chips, subnav tabs, table heads."
+      },
+      "data": {
+        "displayName": "Typed Data",
+        "purpose": "Courier facts: call numbers, dates, bylines, cutlines, credits, ledger labels."
+      },
+      "scale": {
+        "displayName": "Type ramp",
+        "purpose": "The enumerated fixed size steps (typography.scale in DESIGN.md frontmatter): Courier labels and data at 10–15px, Public Sans body 16px with leads and decks at 18–20px, Bricolage titles, headlines, statements, numerals, and banners from 1.5rem to 4.5rem. The front-page banner (5cqi) and deck (2.36cqi) are column-sized at lg."
+      }
     },
     "shadows": [
-      { "name": "card", "value": "0 1px 1px rgba(32,49,59,0.12), 0 4px 10px rgba(32,49,59,0.14)", "purpose": "Resting shadow of catalog cards, slips, table, albums." },
-      { "name": "print", "value": "0 1px 2px rgba(32,49,59,0.18), 0 6px 16px rgba(32,49,59,0.22)", "purpose": "Photo prints and the portrait prints mounted on catalog and coordinator cards." },
-      { "name": "print-lg", "value": "0 2px 4px rgba(32,49,59,0.16), 0 14px 34px rgba(32,49,59,0.28)", "purpose": "The most-lifted objects: hero carousel frame, symposium agenda card, ledger, schedule finale card, students-page feature card; hover state of contact cards." },
-      { "name": "nav-scrolled", "value": "0 2px 12px rgba(20,53,46,0.45)", "purpose": "Under the fixed nav bar, only after 12px of scroll." },
-      { "name": "pocket-lip", "value": "0 -2px 8px rgba(32,49,59,0.10)", "purpose": "Upward shadow on the card-pocket front panel." },
-      { "name": "hole-punch", "value": "inset 0 1px 2px rgba(32,49,59,0.3)", "purpose": "Drilled depth inside every rod hole." }
+      {
+        "name": "card",
+        "value": "0 1px 1px rgba(32,49,59,0.12), 0 4px 10px rgba(32,49,59,0.14)",
+        "purpose": "Resting shadow of cards, press cards, tables, albums, gallery thumbnails."
+      },
+      {
+        "name": "print",
+        "value": "0 1px 2px rgba(32,49,59,0.18), 0 6px 16px rgba(32,49,59,0.22)",
+        "purpose": "Archival prints, portrait mounts, and the hover state of clickable photographs."
+      },
+      {
+        "name": "print-lg",
+        "value": "0 2px 4px rgba(32,49,59,0.16), 0 14px 34px rgba(32,49,59,0.28)",
+        "purpose": "A band's single hero object (front-page photo mount, By-the-numbers card, circulation sheet, hold slip, ledger); hover of press and contact cards; the photo in the lightbox."
+      },
+      {
+        "name": "nav-scrolled",
+        "value": "0 2px 12px rgba(20,53,46,0.45)",
+        "purpose": "Under the fixed bar after 12px of scroll."
+      },
+      {
+        "name": "menu-drop",
+        "value": "0 10px 28px rgba(20,53,46,0.5)",
+        "purpose": "Under the desktop Cohort One dropdown."
+      },
+      {
+        "name": "hole-punch",
+        "value": "inset 0 1px 2px rgba(32,49,59,0.3)",
+        "purpose": "Drilled depth inside every rod hole."
+      }
     ],
     "motion": [
-      { "name": "stamp-in", "value": "spring(stiffness 420, damping 21) from { opacity: 0, scale: 1.45, rotate: rest−5° } to rest; whileInView once, margin −40px", "purpose": "The site's single authored entrance — things arrive the way a rubber stamp lands. Stamps only." },
-      { "name": "straighten", "value": "transform 300ms ease", "purpose": "Tilted prints/slips and the carousel frame rotate to 0° on hover; pocket cards lift 12px on hover/focus-within." },
-      { "name": "reveal", "value": "height + opacity 240ms", "purpose": "FAQ and catalog-card bio accordions." },
-      { "name": "album-crossfade", "value": "opacity 220ms", "purpose": "Workshop album photo swaps." },
-      { "name": "reel-crossfade", "value": "opacity 550ms; autoplay interval 4500ms", "purpose": "Hero cover carousel. Pauses on hover/focus, stops permanently on any manual control, skips autoplay under prefers-reduced-motion; covers preloaded on mount." },
-      { "name": "nav-fade", "value": "opacity 180ms", "purpose": "Mobile nav sheet in/out." },
-      { "name": "hover-color", "value": "color/background-color 150ms", "purpose": "Default hover grammar for buttons, links, tabs, chips — color only, never lift or scale." },
-      { "name": "reduced-motion", "value": "MotionConfig reducedMotion=\"user\" around the app + global CSS kill switch (~0ms durations) + matchMedia guard before carousel autoplay", "purpose": "Three-layer reduced-motion honor: Framer springs, CSS transitions, and autoplay all stand down." }
+      {
+        "name": "stamp-in",
+        "value": "spring(stiffness 420, damping 21) from { opacity: 0, scale: 1.45, rotate: rest-5deg } to rest; whileInView once, margin -40px",
+        "purpose": "The single authored entrance. Stamps only."
+      },
+      {
+        "name": "photo-lift",
+        "value": "box-shadow card -> print + image opacity 1 -> 0.9, 150ms",
+        "purpose": "Hover on straight press photographs: Top 10 spread and GalleryThumb."
+      },
+      {
+        "name": "straighten",
+        "value": "transform 300ms",
+        "purpose": "Tilted archival prints and the hold slip rotate to 0deg on hover."
+      },
+      {
+        "name": "reveal",
+        "value": "height + opacity 240ms",
+        "purpose": "FAQ and catalog-card bio accordions."
+      },
+      {
+        "name": "album-crossfade",
+        "value": "opacity 220ms",
+        "purpose": "Workshop album photo swaps."
+      },
+      {
+        "name": "viewer",
+        "value": "dialog opacity 180ms; photo crossfade 200ms",
+        "purpose": "Lightbox open/close and paging."
+      },
+      {
+        "name": "menu-drop",
+        "value": "opacity + translateY(-4px -> 0) 160ms",
+        "purpose": "Desktop Cohort One dropdown."
+      },
+      {
+        "name": "nav-fade",
+        "value": "opacity 180ms",
+        "purpose": "Mobile menu sheet in/out."
+      },
+      {
+        "name": "chevron-flip",
+        "value": "rotate 180deg, 200ms",
+        "purpose": "Dropdown and accordion chevrons."
+      },
+      {
+        "name": "hover-color",
+        "value": "color/background/border 150ms",
+        "purpose": "Buttons, links, tabs, chips: color only, never lift or scale."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "MotionConfig reducedMotion=\"user\" + global CSS kill switch (0.01ms durations)",
+        "purpose": "Springs and transitions stand down under prefers-reduced-motion."
+      }
     ],
     "breakpoints": [
-      { "name": "sm", "value": "640px" },
-      { "name": "md", "value": "768px" },
-      { "name": "lg", "value": "1024px" }
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      }
     ]
   },
   "components": [
@@ -120,133 +343,175 @@
       "name": "Stamp — Held (red)",
       "kind": "custom",
       "refersTo": "catalog-card",
-      "description": "Double-ring rubber stamp in red ink: the record of something that happened (HELD, a stamped date). Enters with the stamp-in spring.",
-      "html": "<span class=\"ds-stamp ds-stamp-red\"><span class=\"ds-stamp-inner\">JUL 16 2026</span></span>",
-      "css": ".ds-stamp { display: inline-block; border: 2px solid currentColor; padding: 3px; font-family: \"Courier Prime\", Courier, monospace; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; line-height: 1; white-space: nowrap; transform: rotate(-3deg); } .ds-stamp-inner { display: block; border: 1px solid currentColor; padding: 4px 8px; } .ds-stamp-red { color: #BE3A27; }"
+      "description": "Double-ring rubber stamp in red ink: the record of something that happened. Enters with the stamp-in spring.",
+      "html": "<span class=\"ds-stamp ds-stamp-red\"><span class=\"ds-stamp-inner\">HELD · AUG 22 2026</span></span>",
+      "css": ".ds-stamp { display: inline-block; border: 2px solid currentColor; padding: 3px; font-family: \"Courier Prime\", Courier, monospace; font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 0.14em; line-height: 1; white-space: nowrap; transform: rotate(-3deg); } .ds-stamp-inner { display: block; border: 1px solid currentColor; padding: 4px 8px; } .ds-stamp-red { color: #BE3A27; }"
     },
     {
       "name": "Stamp — Due (blue)",
       "kind": "custom",
       "refersTo": "catalog-card",
-      "description": "The quieter ink: pending status (DUE dates, in-processing notes). Static or stamped-in like the red variant.",
-      "html": "<span class=\"ds-stamp-b\"><span class=\"ds-stamp-b-inner\">DUE AUG 13 2026</span></span>",
-      "css": ".ds-stamp-b { display: inline-block; border: 2px solid currentColor; padding: 3px; font-family: \"Courier Prime\", Courier, monospace; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; line-height: 1; white-space: nowrap; color: #2F5A77; transform: rotate(1.5deg); } .ds-stamp-b-inner { display: block; border: 1px solid currentColor; padding: 4px 8px; }"
-    },
-    {
-      "name": "Light Button (on flame)",
-      "kind": "button",
-      "refersTo": "button-light",
-      "description": "Primary action on flame announcement fields — paper-bright fill with flame text, hovers to white. Square corners, trailing wayfinding icon.",
-      "html": "<div class=\"ds-flame-ground\"><a href=\"#\" class=\"ds-btn-light\">Symposium details <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 5v14\"/><path d=\"m19 12-7 7-7-7\"/></svg></a></div>",
-      "css": ".ds-flame-ground { background: #B93C15; padding: 24px; display: inline-block; } .ds-btn-light { display: inline-flex; align-items: center; gap: 8px; background: #FDFCFA; color: #B93C15; padding: 14px 24px; font-family: \"Public Sans\", system-ui, sans-serif; font-weight: 600; border: none; border-radius: 0; box-shadow: 0 1px 1px rgba(32,49,59,0.12), 0 4px 10px rgba(32,49,59,0.14); transition: background-color 0.15s; cursor: pointer; } .ds-btn-light:hover { background: #FFFFFF; } .ds-btn-light:focus-visible { outline: 2px solid #FDFCFA; outline-offset: 2px; }"
+      "description": "The pending ink: DUE and HOLD FOR.",
+      "html": "<span class=\"ds-stamp ds-stamp-blue\"><span class=\"ds-stamp-inner\">DUE AUG 13 2026</span></span>",
+      "css": ".ds-stamp { display: inline-block; border: 2px solid currentColor; padding: 3px; font-family: \"Courier Prime\", Courier, monospace; font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 0.14em; line-height: 1; white-space: nowrap; transform: rotate(2deg); } .ds-stamp-inner { display: block; border: 1px solid currentColor; padding: 4px 8px; } .ds-stamp-blue { color: #2F5A77; }"
     },
     {
       "name": "Flame Button (on paper)",
       "kind": "button",
       "refersTo": "button-flame",
-      "description": "The primary action on paper bands — brand flame fill hovering to deep flame (flyer download, Full agenda).",
-      "html": "<button class=\"ds-btn-flame\">Download the flyer (PDF) <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 3h6v6\"/><path d=\"M10 14 21 3\"/><path d=\"M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6\"/></svg></button>",
-      "css": ".ds-btn-flame { display: inline-flex; align-items: center; gap: 8px; background: #B93C15; color: #FDFCFA; padding: 14px 24px; font-family: \"Public Sans\", system-ui, sans-serif; font-weight: 600; border: none; border-radius: 0; transition: background-color 0.15s; cursor: pointer; } .ds-btn-flame:hover { background: #9E3211; } .ds-btn-flame:focus-visible { outline: 2px solid #BE3A27; outline-offset: 2px; }"
+      "description": "The primary action on paper: Back Cohort Two, See the symposium, Email the program directors.",
+      "html": "<a class=\"ds-btn-flame\" href=\"#\">Back Cohort Two <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></a>",
+      "css": ".ds-btn-flame { display: inline-flex; align-items: center; gap: 8px; background: #B93C15; color: #FDFCFA; padding: 14px 24px; font-family: \"Public Sans\", system-ui, sans-serif; font-weight: 600; border-radius: 0; text-decoration: none; transition: background-color 150ms; } .ds-btn-flame:hover { background: #9E3211; } .ds-btn-flame:focus-visible { outline: 2px solid #BE3A27; outline-offset: 2px; }"
     },
     {
-      "name": "Ink Button (on paper)",
+      "name": "Light Button (on flame)",
       "kind": "button",
-      "refersTo": "button-ink",
-      "description": "Utility action on paper bands — catalog-ink fill hovering to cloth green.",
-      "html": "<button class=\"ds-btn-ink\">Open the card catalog <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></button>",
-      "css": ".ds-btn-ink { display: inline-flex; align-items: center; gap: 8px; background: #20313B; color: #FDFCFA; padding: 12px 20px; font-family: \"Public Sans\", system-ui, sans-serif; font-weight: 600; border: none; border-radius: 0; transition: background-color 0.15s; cursor: pointer; } .ds-btn-ink:hover { background: #1D4A40; } .ds-btn-ink:focus-visible { outline: 2px solid #BE3A27; outline-offset: 2px; }"
-    },
-    {
-      "name": "Stamp Button (loud action)",
-      "kind": "button",
-      "refersTo": "button-stamp",
-      "description": "The one loud action fill in the build (mentor application) — stamp-red hovering to ink.",
-      "html": "<button class=\"ds-btn-stamp\">Open the application <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 3h6v6\"/><path d=\"M10 14 21 3\"/><path d=\"M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6\"/></svg></button>",
-      "css": ".ds-btn-stamp { display: inline-flex; align-items: center; gap: 8px; background: #BE3A27; color: #FDFCFA; padding: 14px 24px; font-family: \"Public Sans\", system-ui, sans-serif; font-weight: 600; border: none; border-radius: 0; transition: background-color 0.15s; cursor: pointer; } .ds-btn-stamp:hover { background: #20313B; } .ds-btn-stamp:focus-visible { outline: 2px solid #BE3A27; outline-offset: 2px; }"
+      "refersTo": "button-light",
+      "description": "Primary action on a flame field, beside an outline-light partner.",
+      "html": "<div class=\"ds-flame-field\"><a class=\"ds-btn-light\" href=\"#\">Email the program directors</a><a class=\"ds-btn-outline-light\" href=\"#\">More ways to help</a></div>",
+      "css": ".ds-flame-field { display: flex; flex-wrap: wrap; gap: 16px; background: #B93C15; padding: 32px; } .ds-btn-light, .ds-btn-outline-light { display: inline-flex; align-items: center; gap: 8px; padding: 14px 24px; font-family: \"Public Sans\", system-ui, sans-serif; font-weight: 600; border-radius: 0; text-decoration: none; transition: background-color 150ms, border-color 150ms; } .ds-btn-light { background: #FDFCFA; color: #B93C15; box-shadow: 0 1px 1px rgba(32,49,59,0.12), 0 4px 10px rgba(32,49,59,0.14); } .ds-btn-light:hover { background: #FFFFFF; } .ds-btn-outline-light { color: #FDFCFA; border: 1px solid rgba(253,252,250,0.5); } .ds-btn-outline-light:hover { border-color: #FDFCFA; } .ds-btn-light:focus-visible, .ds-btn-outline-light:focus-visible { outline: 2px solid #FDFCFA; outline-offset: 2px; }"
     },
     {
       "name": "Filter Chip",
       "kind": "chip",
       "refersTo": "chip-filter",
-      "description": "Typed-label grade filters; selected state fills with catalog ink (aria-pressed).",
-      "html": "<button class=\"ds-chip ds-chip--active\">All mentors</button> <button class=\"ds-chip\">Rising Seniors</button>",
-      "css": ".ds-chip { border: 1px solid rgba(32,49,59,0.3); background: transparent; color: #20313B; padding: 8px 16px; font-family: \"Courier Prime\", Courier, monospace; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; border-radius: 0; transition: border-color 0.15s, background-color 0.15s, color 0.15s; cursor: pointer; } .ds-chip:hover { border-color: #20313B; } .ds-chip--active { border-color: #20313B; background: #20313B; color: #FDFCFA; } .ds-chip:focus-visible { outline: 2px solid #BE3A27; outline-offset: 2px; }"
+      "description": "Courier uppercase filter with an optional count; ink fill when pressed.",
+      "html": "<div class=\"ds-chips\"><button class=\"ds-chip\" aria-pressed=\"true\">All <span class=\"ds-chip-n\">107</span></button><button class=\"ds-chip\" aria-pressed=\"false\">The expo floor <span class=\"ds-chip-n\">70</span></button></div>",
+      "css": ".ds-chips { display: flex; flex-wrap: wrap; gap: 8px; } .ds-chip { border: 1px solid rgba(32,49,59,0.3); background: transparent; color: #20313B; padding: 8px 16px; font-family: \"Courier Prime\", Courier, monospace; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; border-radius: 0; cursor: pointer; transition: border-color 150ms, background-color 150ms; } .ds-chip:hover { border-color: #20313B; } .ds-chip[aria-pressed=\"true\"] { background: #20313B; border-color: #20313B; color: #FDFCFA; } .ds-chip-n { font-weight: 400; font-variant-numeric: tabular-nums; } .ds-chip:focus-visible { outline: 2px solid #BE3A27; outline-offset: 2px; }"
+    },
+    {
+      "name": "Cohort One Subnav",
+      "kind": "nav",
+      "refersTo": "subnav-tab",
+      "description": "Courier tab strip opening every archive page; stamp-red underline on the current page; scrolls sideways on phones.",
+      "html": "<nav class=\"ds-subnav\"><a href=\"#\">Cohort One</a><a href=\"#\" aria-current=\"page\">Symposium &amp; Gallery</a><a href=\"#\">Student Projects</a><a href=\"#\">Workshops</a></nav>",
+      "css": ".ds-subnav { display: flex; gap: 4px; overflow-x: auto; border-bottom: 1px solid rgba(32,49,59,0.15); background: #F3F1EC; } .ds-subnav a { display: block; white-space: nowrap; margin-bottom: -1px; padding: 12px; border-bottom: 2px solid transparent; font-family: \"Courier Prime\", Courier, monospace; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #51616B; text-decoration: none; transition: color 150ms, border-color 150ms; } .ds-subnav a:hover { color: #20313B; border-bottom-color: rgba(32,49,59,0.3); } .ds-subnav a[aria-current=\"page\"] { color: #20313B; border-bottom-color: #BE3A27; } .ds-subnav a:focus-visible { outline: 2px solid #BE3A27; outline-offset: 2px; }"
+    },
+    {
+      "name": "Navigation Bar + Cohort One Menu",
+      "kind": "nav",
+      "refersTo": "archive-menu",
+      "description": "Fixed cloth-deep bar; active tab on a stamp-red underline; the Cohort One dropdown marks the current page with a flame-bright dot.",
+      "html": "<div class=\"ds-nav\"><span class=\"ds-nav-mark\">Next In Research</span><a href=\"#\">Home</a><span class=\"ds-nav-tab ds-active\">Cohort One <svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m6 9 6 6 6-6\"/></svg></span><a href=\"#\">Team</a><a href=\"#\">News</a><ul class=\"ds-menu\"><li><a href=\"#\">Overview</a></li><li><a href=\"#\" aria-current=\"page\">Symposium &amp; Gallery <i></i></a></li><li><a href=\"#\">Student Projects</a></li></ul></div>",
+      "css": ".ds-nav { position: relative; display: flex; align-items: center; gap: 4px; height: 64px; padding: 0 32px 0; background: #14352E; color: #F3F1EC; font-family: \"Public Sans\", system-ui, sans-serif; margin-bottom: 150px; } .ds-nav-mark { font-family: \"Bricolage Grotesque\", Georgia, serif; font-weight: 700; font-size: 18px; letter-spacing: -0.025em; color: #FDFCFA; margin-right: 24px; } .ds-nav > a, .ds-nav-tab { padding: 6px 10px; font-size: 13px; font-weight: 600; color: rgba(243,241,236,0.75); border-bottom: 2px solid transparent; text-decoration: none; transition: color 150ms, border-color 150ms; } .ds-nav > a:hover { color: #FDFCFA; border-bottom-color: rgba(243,241,236,0.3); } .ds-active { color: #FDFCFA; border-bottom-color: #BE3A27; } .ds-menu { position: absolute; left: 190px; top: 60px; width: 256px; margin: 0; padding: 8px 0; list-style: none; background: #14352E; border: 1px solid rgba(243,241,236,0.15); box-shadow: 0 10px 28px rgba(20,53,46,0.5); } .ds-menu a { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; font-size: 14px; font-weight: 600; color: rgba(243,241,236,0.8); text-decoration: none; transition: background-color 150ms, color 150ms; } .ds-menu a:hover { background: #1D4A40; color: #FDFCFA; } .ds-menu a[aria-current=\"page\"] { color: #FDFCFA; } .ds-menu i { width: 6px; height: 6px; border-radius: 9999px; background: #EE6C4D; } .ds-nav a:focus-visible { outline: 2px solid #FDFCFA; outline-offset: 2px; }"
+    },
+    {
+      "name": "By the Numbers Card",
+      "kind": "card",
+      "refersTo": "numbers-box",
+      "description": "The front page's figure box, built as a catalog card: red rule, Courier labels, flame numerals, rod hole, the two actions at its foot.",
+      "html": "<aside class=\"ds-numbers\"><h2>By the numbers · Cohort One</h2><ul><li><b>99</b><span>middle schoolers, grades 6–8</span></li><li><b>60</b><span>students presented at Virginia Tech</span></li><li><b>$0</b><span>cost to any family</span></li></ul><a class=\"ds-n-primary\" href=\"#\">Back Cohort Two →</a><a class=\"ds-n-secondary\" href=\"#\">See Cohort One</a><span class=\"ds-hole\"></span></aside>",
+      "css": ".ds-numbers { position: relative; max-width: 360px; padding: 20px 24px 44px 48px; background-color: #FDFCFA; background-image: linear-gradient(to right, transparent 0, transparent 2.25rem, rgba(190,58,39,0.5) 2.25rem, rgba(190,58,39,0.5) calc(2.25rem + 1.5px), transparent calc(2.25rem + 1.5px)); border: 1px solid #E1DED6; color: #20313B; box-shadow: 0 2px 4px rgba(32,49,59,0.16), 0 14px 34px rgba(32,49,59,0.28); } .ds-numbers h2 { margin: 0; padding-bottom: 8px; border-bottom: 2px solid #20313B; font-family: \"Courier Prime\", Courier, monospace; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; } .ds-numbers ul { list-style: none; margin: 0; padding: 0; } .ds-numbers li { display: grid; grid-template-columns: 5.75rem 1fr; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(32,49,59,0.1); } .ds-numbers b { font-family: \"Bricolage Grotesque\", Georgia, serif; font-size: 2.4rem; font-weight: 800; line-height: 1; letter-spacing: -0.025em; color: #B93C15; font-variant-numeric: tabular-nums; } .ds-numbers li span { font-family: \"Courier Prime\", Courier, monospace; font-size: 13px; line-height: 1.35; } .ds-n-primary, .ds-n-secondary { display: flex; justify-content: center; margin-top: 10px; padding: 14px 20px; font-family: \"Public Sans\", system-ui, sans-serif; font-weight: 600; text-decoration: none; transition: background-color 150ms, border-color 150ms; } .ds-n-primary { margin-top: 20px; background: #B93C15; color: #FDFCFA; } .ds-n-primary:hover { background: #9E3211; } .ds-n-secondary { padding: 12px 20px; border: 1px solid rgba(32,49,59,0.3); color: #20313B; } .ds-n-secondary:hover { border-color: #20313B; } .ds-hole { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); width: 16px; height: 16px; border-radius: 9999px; background: #FDFCFA; border: 1px solid rgba(32,49,59,0.25); box-shadow: inset 0 1px 2px rgba(32,49,59,0.3); }"
     },
     {
       "name": "Catalog Card (portrait-led)",
       "kind": "card",
       "refersTo": "catalog-card",
-      "description": "The mentor record: a full-card-width 4:5 portrait print mounted square at the top, typed Courier details below with the red-rule margin scoped to the text block, punched rod hole.",
-      "html": "<article class=\"ds-catalog-card\"><div class=\"ds-cc-mount\"><div class=\"ds-cc-print\"><svg viewBox=\"0 0 4 5\" preserveAspectRatio=\"none\"><rect width=\"4\" height=\"5\" fill=\"#51616B\"/></svg></div></div><div class=\"ds-cc-text\"><p class=\"ds-cc-call\">006.31 MUP</p><h3 class=\"ds-cc-name\">Ashwath Muppa</h3><p class=\"ds-cc-focus\">Machine Learning &amp; Mathematical Modeling</p><p class=\"ds-cc-grade\">Rising Senior · TJHSST</p></div><span class=\"ds-cc-hole\" aria-hidden=\"true\"></span></article>",
-      "css": ".ds-catalog-card { position: relative; max-width: 300px; background: #FDFCFA; border: 1px solid #E1DED6; border-radius: 0; padding-bottom: 36px; box-shadow: 0 1px 1px rgba(32,49,59,0.12), 0 4px 10px rgba(32,49,59,0.14); } .ds-cc-mount { padding: 12px 12px 0; } .ds-cc-print { background: #FFFFFF; padding: 6px 6px 8px; box-shadow: 0 1px 2px rgba(32,49,59,0.18), 0 6px 16px rgba(32,49,59,0.22); } .ds-cc-print svg { display: block; width: 100%; aspect-ratio: 4 / 5; } .ds-cc-text { padding: 16px 16px 0 48px; background-image: linear-gradient(to right, transparent 0, transparent 2.25rem, rgba(190,58,39,0.5) 2.25rem, rgba(190,58,39,0.5) calc(2.25rem + 1.5px), transparent calc(2.25rem + 1.5px)); font-family: \"Courier Prime\", Courier, monospace; } .ds-cc-call { margin: 0; font-size: 12px; color: #BE3A27; } .ds-cc-name { margin: 4px 0 0; font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #20313B; } .ds-cc-focus { margin: 4px 0 0; font-size: 13px; line-height: 1.375; color: #51616B; } .ds-cc-grade { margin: 8px 0 0; font-size: 11px; text-transform: uppercase; letter-spacing: 0.16em; color: #2F5A77; } .ds-cc-hole { position: absolute; bottom: 8px; left: 50%; width: 16px; height: 16px; transform: translateX(-50%); border-radius: 9999px; border: 1px solid rgba(32,49,59,0.25); background: #FDFCFA; box-shadow: inset 0 1px 2px rgba(32,49,59,0.3); }"
+      "description": "Mentor record: white portrait mount, red-ruled typed details, rod hole.",
+      "html": "<article class=\"ds-cat\"><div class=\"ds-cat-mount\"><div class=\"ds-cat-img\"></div></div><div class=\"ds-cat-text\"><p class=\"ds-cat-call\">006.31 MUP</p><h3>Mentor Name</h3><p class=\"ds-cat-focus\">Machine learning · Biology</p><p class=\"ds-cat-grade\">Rising Senior · TJHSST</p></div><span class=\"ds-hole\"></span></article>",
+      "css": ".ds-cat { position: relative; width: 280px; padding-bottom: 36px; background: #FDFCFA; border: 1px solid #E1DED6; color: #20313B; box-shadow: 0 1px 1px rgba(32,49,59,0.12), 0 4px 10px rgba(32,49,59,0.14); } .ds-cat-mount { margin: 12px 12px 0; padding: 6px 6px 8px; background: #FFFFFF; box-shadow: 0 1px 2px rgba(32,49,59,0.18), 0 6px 16px rgba(32,49,59,0.22); } .ds-cat-img { aspect-ratio: 4 / 5; background: linear-gradient(160deg, #51616B, #20313B); } .ds-cat-text { padding: 16px 16px 0 48px; background-image: linear-gradient(to right, transparent 0, transparent 2.25rem, rgba(190,58,39,0.5) 2.25rem, rgba(190,58,39,0.5) calc(2.25rem + 1.5px), transparent calc(2.25rem + 1.5px)); font-family: \"Courier Prime\", Courier, monospace; } .ds-cat-text p, .ds-cat-text h3 { margin: 4px 0 0; } .ds-cat-call { font-size: 12px; color: #BE3A27; } .ds-cat-text h3 { font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; } .ds-cat-focus { font-size: 13px; color: #51616B; } .ds-cat-grade { font-size: 11px; text-transform: uppercase; letter-spacing: 0.16em; color: #2F5A77; } .ds-hole { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); width: 16px; height: 16px; border-radius: 9999px; background: #FDFCFA; border: 1px solid rgba(32,49,59,0.25); box-shadow: inset 0 1px 2px rgba(32,49,59,0.3); }"
     },
     {
-      "name": "Photo Print",
+      "name": "Gallery Thumb (press photograph)",
       "kind": "custom",
-      "refersTo": "catalog-card",
-      "description": "Every standalone photograph's mandatory dress: white archival border, ink-tinted shadow, resting tilt that straightens on hover, typed caption.",
-      "html": "<figure class=\"ds-photo-print\"><svg viewBox=\"0 0 4 3\" preserveAspectRatio=\"none\"><rect width=\"4\" height=\"3\" fill=\"#1D4A40\"/><rect x=\"0.3\" y=\"1.9\" width=\"3.4\" height=\"0.9\" fill=\"#B93C15\"/></svg><figcaption>Introduction session · Spring 2026</figcaption></figure>",
-      "css": ".ds-photo-print { max-width: 280px; margin: 0; background: #FFFFFF; padding: 8px 8px 10px; box-shadow: 0 1px 2px rgba(32,49,59,0.18), 0 6px 16px rgba(32,49,59,0.22); transform: rotate(-1.5deg); transition: transform 0.3s; } .ds-photo-print:hover { transform: rotate(0deg); } .ds-photo-print svg { display: block; width: 100%; } .ds-photo-print figcaption { padding-top: 8px; font-family: \"Courier Prime\", Courier, monospace; font-size: 11px; line-height: 1.375; color: #51616B; }"
+      "refersTo": "gallery-thumb",
+      "description": "Straight photograph in a 4px white keyline; hover lifts card -> print and fades the image slightly. Opens the Lightbox.",
+      "html": "<figure class=\"ds-thumb-fig\"><button class=\"ds-thumb\"><span class=\"ds-thumb-img\"></span></button><figcaption>A student explains a poster on the expo floor.</figcaption></figure>",
+      "css": ".ds-thumb-fig { width: 260px; margin: 0; } .ds-thumb { display: block; width: 100%; padding: 4px; border: 0; background: #FFFFFF; cursor: pointer; box-shadow: 0 1px 1px rgba(32,49,59,0.12), 0 4px 10px rgba(32,49,59,0.14); transition: box-shadow 150ms; } .ds-thumb:hover { box-shadow: 0 1px 2px rgba(32,49,59,0.18), 0 6px 16px rgba(32,49,59,0.22); } .ds-thumb-img { display: block; aspect-ratio: 4 / 3; background: linear-gradient(160deg, #B93C15, #1D4A40); transition: opacity 150ms; } .ds-thumb:hover .ds-thumb-img { opacity: 0.9; } .ds-thumb:focus-visible { outline: 2px solid #BE3A27; outline-offset: 2px; } .ds-thumb-fig figcaption { margin-top: 8px; font-family: \"Courier Prime\", Courier, monospace; font-size: 12px; line-height: 1.375; color: #51616B; }"
     },
     {
-      "name": "Accession Ledger",
-      "kind": "card",
-      "refersTo": "catalog-card",
-      "description": "The ruled ledger sheet: a ul of linked rows joining mono labels to bold stamp-red totals across dotted-ink dot leaders; rows tint to paper on hover.",
-      "html": "<div class=\"ds-ledger\"><p class=\"ds-lg-cap\">Accession ledger · Summer 2026</p><ul class=\"ds-lg-rows\"><li><span class=\"ds-lg-label\">TJHSST student mentors</span><span class=\"ds-lg-dots\" aria-hidden=\"true\"></span><span class=\"ds-lg-value\">29</span></li><li><span class=\"ds-lg-label\">Workshop photo albums shelved</span><span class=\"ds-lg-dots\" aria-hidden=\"true\"></span><span class=\"ds-lg-value\">5</span></li><li><span class=\"ds-lg-label\">Cost to any family, ever</span><span class=\"ds-lg-dots\" aria-hidden=\"true\"></span><span class=\"ds-lg-value\">$0</span></li></ul></div>",
-      "css": ".ds-ledger { position: relative; max-width: 420px; background: #FDFCFA; border: 1px solid #E1DED6; border-radius: 0; padding: 24px 24px 32px; box-shadow: 0 2px 4px rgba(32,49,59,0.16), 0 14px 34px rgba(32,49,59,0.28); background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 27px, rgba(47,90,119,0.22) 27px, rgba(47,90,119,0.22) 28px); font-family: \"Courier Prime\", Courier, monospace; } .ds-lg-cap { margin: 0; font-size: 11px; text-transform: uppercase; letter-spacing: 0.22em; color: #51616B; } .ds-lg-rows { margin: 16px 0 0; padding: 0; list-style: none; } .ds-lg-rows li { display: flex; align-items: baseline; padding: 8px 0; transition: background-color 0.15s; cursor: pointer; } .ds-lg-rows li:hover { background: #F3F1EC; } .ds-lg-label { font-size: 15px; color: #20313B; } .ds-lg-dots { flex: 1; margin: 0 8px; border-bottom: 1px dotted rgba(32,49,59,0.35); } .ds-lg-value { font-size: 20px; font-weight: 700; color: #BE3A27; }"
-    },
-    {
-      "name": "Symposium Agenda Card",
-      "kind": "card",
-      "refersTo": "catalog-card",
-      "description": "The August 22 proof object: red-ruled paper card opening with a stamped date/time, bold mono address, hairline agenda rows with stamp-red times, and a mono partner credit line.",
-      "html": "<div class=\"ds-agenda\"><span class=\"ds-ag-stamp\"><span class=\"ds-ag-stamp-in\">August 22nd · 3:00 – 7:00 PM</span></span><p class=\"ds-ag-addr\">3625 Potomac Ave, Alexandria, VA 22305</p><ul class=\"ds-ag-rows\"><li><span class=\"ds-ag-time\">3:00 PM</span><span class=\"ds-ag-item\">Student arrival &amp; set-up — poster boards and props</span></li><li><span class=\"ds-ag-time\">4:00 PM</span><span class=\"ds-ag-item\">Symposium Expo — students present their research</span></li><li><span class=\"ds-ag-time\">7:00 PM</span><span class=\"ds-ag-item\">Closing ceremony and guest speakers</span></li></ul><p class=\"ds-ag-with\">Working with Virginia Tech · Fairfax County Public Schools · Loudoun County Public Schools</p><span class=\"ds-ag-hole\" aria-hidden=\"true\"></span></div>",
-      "css": ".ds-agenda { position: relative; max-width: 460px; background: #FDFCFA; border: 1px solid #E1DED6; border-radius: 0; padding: 28px 28px 48px 56px; box-shadow: 0 2px 4px rgba(32,49,59,0.16), 0 14px 34px rgba(32,49,59,0.28); background-image: linear-gradient(to right, transparent 0, transparent 2.25rem, rgba(190,58,39,0.5) 2.25rem, rgba(190,58,39,0.5) calc(2.25rem + 1.5px), transparent calc(2.25rem + 1.5px)); font-family: \"Courier Prime\", Courier, monospace; } .ds-ag-stamp { display: inline-block; border: 2px solid #BE3A27; padding: 3px; color: #BE3A27; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; line-height: 1; white-space: nowrap; transform: rotate(-2deg); } .ds-ag-stamp-in { display: block; border: 1px solid currentColor; padding: 4px 8px; } .ds-ag-addr { margin: 16px 0 0; font-size: 14px; font-weight: 700; color: #20313B; } .ds-ag-rows { margin: 20px 0 0; padding: 0; list-style: none; } .ds-ag-rows li { display: flex; align-items: baseline; gap: 16px; padding: 10px 0; border-bottom: 1px solid rgba(32,49,59,0.1); } .ds-ag-time { width: 80px; flex-shrink: 0; font-size: 13px; font-weight: 700; color: #BE3A27; } .ds-ag-item { font-size: 13px; line-height: 1.625; color: #20313B; } .ds-ag-with { margin: 20px 0 0; font-size: 12px; line-height: 1.625; color: #51616B; } .ds-ag-hole { position: absolute; bottom: 8px; left: 50%; width: 16px; height: 16px; transform: translateX(-50%); border-radius: 9999px; border: 1px solid rgba(32,49,59,0.25); background: #FDFCFA; box-shadow: inset 0 1px 2px rgba(32,49,59,0.3); }"
+      "name": "Lightbox",
+      "kind": "custom",
+      "refersTo": "lightbox",
+      "description": "Cloth-deep full-screen viewer: Courier counter, keyline photo, caption, 44px square controls.",
+      "html": "<div class=\"ds-lb\"><div class=\"ds-lb-top\"><span>03 / 10</span><button aria-label=\"Close\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M18 6 6 18\"/><path d=\"m6 6 12 12\"/></svg></button></div><div class=\"ds-lb-photo\"></div><div class=\"ds-lb-foot\"><p>Cohort One on the staircase at Virginia Tech.</p><span><button aria-label=\"Previous\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m15 18-6-6 6-6\"/></svg></button><button aria-label=\"Next\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m9 18 6-6-6-6\"/></svg></button></span></div></div>",
+      "css": ".ds-lb { display: flex; flex-direction: column; gap: 12px; width: 560px; padding: 12px 20px 16px; background: #14352E; color: #F3F1EC; } .ds-lb-top, .ds-lb-foot { display: flex; justify-content: space-between; align-items: center; gap: 16px; } .ds-lb-top span { font-family: \"Courier Prime\", Courier, monospace; font-size: 13px; font-weight: 700; color: #FDFCFA; font-variant-numeric: tabular-nums; } .ds-lb-foot p { margin: 0; font-family: \"Courier Prime\", Courier, monospace; font-size: 13px; line-height: 1.6; color: rgba(243,241,236,0.9); } .ds-lb-foot span { display: flex; gap: 8px; } .ds-lb button { width: 44px; height: 44px; border: 1px solid rgba(243,241,236,0.4); background: transparent; color: #FDFCFA; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 0; transition: background-color 150ms, color 150ms; } .ds-lb button:hover { background: #FDFCFA; color: #14352E; } .ds-lb button:focus-visible { outline: 2px solid #FDFCFA; outline-offset: 2px; } .ds-lb-photo { aspect-ratio: 16 / 9; border: 4px solid #FFFFFF; background: linear-gradient(160deg, #B93C15, #9E3211); box-shadow: 0 2px 4px rgba(32,49,59,0.16), 0 14px 34px rgba(32,49,59,0.28); }"
     }
   ],
   "narrative": {
     "northStar": "The Library Record",
-    "overview": "The site is a public library's own record of a summer — but the record is now dressed in the program's own brand color. Flame-orange fields (user-pinned, Aug 2026) open and close the record like a poster pasted to the library door; buckram-cloth green remains as the institution's furniture — the nav bar, the footer, the ledger and schools bands; and between them, clean paper neutrals carry the content as physical objects: a card, a slip, a print, a ledger, a pocket. Evidence is the aesthetic. A date is stamped, a mentor is filed under a call number, a photo is a white-bordered archival print with a typed caption. The world explicitly refuses both the dark SaaS gradient hero and the sterile white nonprofit template (direction contract, index.html, seed 1ec49fef, rev. 2), and it retired the warm manila card stock of the first rendition — the paper is clean now, not yellowed.\n\nThe mood is civic, warm, and matter-of-fact — a well-run county institution with something to announce, not a startup. Density is generous but orderly: a flame band announces, paper bands present the evidence, cloth bands do the bookkeeping, and objects sit slightly tilted as if just set down. The typography splits cleanly into three voices — poster capitals for announcements, plain civic sans for talking to families, and typewriter mono for anything a librarian would type or stamp.",
+    "overview": "The site is a public library's own record of a finished summer, and since September 2026 that record opens as a front page. Flame-orange fields (user-pinned, Aug 2026) open and close it like a broadsheet pasted to the library door. Buckram-cloth green is the institution's furniture: the nav bar and its archive menu, the vision band, the photo viewer, and the footer. Between the two, clean paper neutrals carry the evidence as physical objects: catalog cards, a circulation sheet, an accession ledger, a hold slip, and, new with the Front Page, straight press photographs with white keylines and typed cutlines. Evidence is the aesthetic. A date is stamped, a mentor is filed under a call number, a photograph carries its credit. The world still refuses both the dark SaaS gradient hero and the sterile white nonprofit template (world contract seed 1ec49fef), and the home contract (seed afe8fa7a, first comment in `<body>` of `index.html`) adds a third refusal: the stat-tile SaaS hero.\n\nThe mood is civic, proud, and matter-of-fact: a well-run county institution reporting what happened. Density is generous but orderly. A flame band announces, paper bands present the evidence, cloth does the bookkeeping. Two photographic registers coexist: *press photographs* (the home page and every gallery) sit straight in thin white keylines, like prints on a newspaper page, while *archival prints* on the archive's interior pages still rest slightly tilted as if just set down. Typography splits into three voices: poster capitals for announcements, plain civic sans for talking to families, and typewriter mono for anything a librarian would type, stamp, or caption.",
     "keyCharacteristics": [
-      "Two colored registers over one paper ground: flame orange announces (hero, closing field, primary buttons), cloth green administers (nav, footer, ledger, schools band). Never a plain white page.",
-      "Clean paper neutrals (#F3F1EC family) as the card stock — the warm manila is retired.",
-      "Ephemera as components: catalog cards, hold slips, the accession ledger, card pockets, rod holes, archival prints, and one autoplaying reel of prints (the hero carousel).",
+      "Two colored registers over one paper ground: flame announces (front page, close, primary buttons, headline numerals), cloth administers (nav, archive menu, vision band, photo viewer, footer). Never a plain white page.",
+      "Clean paper neutrals (#F3F1EC family) as the card stock; the warm manila rendition is retired.",
+      "Ephemera as components: catalog cards, the By-the-numbers card, the circulation sheet, the accession ledger, the hold slip, rod holes, and press photographs with Courier cutlines.",
       "Two stamp inks carry all status: red for what happened, blue for what is pending.",
-      "Strictly rectilinear paper edges; the only circles are drilled holes and dots.",
+      "Strictly rectilinear edges; the only circles are drilled holes and dots.",
       "One authored motion: things arrive the way a rubber stamp lands.",
-      "A single light world — no dark mode; the cloth greens are the dark register."
+      "A single light world with no dark mode; the cloth greens are the dark register."
     ],
     "rules": [
-      { "name": "The Two Registers Rule", "body": "Flame announces, cloth administers. Flame fields open and close the record (hero and closing band) and fill the primary action on paper; cloth is the institution's furniture — nav, footer, ledger band, schools band. Paper bands carry the evidence between them. Neither register ever grounds a whole interior page; those are paper.", "section": "colors" },
-      { "name": "The Two Inks Rule", "body": "Status is always a stamp, and the ink states the tense: red (#BE3A27) for what happened (HELD, a stamped date), blue (#2F5A77) for what's pending (DUE, HOLD FOR, in processing). No green/amber/gray status pills exist in this world.", "section": "colors" },
-      { "name": "The Card, Not Page Rule", "body": "Paper-bright surfaces are always bounded objects — bordered in paper-shade, shadowed, often tilted or rod-holed — sitting on a paper, cloth, or flame field. There is no edge-to-edge white or off-white \"page.\"", "section": "colors" },
-      { "name": "The Typed Data Rule", "body": "Courier Prime is reserved for what a librarian would type or stamp: identifiers, dates, statuses, captions, labels, and the contents of catalog cards. It never sets narrative prose paragraphs or display headings.", "section": "typography" },
-      { "name": "The No Floating Label Rule", "body": "Small mono labels exist only as printed parts of ephemera objects (a slip's header, a ledger's caption, a pocket's label). No eyebrow/kicker labels float above display headings; sections open with the heading itself.", "section": "typography" },
-      { "name": "The Ink-Shadow Rule", "body": "Shadows are diffuse, downward, and ink-tinted (rgba(32,49,59,…)). Elevation is reserved: card at rest, print for photographs, print-lg only for a band's single hero object. Hover may swap card → print-lg (contact cards) but never invents new shadows.", "section": "elevation" },
-      { "name": "The Guillotine Rule", "body": "Corners are square because paper is cut, not molded. The only permitted circles are holes and dots. Rounding anything else breaks the material.", "section": "shapes" },
-      { "name": "The Handed-Reel Rule", "body": "Autoplay is a courtesy, never a takeover: the hero reel pauses while hovered or focused, any manual control (dot, arrow, or the aria-pressed pause toggle) stops autoplay for good, and under prefers-reduced-motion the reel never advances on its own.", "section": "components" }
+      {
+        "name": "The Two Registers Rule",
+        "body": "Flame announces, cloth administers. Flame fields open and close the home page and fill the primary action on paper; cloth is the institution's furniture: nav, archive menu, vision band, photo viewer, footer. Paper bands carry the evidence between them. Neither register grounds a whole interior page; those are paper.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two Inks Rule",
+        "body": "Status is always a stamp, and the ink states the tense: red for what happened (HELD, a stamped date), blue for what is pending (DUE, HOLD FOR, in processing). No green, amber, or gray status pills exist in this world.",
+        "section": "colors"
+      },
+      {
+        "name": "The Card, Not Page Rule",
+        "body": "Paper-bright surfaces are always bounded objects (bordered in paper-shade, ink-shadowed, often rod-holed) sitting on a paper, cloth, or flame field. There is no edge-to-edge white or off-white page.",
+        "section": "colors"
+      },
+      {
+        "name": "The Typed Data Rule",
+        "body": "Courier Prime is reserved for what a librarian or a news desk would type: identifiers, dates, bylines, cutlines, credits, statuses, labels, and the contents of catalog cards. It never sets narrative prose paragraphs or display headings.",
+        "section": "typography"
+      },
+      {
+        "name": "The Run-In Rule",
+        "body": "The program's two standing statements are set as run-ins, never as labels: \"Our mission:\" in bold paper-bright leading the front-page deck, and \"Our vision:\" in Bricolage 800 opening the cloth band's h2 (the rest of that heading in 600). The lead-in belongs to the sentence it starts.",
+        "section": "typography"
+      },
+      {
+        "name": "The No Floating Label Rule",
+        "body": "Small mono labels exist only as printed parts of objects (a card's header, a sheet's caption, a slip's hold line) or as the front page's dateline strip, which spans the full measure between two paper-bright/40 rules and carries only typed facts (cohort, date, place, \"Free for every family\"). No eyebrow or kicker label floats above a section heading.",
+        "section": "typography"
+      },
+      {
+        "name": "The Ink-Shadow Rule",
+        "body": "Shadows are diffuse, downward, and ink-tinted. Elevation is reserved: `card` at rest, `print` for photographs, `print-lg` only for a band's single hero object. Hover may step one level (`card` → `print` on photographs, `card` → `print-lg` on press and contact cards) but never invents a new shadow.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Guillotine Rule",
+        "body": "Corners are square because paper is cut, not molded. The only permitted circles are holes and dots. Rounding anything else breaks the material.",
+        "section": "shapes"
+      },
+      {
+        "name": "The Press-Print Rule",
+        "body": "A photograph that reports (home, galleries, the viewer) is straight and keylined in white; a photograph that is kept (the archive's standalone prints) may tilt. Never tilt a press photograph, and never frame one with anything but white.",
+        "section": "shapes"
+      }
     ],
     "dos": [
-      "Do keep the two registers straight: flame (#B93C15) grounds announcement fields and primary buttons, cloth (#1D4A40/#14352E) grounds the institutional chrome (nav, footer, ledger, schools), and paper (#F3F1EC) grounds content bands. Seam a colored field to paper with an 8px rule in that field's deep tone; seam paper to paper with an ink/10 hairline.",
-      "Do render every standalone photograph as a PhotoPrint: white border, shadow-print, slight tilt, hover-straighten, typed mono caption. Portraits mounted inside catalog and coordinator cards keep the white mount but sit square and full-width (4:5 crop).",
-      "Do carry status with stamps in the correct ink — red = happened, blue = pending — using the double-ring Stamp and its spring entrance (stiffness 420, damping 21).",
-      "Do honor reduced motion at all three layers: MotionConfig reducedMotion=\"user\" around the app, the global CSS kill switch, and a matchMedia guard before any autoplay.",
-      "Do give autoplaying media the Handed-Reel treatment: pause on hover/focus, a visible aria-pressed pause control, and permanent stop on any manual navigation.",
-      "Do put scroll-mt-16 on any in-page anchor target; the 64px nav is fixed.",
-      "Do keep Courier Prime for typed data and labels, Public Sans for prose, Bricolage for headings — three voices, never swapped.",
-      "Do give each paper object its full kit: 1px paper-shade border, ink-tinted shadow, square corners, and a rod hole when it's a catalog record.",
-      "Do limit icons to functional wayfinding lucide strokes (arrows, chevrons, mail, external-link, menu/x, play/pause) at 16–20px."
+      "**Do** keep the two registers straight: flame grounds the front page, the close, and primary buttons; cloth grounds the chrome (nav, archive menu, vision band, viewer, footer); paper grounds content. Seam the flame front page to paper with an 8px flame-deep rule and paper to paper with an `ink/10` hairline.",
+      "**Do** set press photographs straight in a white keyline (8px on the lead, 4px on thumbnails) with a Courier cutline and, on the lead, the photo credit. Hover lifts `card` → `print` and fades the image to 90%.",
+      "**Do** reserve tilt for kept objects: archival `PhotoPrint`s on interior archive pages and the hold slip, at −1.4° to +1.6°, straightening on hover.",
+      "**Do** carry status with stamps in the right ink (red happened, blue pending) using the double-ring `Stamp` and its spring (stiffness 420, damping 21). One stamp per first viewport.",
+      "**Do** build figure boxes as catalog cards: red-rule margin, paper-shade border, rod hole, Courier labels, flame Bricolage numerals.",
+      "**Do** open every Cohort One archive page with `CohortSubnav`, and route every internal link through `PageLink` so it is a real anchor.",
+      "**Do** give every photo gallery the `Lightbox`: counter, arrow keys, swipe, Escape, focus trap, and focus return.",
+      "**Do** size thumbnails from the photo's own width and height so masonry never jumps.",
+      "**Do** honor reduced motion at both layers: `MotionConfig reducedMotion=\"user\"` and the global CSS kill switch.",
+      "**Do** keep Courier Prime for typed data, labels, bylines, and cutlines; Public Sans for prose; Bricolage for headings and numerals. Three voices, never swapped.",
+      "**Do** limit icons to functional lucide strokes (arrows, chevrons, mail, external-link, menu, X) at 16–20px."
     ],
     "donts": [
-      "Don't round a corner. Only rod holes, dot markers, and the reel dots are circles (The Guillotine Rule).",
-      "Don't warm the neutrals back toward manila or cream — the card stock is the clean paper trio (#F3F1EC / #FDFCFA / #E1DED6); the manila rendition is retired by the user.",
-      "Don't set flame-bright (#EE6C4D) as text or accents on paper surfaces — it lives as small punctuation on cloth grounds, and the contrast fails anywhere lighter.",
-      "Don't float eyebrow/kicker labels above headings; mono labels belong inside ephemera objects only.",
-      "Don't introduce a dark mode or new dark surfaces; the cloth greens are this light civic world's entire dark register.",
-      "Don't author new entrance animations — the stamp-in spring is the only arrival; everything else is a functional fade, reveal, or straighten at 180–550ms.",
-      "Don't use pure-black or colored shadows; every shadow tints from catalog ink rgba(32,49,59,…).",
-      "Don't let transformed objects widen the page — tilts and pre-animation scale are why overflow-x: clip is load-bearing on html/body."
+      "**Don't** round a corner. Only rod holes and dot markers are circles (The Guillotine Rule).",
+      "**Don't** tilt a press photograph or frame one in anything but white (The Press-Print Rule).",
+      "**Don't** warm the neutrals back toward manila or cream. The card stock is the clean paper trio (#F3F1EC / #FDFCFA / #E1DED6).",
+      "**Don't** set flame-bright (#EE6C4D) as text or on paper; it is a small dot on cloth-deep only.",
+      "**Don't** float eyebrow or kicker labels above headings. Mono labels belong inside objects, and the only strip above a heading is the front-page dateline between rules.",
+      "**Don't** lay out figures as bare stat tiles; numbers live inside a catalog-card box or a dot-leader ledger.",
+      "**Don't** introduce a dark mode or new dark surfaces; the cloth greens are this light world's entire dark register.",
+      "**Don't** author new entrance animations. The stamp-in spring is the only arrival; everything else is a functional fade, reveal, lift, or straighten at 160–300ms.",
+      "**Don't** use pure-black or colored shadows; every shadow tints from catalog ink or deep cloth.",
+      "**Don't** let transformed objects widen the page; `overflow-x: clip` on `html`/`body` is load-bearing.",
+      "**Don't** name students in captions, cutlines, or alt text; captions name the research, not the researcher."
     ]
   }
 }

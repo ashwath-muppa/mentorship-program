@@ -493,9 +493,9 @@ const WORKSHOPS = [
   { n: 4, iso: "2026-07-09", date: "Thursday, July 9", time: "4:00 – 5:00 PM", title: "Data Analysis, Statistical Tests, and Applied Computer Science", topic: "Skills", loc: ASHBURN },
   { n: 5, iso: "2026-07-16", date: "Thursday, July 16", time: "4:00 – 5:00 PM", title: "Scientific Writing Part 1: Overview & Responsible AI Usage", topic: "Skills", loc: ASHBURN },
   { n: 6, iso: "2026-07-23", date: "Thursday, July 23", time: "4:00 – 5:00 PM", title: "Scientific Writing Part 2: Reading, Interpreting, and Summarizing Data", topic: "Skills", loc: ASHBURN },
-  { n: 7, iso: "2026-07-30", date: "Thursday, July 30", time: "4:00 – 5:00 PM", title: "Skills Session", topic: "Skills", loc: BRAMBLETON },
-  { n: 8, iso: "2026-08-06", date: "Thursday, August 6", time: "Time + Location TBD", title: "Finalizing Student Posters / Projects", topic: "Publishing", loc: null },
-  { n: 9, iso: "2026-08-13", date: "Thursday, August 13", time: "Time + Location TBD", title: "Practicing Presentation", topic: "Publishing", loc: null },
+  { n: 7, iso: "2026-07-30", date: "Thursday, July 30", time: "4:00 – 5:00 PM", title: "Mental Health & Time Management", topic: "Skills", loc: BRAMBLETON },
+  { n: 8, iso: "2026-08-06", date: "Thursday, August 6", time: "5:00 – 6:00 PM", title: "Finalizing Student Posters / Projects", topic: "Publishing", loc: ASHBURN },
+  { n: 9, iso: "2026-08-13", date: "Thursday, August 13", time: "5:00 – 6:00 PM", title: "Practicing Presentation", topic: "Publishing", loc: BRAMBLETON },
 ];
 
 function workshopHeld(w) {
@@ -571,6 +571,43 @@ const WORKSHOP_GALLERIES = [
     homePicks: [0, 4, 10],
     slides: `${WORKSHOP_ROOT}/workshop-5/slides/slideshow-w5.pdf`,
     handout: `${WORKSHOP_ROOT}/workshop-5/handouts/second.pdf`,
+  },
+  {
+    n: 6,
+    photos: [
+      "IMG_0807.jpg", "IMG_0804.jpg", "IMG_0805.jpg", "IMG_0810.jpg", "IMG_0812.jpg",
+      "IMG_0813.jpg", "IMG_0815.jpg", "IMG_0817.jpg", "IMG_0820.jpg",
+    ].map((file) => `${WORKSHOP_ROOT}/workshop-6/photos/${file}`),
+    homePicks: [0, 5, 6],
+    slides: `${WORKSHOP_ROOT}/workshop-6/slides/workshop-6-scientific-writing-part-2.pdf`,
+  },
+  {
+    n: 7,
+    photos: [
+      "IMG_0831.jpg", "IMG_1037.jpg", "IMG_1038.jpg", "IMG_1041.jpg", "IMG_7646.jpg",
+      "IMG_0839.jpg", "IMG_0841.jpg", "IMG_1046.jpg", "IMG_1047.jpg", "IMG_0845.jpg",
+      "IMG_7656.jpg", "IMG_1052.jpg",
+    ].map((file) => `${WORKSHOP_ROOT}/workshop-7/photos/${file}`),
+    homePicks: [0, 4, 7],
+    slides: `${WORKSHOP_ROOT}/workshop-7/slides/workshop-7-mental-health-time-management.pdf`,
+  },
+  {
+    n: 8,
+    photos: [
+      "IMG_2258.jpg", "IMG_2228.jpg", "IMG_2232.jpg", "IMG_2233.jpg", "IMG_2254.jpg",
+      "IMG_2256.jpg", "IMG_2262.jpg", "IMG_2266.jpg",
+    ].map((file) => `${WORKSHOP_ROOT}/workshop-8/photos/${file}`),
+    homePicks: [0, 4, 7],
+    slides: `${WORKSHOP_ROOT}/workshop-8/slides/workshop-8-finalizing-projects-posters.pdf`,
+  },
+  {
+    n: 9,
+    photos: [
+      "IMG_9013.jpg", "IMG_9024.jpg", "IMG_7835.jpg", "IMG_7836.jpg", "IMG_7839.jpg",
+      "IMG_7841.jpg", "IMG_7843.jpg",
+    ].map((file) => `${WORKSHOP_ROOT}/workshop-9/photos/${file}`),
+    homePicks: [0, 2, 5],
+    slides: `${WORKSHOP_ROOT}/workshop-9/slides/workshop-9-presentation-prep.pdf`,
   },
 ];
 
@@ -816,7 +853,7 @@ function CoverCarousel() {
       </figure>
 
       <div className="mt-4 flex items-center justify-between">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2">
           {WORKSHOP_COVERS.map((c, i) => (
             <button
               key={c.n}
@@ -1170,10 +1207,19 @@ function HomePage({ setActivePage }) {
               What happened, week by week
             </h2>
             <p className="mt-5 text-lg leading-relaxed text-ink-soft">
-              {["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"][heldCount]}{" "}
-              of nine workshops are stamped into the record so far —{" "}
-              {WORKSHOP_GALLERIES.length} photo albums are shelved on the
-              Workshops page, and the rest are in processing.
+              {WORKSHOP_GALLERIES.length === WORKSHOPS.length ? (
+                <>
+                  All nine workshops are stamped into the record, and every
+                  one has its photo album shelved on the Workshops page.
+                </>
+              ) : (
+                <>
+                  {["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"][heldCount]}{" "}
+                  of nine workshops are stamped into the record so far —{" "}
+                  {WORKSHOP_GALLERIES.length} photo albums are shelved on the
+                  Workshops page, and the rest are in processing.
+                </>
+              )}
             </p>
           </div>
 
@@ -1759,7 +1805,7 @@ function SchedulePage({ setActivePage }) {
     <PageShell>
       <PageTitle
         title="The circulation schedule"
-        lead="Nine free workshops carry the series from the fundamentals of research to presenting finished work — hosted at Loudoun County public libraries, with the final sessions arranged with families directly."
+        lead="Nine free workshops carry the series from the fundamentals of research to presenting finished work — every one hosted at a Loudoun County public library, in Ashburn or Brambleton."
       />
 
       {/* Desktop table */}
@@ -2014,7 +2060,7 @@ function WorkshopsPage() {
     <PageShell>
       <PageTitle
         title="The albums"
-        lead="Each workshop's photo album sits beside the slides and handouts the students actually used. New albums are shelved as sessions wrap."
+        lead="Each workshop's photo album sits beside the slides and handouts the students actually used — all nine sessions, June 17 through August 13."
       />
 
       <div className="space-y-16">
@@ -2071,44 +2117,46 @@ function WorkshopsPage() {
                 <Stamp rotate={w.n % 2 ? -3 : 2}>{stampDate(w.iso)}</Stamp>
               </div>
 
-              <div className="grid items-stretch gap-6 lg:grid-cols-2">
+              <div className={cn("grid items-stretch gap-6", gallery.slides && "lg:grid-cols-2")}>
                 <WorkshopAlbum photos={gallery.photos} title={title} />
 
-                <div className="flex h-full flex-col border border-paper-shade bg-paper-bright p-4 shadow-card">
-                  <div className="flex items-center justify-between gap-4 px-1 pb-3 pt-1">
-                    <h3 className="font-display text-xl font-bold tracking-tight text-ink">
-                      The slides
-                    </h3>
-                    <div className="flex items-center gap-4">
-                      {gallery.handout && (
+                {gallery.slides && (
+                  <div className="flex h-full flex-col border border-paper-shade bg-paper-bright p-4 shadow-card">
+                    <div className="flex items-center justify-between gap-4 px-1 pb-3 pt-1">
+                      <h3 className="font-display text-xl font-bold tracking-tight text-ink">
+                        The slides
+                      </h3>
+                      <div className="flex items-center gap-4">
+                        {gallery.handout && (
+                          <a
+                            href={gallery.handout}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-1.5 font-mono text-[12px] font-bold uppercase tracking-[0.12em] text-stamp-blue transition-colors hover:text-ink"
+                          >
+                            Handout
+                            <ExternalLink className="h-4 w-4" />
+                          </a>
+                        )}
                         <a
-                          href={gallery.handout}
+                          href={gallery.slides}
                           target="_blank"
                           rel="noreferrer"
-                          className="inline-flex items-center gap-1.5 font-mono text-[12px] font-bold uppercase tracking-[0.12em] text-stamp-blue transition-colors hover:text-ink"
+                          className="inline-flex items-center gap-1.5 font-mono text-[12px] font-bold uppercase tracking-[0.12em] text-stamp transition-colors hover:text-ink"
                         >
-                          Handout
+                          Open
                           <ExternalLink className="h-4 w-4" />
                         </a>
-                      )}
-                      <a
-                        href={gallery.slides}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-1.5 font-mono text-[12px] font-bold uppercase tracking-[0.12em] text-stamp transition-colors hover:text-ink"
-                      >
-                        Open
-                        <ExternalLink className="h-4 w-4" />
-                      </a>
+                      </div>
                     </div>
+                    <iframe
+                      src={gallery.slides}
+                      title={`${title} slides`}
+                      className="min-h-[380px] w-full flex-1 border border-paper-shade bg-white sm:min-h-[460px]"
+                      loading="lazy"
+                    />
                   </div>
-                  <iframe
-                    src={gallery.slides}
-                    title={`${title} slides`}
-                    className="min-h-[380px] w-full flex-1 border border-paper-shade bg-white sm:min-h-[460px]"
-                    loading="lazy"
-                  />
-                </div>
+                )}
               </div>
             </section>
           );

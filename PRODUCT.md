@@ -36,7 +36,7 @@ Near-peer research mentorship at a scale and price no formal program matches: cu
 ## Operating Context
 
 - **Program state (September 2026): Cohort One is complete and documented.** Planning for Cohort Two (Summer 2027) is under way; support and funding are being sought. The founders plan to incorporate as a 501(c)(3) — the site never claims that status until it is real.
-- **Communication is email-first.** The directors are reached at devsrivastava@nextinresearch.org and deborah.ctp@nextinresearch.org. Private student/parent channels are shared individually, never posted.
+- **Communication is email-first.** The directors are reached at devsrivastava@nextinresearch.org and deborahctp@nextinresearch.org. Private student/parent channels are shared individually, never posted.
 - **The site's one ask is email.** No donation link (the GoFundMe was removed by the founders), no mentor application form (the 2026 form was retired). Hosts, sponsors, judges, speakers, 2027 mentors, and 2027 families all email the directors.
 - Google Classroom remains the enrolled students' enrichment space; it is linked, not replaced.
 

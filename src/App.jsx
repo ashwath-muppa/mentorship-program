@@ -227,7 +227,7 @@ const FOUNDERS = [
     role: "Program Director / Cofounder",
     school: "TJHSST",
     interest: "Neuroscience",
-    email: "deborah.ctp@nextinresearch.org",
+    email: "deborahctp@nextinresearch.org",
     image: `${IMAGE_ROOT}/Mentor_Imgs/Deborah_Torrico_Pardo.jpg`,
     call: "612.8 TOR",
   },

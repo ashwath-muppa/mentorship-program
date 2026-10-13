@@ -1206,7 +1206,7 @@ function Navigation({ activePage }) {
 // PRESS — shared by the front page and the News page
 // ─────────────────────────────────────────────
 
-// The lead story: a link card (VT News refuses to be framed).
+// A story as a link card (most outlets refuse to be framed).
 function PressStory({ item, large = false }) {
   return (
     <article className="group relative flex flex-col border border-paper-shade bg-paper-bright shadow-card transition-shadow hover:shadow-print-lg">
@@ -1239,9 +1239,14 @@ function PressStory({ item, large = false }) {
           {item.outlet} · {item.dateLabel}
         </p>
         {item.quote && (
-          <p className="mt-5 font-display text-xl font-semibold leading-snug tracking-tight text-flame sm:text-2xl">
-            “{item.quote}”
-          </p>
+          <figure className="mt-5">
+            <blockquote className="font-display text-xl font-semibold leading-snug tracking-tight text-flame sm:text-2xl">
+              “{item.quote}”
+            </blockquote>
+            {item.quoteBy && (
+              <figcaption className="mt-2 font-mono text-[12px] text-ink-soft">{item.quoteBy}</figcaption>
+            )}
+          </figure>
         )}
         <p className="mt-auto inline-flex items-center gap-2 pt-6 font-semibold text-stamp transition-colors group-hover:text-ink">
           Read it on {item.outlet.split(" · ")[0]}
@@ -1252,40 +1257,20 @@ function PressStory({ item, large = false }) {
   );
 }
 
-// A second story, told briefly, linking out to the original post.
-function PressBrief({ item }) {
+// More coverage, one line per story, linking out to the original.
+function PressLine({ item }) {
   return (
-    <article className="group relative flex flex-col border border-paper-shade bg-paper-bright shadow-card transition-shadow hover:shadow-print-lg">
-      <div className="p-3 pb-0">
-        <img
-          src={item.image.src}
-          alt={item.image.alt}
-          loading="lazy"
-          decoding="async"
-          className="aspect-[4/3] w-full object-cover"
-        />
-      </div>
-      <div className="flex flex-1 flex-col p-6">
-        <h3 className="font-display text-xl font-bold leading-snug tracking-tight text-ink">
-          <a
-            href={item.url}
-            target="_blank"
-            rel="noreferrer"
-            className="after:absolute after:inset-0 after:content-['']"
-          >
-            {item.outlet.split(" · ")[0]}
-          </a>
-        </h3>
-        <p className="mt-2 font-mono text-[13px] text-ink-soft">
-          {item.outlet.split(" · ")[1] || item.outlet} · {item.dateLabel}
-        </p>
-        <p className="mt-3 leading-relaxed text-ink">{item.summary}</p>
-        <p className="mt-auto inline-flex items-center gap-2 pt-5 font-semibold text-stamp transition-colors group-hover:text-ink">
-          View the post
-          <ExternalLink className="h-4 w-4" />
-        </p>
-      </div>
-    </article>
+    <li className="border-b border-ink/15">
+      <a href={item.url} target="_blank" rel="noreferrer" className="group block py-4">
+        <span className="block font-display text-lg font-bold leading-snug tracking-tight text-ink transition-colors group-hover:text-stamp">
+          {item.title}
+        </span>
+        <span className="mt-1.5 block font-mono text-[12px] leading-relaxed text-ink-soft">
+          {item.outlet} · {item.dateLabel}{" "}
+          <ExternalLink className="inline h-3.5 w-3.5 align-[-2px]" />
+        </span>
+      </a>
+    </li>
   );
 }
 
@@ -1312,7 +1297,8 @@ function HomePage() {
   // #1 is the flagship above; the opening on the stairs (#4) leads the spread.
   const spread = [TOP_TEN[3], ...TOP_TEN.slice(1).filter((_, i) => i !== 2)];
   const spreadPhotos = spread.map(toViewerPhoto);
-  const [leadStory, secondStory] = PRESS;
+  const leadStory = PRESS.find((p) => p.id === "vt-news");
+  const moreCoverage = PRESS.filter((p) => p !== leadStory);
 
   return (
     <div>
@@ -1427,8 +1413,17 @@ function HomePage() {
           </div>
           <div className="mt-10 grid items-start gap-6 lg:grid-cols-[1.4fr_0.6fr]">
             <PressStory item={leadStory} />
-            <div className="grid gap-6">
-              <PressBrief item={secondStory} />
+            <div className="grid gap-8">
+              <div>
+                <h3 className="border-b-2 border-ink pb-2 font-display text-xl font-bold tracking-tight text-ink">
+                  More coverage
+                </h3>
+                <ul>
+                  {moreCoverage.map((item) => (
+                    <PressLine key={item.id} item={item} />
+                  ))}
+                </ul>
+              </div>
               <div className="border-t-2 border-ink pt-4">
                 <h3 className="font-display text-xl font-bold tracking-tight text-ink">
                   Press inquiries
@@ -2668,7 +2663,8 @@ function ProjectsPage() {
 // ─────────────────────────────────────────────
 
 function NewsPage() {
-  const [vtNews, linkedIn] = PRESS;
+  const articles = PRESS.filter((p) => !p.embed);
+  const posts = PRESS.filter((p) => p.embed);
 
   return (
     <PageShell>
@@ -2679,7 +2675,9 @@ function NewsPage() {
 
       <div className="grid items-start gap-8 lg:grid-cols-[1.15fr_0.85fr]">
         <div className="grid gap-8">
-          <PressStory item={vtNews} large />
+          {articles.map((item) => (
+            <PressStory key={item.id} item={item} large />
+          ))}
 
           <div className="red-rule relative border border-paper-shade bg-paper-bright p-7 pl-14 pb-12 shadow-card sm:p-9 sm:pl-14">
             <h2 className="font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
@@ -2703,29 +2701,34 @@ function NewsPage() {
           </div>
         </div>
 
-        <article className="border border-paper-shade bg-paper-bright p-4 shadow-card">
-          <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 px-1 pb-3 pt-1">
-            <h2 className="font-display text-xl font-bold tracking-tight text-ink">
-              {linkedIn.outlet.split(" · ")[0]}
-            </h2>
-            <a
-              href={linkedIn.url}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-1.5 font-mono text-[12px] font-bold uppercase tracking-[0.12em] text-stamp transition-colors hover:text-ink"
-            >
-              On LinkedIn
-              <ExternalLink className="h-4 w-4" />
-            </a>
-          </div>
-          <p className="px-1 pb-3 font-mono text-[12px] text-ink-soft">{linkedIn.dateLabel}</p>
-          <iframe
-            src={linkedIn.embed}
-            title="Virginia Tech in the D.C. Area's LinkedIn post about the Cohort One symposium"
-            loading="lazy"
-            className="h-[780px] w-full border border-paper-shade bg-white"
-          />
-        </article>
+        <div className="grid gap-8">
+          {posts.map((post) => {
+            const [author, network] = post.outlet.split(" · ");
+            return (
+              <article key={post.id} className="border border-paper-shade bg-paper-bright p-4 shadow-card">
+                <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 px-1 pb-3 pt-1">
+                  <h2 className="font-display text-xl font-bold tracking-tight text-ink">{author}</h2>
+                  <a
+                    href={post.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 font-mono text-[12px] font-bold uppercase tracking-[0.12em] text-stamp transition-colors hover:text-ink"
+                  >
+                    On {network || "the original site"}
+                    <ExternalLink className="h-4 w-4" />
+                  </a>
+                </div>
+                <p className="px-1 pb-3 font-mono text-[12px] text-ink-soft">{post.dateLabel}</p>
+                <iframe
+                  src={post.embed}
+                  title={`${author}'s post about the Cohort One symposium`}
+                  loading="lazy"
+                  className="h-[780px] w-full border border-paper-shade bg-white"
+                />
+              </article>
+            );
+          })}
+        </div>
       </div>
     </PageShell>
   );
@@ -3045,7 +3048,7 @@ function Footer() {
       </div>
       <div className="border-t border-paper/15">
         <p className="mx-auto max-w-7xl px-5 py-5 font-mono text-[11px] leading-relaxed tracking-[0.08em] text-paper/70 sm:px-8">
-          Last stamped September 2026 · {PHOTO_CREDIT}.
+          Last stamped October 2026 · {PHOTO_CREDIT}.
         </p>
       </div>
     </footer>

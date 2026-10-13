@@ -84,9 +84,23 @@ export const COHORT_STORY = [
 ];
 
 // ── Press ──
-// VT News blocks framing (X-Frame-Options: SAMEORIGIN), so it runs as a link
-// card. LinkedIn's /embed/ URL allows framing.
+// Newest first. VT News blocks framing (X-Frame-Options: SAMEORIGIN), so articles
+// run as link cards; a post with an `embed` URL is framed live on the News page.
 export const PRESS = [
+  {
+    id: "founded-by-women",
+    outlet: "Founded by Women",
+    dateLabel: "October 13, 2026",
+    title:
+      "Two Seniors Built a Free Research Program for Middle Schoolers — and 60 of Them Presented at Virginia Tech",
+    quote: "…a statement that youth is capable of contributing to the scientific community.",
+    quoteBy: "Deborah Torrico-Pardo",
+    url: "https://www.foundedbywomen.org/next-gen-founders/two-seniors-built-a-free-research-program-for-middle-schoolers-and-60-of-them-presented-at-virginia-tech/",
+    image: {
+      src: `${SYMPOSIUM_ROOT}/gallery/full/img_0559.jpg`,
+      alt: "Program directors Dev Srivastava and Deborah Torrico-Pardo on the staircase at the Cohort One symposium",
+    },
+  },
   {
     id: "vt-news",
     outlet: "Virginia Tech News",
@@ -107,12 +121,6 @@ export const PRESS = [
     title: "Virginia Tech in the D.C. Area on the Cohort One symposium",
     url: "https://www.linkedin.com/posts/vtdcarea_virginia-tech-welcomed-more-than-250-attendees-activity-7500274151425818624-AVe4",
     embed: "https://www.linkedin.com/embed/feed/update/urn:li:activity:7500274151425818624",
-    summary:
-      "Virginia Tech's D.C.-area team recapped the symposium: more than 250 attendees and 60 middle school presenters at Academic Building One.",
-    image: {
-      src: `${SYMPOSIUM_ROOT}/gallery/full/img_0582.jpg`,
-      alt: "Cohort One students holding up their certificates on the staircase",
-    },
   },
 ];
 

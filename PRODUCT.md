@@ -66,7 +66,7 @@ Near-peer research mentorship at a scale and price no formal program matches: cu
 - Certificates of Achievement for every presenting student and every mentor (no ranked awards were given).
 - $0 cost to any family.
 
-**Assets:** 107 curated symposium photographs (event photography by Nagaraju Kashayi for Virginia Tech, plus program phone photos) in `public/images/NextInResearch/symposium/`, including the team's own Top 10; nine workshop albums with slides; 29 mentor profiles with portraits; press: Virginia Tech News article and the Virginia Tech in the D.C. Area LinkedIn post.
+**Assets:** 107 curated symposium photographs (event photography by Nagaraju Kashayi for Virginia Tech, plus program phone photos) in `public/images/NextInResearch/symposium/`, including the team's own Top 10; nine workshop albums with slides; 29 mentor profiles with portraits; press: the Virginia Tech News article, the Virginia Tech in the D.C. Area LinkedIn post, and Founded by Women's Q&A with Deborah (Oct 13, 2026).
 
 **Deliberately absent — never fabricate:**
 

@@ -1297,8 +1297,9 @@ function HomePage() {
   // #1 is the flagship above; the opening on the stairs (#4) leads the spread.
   const spread = [TOP_TEN[3], ...TOP_TEN.slice(1).filter((_, i) => i !== 2)];
   const spreadPhotos = spread.map(toViewerPhoto);
-  const leadStory = PRESS.find((p) => p.id === "vt-news");
-  const moreCoverage = PRESS.filter((p) => p !== leadStory);
+  // PRESS always starts with Virginia Tech News (pinned in src/data/cohortOne.js),
+  // so it leads here; every other story lists under More coverage, newest first.
+  const [leadStory, ...moreCoverage] = PRESS;
 
   return (
     <div>
@@ -2663,6 +2664,7 @@ function ProjectsPage() {
 // ─────────────────────────────────────────────
 
 function NewsPage() {
+  // Virginia Tech News is always the first card (pinned in src/data/cohortOne.js).
   const articles = PRESS.filter((p) => !p.embed);
   const posts = PRESS.filter((p) => p.embed);
 

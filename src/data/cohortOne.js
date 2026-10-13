@@ -84,9 +84,35 @@ export const COHORT_STORY = [
 ];
 
 // ── Press ──
-// Newest first. VT News blocks framing (X-Frame-Options: SAMEORIGIN), so articles
-// run as link cards; a post with an `embed` URL is framed live on the News page.
-export const PRESS = [
+//
+// ADDING A NEWS STORY: copy an entry below and paste it directly under the
+// Virginia Tech News entry, so the list always reads VT News first, then every
+// other story newest first. Give it an id, outlet, dateLabel, title, url, and an
+// image from our own gallery (or an `embed` URL for a post that can be framed,
+// like LinkedIn). `quote` and `quoteBy` are optional.
+//
+// Virginia Tech News is ALWAYS the first story: the home page's lead and the top
+// of the News page. It carries `pinned: true`, and PRESS below sorts pinned
+// stories first, so it stays first even if a new story lands above it. Never add
+// `pinned` to any other story.
+//
+// VT News blocks framing (X-Frame-Options: SAMEORIGIN), so articles run as link
+// cards; a post with an `embed` URL is framed live on the News page.
+const PRESS_STORIES = [
+  {
+    id: "vt-news",
+    pinned: true, // Always the first story on the site. Keep this on VT News only.
+    outlet: "Virginia Tech News",
+    dateLabel: "September 11, 2026",
+    title:
+      "Institute for Advanced Computing hosts symposium to showcase STEM learning for local middle school students",
+    quote: "…the passion that these young engineers bring to STEM fields.",
+    url: "https://news.vt.edu/articles/2026/09/STEM-symposium-IAC-2026.html",
+    image: {
+      src: `${SYMPOSIUM_ROOT}/gallery/full/20260822_153343.jpg`,
+      alt: "The Boeing Auditorium filled with research posters, students, and families during the symposium",
+    },
+  },
   {
     id: "founded-by-women",
     outlet: "Founded by Women",
@@ -102,19 +128,6 @@ export const PRESS = [
     },
   },
   {
-    id: "vt-news",
-    outlet: "Virginia Tech News",
-    dateLabel: "September 11, 2026",
-    title:
-      "Institute for Advanced Computing hosts symposium to showcase STEM learning for local middle school students",
-    quote: "…the passion that these young engineers bring to STEM fields.",
-    url: "https://news.vt.edu/articles/2026/09/STEM-symposium-IAC-2026.html",
-    image: {
-      src: `${SYMPOSIUM_ROOT}/gallery/full/20260822_153343.jpg`,
-      alt: "The Boeing Auditorium filled with research posters, students, and families during the symposium",
-    },
-  },
-  {
     id: "vt-dc-linkedin",
     outlet: "Virginia Tech in the D.C. Area · LinkedIn",
     dateLabel: "August 31, 2026",
@@ -122,6 +135,11 @@ export const PRESS = [
     url: "https://www.linkedin.com/posts/vtdcarea_virginia-tech-welcomed-more-than-250-attendees-activity-7500274151425818624-AVe4",
     embed: "https://www.linkedin.com/embed/feed/update/urn:li:activity:7500274151425818624",
   },
+];
+
+export const PRESS = [
+  ...PRESS_STORIES.filter((story) => story.pinned),
+  ...PRESS_STORIES.filter((story) => !story.pinned),
 ];
 
 // ── The symposium ──

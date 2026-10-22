@@ -96,6 +96,11 @@ export const COHORT_STORY = [
 // stories first, so it stays first even if a new story lands above it. Never add
 // `pinned` to any other story.
 //
+// FEATURED: `featured: true` puts one story right next to VT News at the top of
+// both the home page and the News page, as an image card. Feature one story at a
+// time; everything else lists below, newest first. A story's photo can carry a
+// `credit` (shown under the image) when it isn't ours, like a TV still.
+//
 // VT News blocks framing (X-Frame-Options: SAMEORIGIN), so articles run as link
 // cards; a post with an `embed` URL is framed live on the News page.
 const PRESS_STORIES = [
@@ -111,6 +116,20 @@ const PRESS_STORIES = [
     image: {
       src: `${SYMPOSIUM_ROOT}/gallery/full/20260822_153343.jpg`,
       alt: "The Boeing Auditorium filled with research posters, students, and families during the symposium",
+    },
+  },
+  {
+    id: "abc7-gmw",
+    featured: true, // Sits right next to VT News at the top of the home and News pages.
+    outlet: "ABC7 WJLA · Good Morning Washington",
+    dateLabel: "October 21, 2026",
+    title: "High Schoolers Help Middle Schoolers Explore Their Ideas through Next in Research Program",
+    url: "https://wjla.com/good-morning-washington/high-schoolers-help-middle-schoolers-explore-their-ideas-through-next-in-research-program",
+    cta: "Watch the interview on ABC7",
+    image: {
+      src: `${BASE}images/NextInResearch/press/abc7-gmw-studio.jpg`,
+      alt: "Dev Srivastava and Deborah Torrico-Pardo in the Good Morning Washington studio",
+      credit: "Still: ABC7 WJLA",
     },
   },
   {
@@ -139,7 +158,8 @@ const PRESS_STORIES = [
 
 export const PRESS = [
   ...PRESS_STORIES.filter((story) => story.pinned),
-  ...PRESS_STORIES.filter((story) => !story.pinned),
+  ...PRESS_STORIES.filter((story) => !story.pinned && story.featured),
+  ...PRESS_STORIES.filter((story) => !story.pinned && !story.featured),
 ];
 
 // ── The symposium ──

@@ -1210,7 +1210,7 @@ function Navigation({ activePage }) {
 function PressStory({ item, large = false }) {
   return (
     <article className="group relative flex flex-col border border-paper-shade bg-paper-bright shadow-card transition-shadow hover:shadow-print-lg">
-      <div className="p-3 pb-0">
+      <div className="relative p-3 pb-0">
         <img
           src={item.image.src}
           alt={item.image.alt}
@@ -1218,6 +1218,11 @@ function PressStory({ item, large = false }) {
           decoding="async"
           className="aspect-[16/9] w-full object-cover object-[50%_40%]"
         />
+        {item.image.credit && (
+          <p className="absolute bottom-1 right-4 bg-paper-bright/90 px-1.5 py-0.5 font-mono text-[10px] text-ink">
+            {item.image.credit}
+          </p>
+        )}
       </div>
       <div className="flex flex-1 flex-col p-6 sm:p-8">
         <h3
@@ -1249,7 +1254,7 @@ function PressStory({ item, large = false }) {
           </figure>
         )}
         <p className="mt-auto inline-flex items-center gap-2 pt-6 font-semibold text-stamp transition-colors group-hover:text-ink">
-          Read it on {item.outlet.split(" · ")[0]}
+          {item.cta || `Read it on ${item.outlet.split(" · ")[0]}`}
           <ExternalLink className="h-4 w-4" />
         </p>
       </div>
@@ -1298,8 +1303,10 @@ function HomePage() {
   const spread = [TOP_TEN[3], ...TOP_TEN.slice(1).filter((_, i) => i !== 2)];
   const spreadPhotos = spread.map(toViewerPhoto);
   // PRESS always starts with Virginia Tech News (pinned in src/data/cohortOne.js),
-  // so it leads here; every other story lists under More coverage, newest first.
-  const [leadStory, ...moreCoverage] = PRESS;
+  // then the featured story; those two lead side by side, and every other story
+  // lists under More coverage, newest first.
+  const topStories = PRESS.filter((p) => p.pinned || p.featured);
+  const moreCoverage = PRESS.filter((p) => !p.pinned && !p.featured);
 
   return (
     <div>
@@ -1412,9 +1419,13 @@ function HomePage() {
               <ArrowRight className="h-4 w-4" />
             </PageLink>
           </div>
-          <div className="mt-10 grid items-start gap-6 lg:grid-cols-[1.4fr_0.6fr]">
-            <PressStory item={leadStory} />
-            <div className="grid gap-8">
+          <div className="mt-10 grid gap-6 md:grid-cols-2">
+            {topStories.map((item) => (
+              <PressStory key={item.id} item={item} />
+            ))}
+          </div>
+          <div className="mt-10 grid gap-10 lg:grid-cols-[1.4fr_0.6fr]">
+            {moreCoverage.length > 0 && (
               <div>
                 <h3 className="border-b-2 border-ink pb-2 font-display text-xl font-bold tracking-tight text-ink">
                   More coverage
@@ -1425,21 +1436,21 @@ function HomePage() {
                   ))}
                 </ul>
               </div>
-              <div className="border-t-2 border-ink pt-4">
-                <h3 className="font-display text-xl font-bold tracking-tight text-ink">
-                  Press inquiries
-                </h3>
-                <p className="mt-2 leading-relaxed text-ink">
-                  Interviews, photographs, and the full Cohort One story.
-                </p>
-                <a
-                  href={directorsMailto("Press inquiry")}
-                  className="mt-3 inline-flex items-center gap-2 font-semibold text-stamp transition-colors hover:text-ink"
-                >
-                  <Mail className="h-4 w-4" />
-                  Email the program directors
-                </a>
-              </div>
+            )}
+            <div className="border-t-2 border-ink pt-4">
+              <h3 className="font-display text-xl font-bold tracking-tight text-ink">
+                Press inquiries
+              </h3>
+              <p className="mt-2 leading-relaxed text-ink">
+                Interviews, photographs, and the full Cohort One story.
+              </p>
+              <a
+                href={directorsMailto("Press inquiry")}
+                className="mt-3 inline-flex items-center gap-2 font-semibold text-stamp transition-colors hover:text-ink"
+              >
+                <Mail className="h-4 w-4" />
+                Email the program directors
+              </a>
             </div>
           </div>
         </div>
@@ -2664,8 +2675,10 @@ function ProjectsPage() {
 // ─────────────────────────────────────────────
 
 function NewsPage() {
-  // Virginia Tech News is always the first card (pinned in src/data/cohortOne.js).
-  const articles = PRESS.filter((p) => !p.embed);
+  // Virginia Tech News is always the first card (pinned in src/data/cohortOne.js),
+  // with the featured story right beside it.
+  const topStories = PRESS.filter((p) => p.pinned || p.featured);
+  const articles = PRESS.filter((p) => !p.embed && !p.pinned && !p.featured);
   const posts = PRESS.filter((p) => p.embed);
 
   return (
@@ -2674,6 +2687,12 @@ function NewsPage() {
         title="In the news"
         lead="Coverage of Next In Research and the Cohort One Symposium & Expo at Virginia Tech."
       />
+
+      <div className="mb-8 grid gap-8 md:grid-cols-2">
+        {topStories.map((item) => (
+          <PressStory key={item.id} item={item} large />
+        ))}
+      </div>
 
       <div className="grid items-start gap-8 lg:grid-cols-[1.15fr_0.85fr]">
         <div className="grid gap-8">
